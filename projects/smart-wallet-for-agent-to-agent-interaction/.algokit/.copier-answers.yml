@@ -1,0 +1,9 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 0.3.2
+_src_path: gh:algorandfoundation/algokit-typescript-template
+author_email: chris.kim@algorand.foundation
+author_name: Chris Kim (Hyunggun)
+contract_name: listing_plugin
+preset_name: production
+project_name: smart-wallet-for-agent-to-agent-interaction
+
