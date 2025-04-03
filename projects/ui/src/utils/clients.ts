@@ -2,14 +2,12 @@ import algosdk from 'algosdk'
 import { AlgorandClient } from '@algorandfoundation/algokit-utils'
 import { getAlgodConfigFromEnvironment } from './network/getAlgoClientConfigs'
 import { AbstractedAccountClient, AbstractedAccountFactory } from '@/contracts/AbstractedAccount'
-import { OptInPluginClient } from '@/contracts/OptInPlugin'
-import { getMarketplacePluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from './env'
+import { getMarketplacePluginIDFromEnvironment } from './env'
 import { MarketplacePluginClient } from '@/contracts/MarketplacePlugin'
 
 const algodConfig = getAlgodConfigFromEnvironment()
-const algorandClient = AlgorandClient.fromConfig({ algodConfig }).setDefaultValidityWindow(200)
+const algorand = AlgorandClient.fromConfig({ algodConfig }).setDefaultValidityWindow(200)
 
-const OPTIN_PLUGIN_ID = getOptinPluginIDFromEnvironment()
 const MARKETPLACE_PLUGIN_ID = getMarketplacePluginIDFromEnvironment()
 
 export interface GetAbstractedAccountFactoryParams {
@@ -24,7 +22,7 @@ export function GetAbstractedAccountFactory({
     return new AbstractedAccountFactory({
         defaultSender,
         defaultSigner,
-        algorand: algorandClient,
+        algorand: algorand,
     })
 }
 
@@ -35,23 +33,10 @@ export interface GetAbstractAccountClientParams {
 }
 
 export async function getAbstractAccountClient({ activeAddress, signer, appId = 0n }: GetAbstractAccountClientParams): Promise<AbstractedAccountClient> {
-    algorandClient.setSigner(activeAddress, signer)
-    return algorandClient.client.getTypedAppClientById(AbstractedAccountClient, {
+    algorand.setSigner(activeAddress, signer)
+    return algorand.client.getTypedAppClientById(AbstractedAccountClient, {
         defaultSender: activeAddress,
         appId: appId,
-    })
-}
-
-export interface GetOptinClientParams {
-    signer: algosdk.TransactionSigner
-    activeAddress: string
-}
-
-export async function getOptinClient({ activeAddress, signer }: GetOptinClientParams): Promise<OptInPluginClient> {
-    algorandClient.setSigner(activeAddress, signer)
-    return algorandClient.client.getTypedAppClientById(OptInPluginClient, {
-        defaultSender: activeAddress,
-        appId: OPTIN_PLUGIN_ID,
     })
 }
 
@@ -61,8 +46,8 @@ export interface GetAgentClientParams {
 }
 
 export async function getMarketplacePluginClient({ activeAddress, signer }: GetAgentClientParams): Promise<MarketplacePluginClient> {
-    algorandClient.setSigner(activeAddress, signer)
-    return algorandClient.client.getTypedAppClientById(MarketplacePluginClient, {
+    algorand.setSigner(activeAddress, signer)
+    return algorand.client.getTypedAppClientById(MarketplacePluginClient, {
         defaultSender: activeAddress,
         appId: MARKETPLACE_PLUGIN_ID,
     })
