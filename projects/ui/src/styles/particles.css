@@ -1,0 +1,16 @@
+@keyframes purple {
+    50% {
+        transform: translate3d(36vw, 0vh, 0);
+    }
+    100% {
+        transform: translate3d(21vw, 2vh, 0);
+    }
+}
+@keyframes purple-pseudo {
+    33% {
+        transform: translate3d(3vw, 14vh, 0) rotate(37deg);
+    }
+    100% {
+        transform: translate3d(71vw, 29vh, 0) rotate(331deg);
+    }
+}

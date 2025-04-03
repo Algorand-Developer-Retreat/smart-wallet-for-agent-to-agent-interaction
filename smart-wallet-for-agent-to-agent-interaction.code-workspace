@@ -8,6 +8,9 @@
       "path": "projects/contracts"
     },
     {
+      "path": "projects/ui"
+    },
+    {
       "path": "projects/mcp-client",
       "name": "MCP Client"
     },
