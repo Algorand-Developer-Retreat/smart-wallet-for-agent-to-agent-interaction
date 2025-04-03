@@ -26,13 +26,14 @@
         "./src/*"
       ]
     },
-    "target": "ES2020"
+    "target": "ESNext"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+     "init.ts"
   ],
   "exclude": [
     "node_modules"

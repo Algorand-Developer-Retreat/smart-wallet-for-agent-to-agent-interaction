@@ -3,18 +3,19 @@
 import { useWallet } from "@txnlab/use-wallet-react"
 import { ConnectModal } from "./connectModal"
 import { Button } from "./ui/button"
-import { GetAbstractedAccountFactory, getOptinClient } from "@/utils/clients"
+import { GetAbstractedAccountFactory, getMarketplacePluginClient, getOptinClient } from "@/utils/clients"
 import { useState } from "react"
 import { AbstractedAccountClient } from "@/contracts/AbstractedAccountClient"
-import { getAgentPluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from "@/utils/env"
+import { getListingFactoryIDFromEnvironment, getMarketplacePluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from "@/utils/env"
 
 const ZERO_ADDRESS = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ'
 const maxUint64 = BigInt('18446744073709551615');
 const optInPluginID = getOptinPluginIDFromEnvironment()
-const agentPluginID = getAgentPluginIDFromEnvironment()
+// const listingFactoryID = getListingFactoryIDFromEnvironment()
+const marketPlacePluginID = getMarketplacePluginIDFromEnvironment()
 
 export default function HomeSection() {
-    const { activeAddress, transactionSigner } = useWallet()
+    const { activeWallet, activeAddress, transactionSigner } = useWallet()
     const [abstractedAccountClient, setAbstractedAccountClient] = useState<AbstractedAccountClient | null>(null)
     const [agentAddress, setAgentAddress] = useState<string | null>(null)
 
@@ -35,8 +36,6 @@ export default function HomeSection() {
         });
 
         setAbstractedAccountClient(results.appClient)
-
-
     }
 
     const installGlobalOptinPlugin = async () => {
@@ -82,24 +81,27 @@ export default function HomeSection() {
             return
         }
 
-        const methods = [
-            [agent.appClient.getABIMethod('list').getSelector(), 0]
-            [agent.appClient.getABIMethod('purchase').getSelector(), 0]
-            [agent.appClient.getABIMethod('changePrice').getSelector(), 0]
-            [agent.appClient.getABIMethod('delist').getSelector(), 0]
-            [agent.appClient.getABIMethod('offer').getSelector(), 0]
-        ]
+        const marketplacePluginClient = await getMarketplacePluginClient({
+            activeAddress,
+            signer: transactionSigner
+        })
 
         await abstractedAccountClient.send.arc58AddPlugin({
             sender: activeAddress,
             signer: transactionSigner,
             args: {
-                app: agentPluginID,
+                app: marketPlacePluginID,
                 allowedCaller: agentAddress,
                 lastValidRound: maxUint64,
                 cooldown: 1,
                 adminPrivileges: false,
-                methods
+                methods: [
+                    [marketplacePluginClient.appClient.getABIMethod('list').getSelector(), 0],
+                    [marketplacePluginClient.appClient.getABIMethod('purchase').getSelector(), 0],
+                    [marketplacePluginClient.appClient.getABIMethod('changePrice').getSelector(), 0],
+                    [marketplacePluginClient.appClient.getABIMethod('delist').getSelector(), 0],
+                    [marketplacePluginClient.appClient.getABIMethod('offer').getSelector(), 0]
+                ]
             }
         });
     }
@@ -109,7 +111,12 @@ export default function HomeSection() {
     }
 
     return (
-        <div>
+        <div className="z-50">
+            <Button
+                onClick={() => activeWallet?.disconnect()}
+            >
+                Disconnect
+            </Button>
             <Button
                 onClick={createSmartWallet}
             >

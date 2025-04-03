@@ -1,3 +1,5 @@
+import { ListingFactoryFactory } from '@/contracts/ListingFactory';
+import { MarketplacePluginFactory } from '@/contracts/MarketplacePlugin';
 import { OptInPluginFactory } from '@/contracts/OptInPluginClient';
 import { getAlgodConfigFromEnvironment } from '@/utils/network/getAlgoClientConfigs';
 import { AlgorandClient } from '@algorandfoundation/algokit-utils';
@@ -18,16 +20,24 @@ const optInMintResults = await optinPluginMinter.send.create.createApplication()
 
 envFile = envFile.replace('<REPLACE_WITH_OPTIN_PLUGIN_ID>', optInMintResults.appClient.appId.toString())
 
+const ListingFactoryMinter = new ListingFactoryFactory({
+    defaultSender: kmdAccount.addr,
+    defaultSigner: kmdAccount.signer,
+    algorand
+})
 
+const listingFactoryMintResults = await ListingFactoryMinter.send.create.createApplication()
 
-// const agentPluginMinter = new AgentPluginFactory({
-//     defaultSender: kmdAccount.addr,
-//     defaultSigner: kmdAccount.signer,
-//     algorand
-// })
+envFile = envFile.replace('<REPLACE_WITH_LISTING_FACTORY_ID>', listingFactoryMintResults.appClient.appId.toString())
 
-// const agentPluginMintResults = await agentPluginMinter.send.create.createApplication();
+const marketplacePluginMinter = new MarketplacePluginFactory({
+    defaultSender: kmdAccount.addr,
+    defaultSigner: kmdAccount.signer,
+    algorand
+})
 
-// envFile = envFile.replace('<REPLACE_WITH_AGENT_PLUGIN_ID>', agentPluginMintResults.appClient.appId.toString())
+const marketPlacePluginMintResults = await marketplacePluginMinter.send.create.bare()
+
+envFile = envFile.replace('<REPLACE_WITH_MARKETPLACE_PLUGIN_ID>', marketPlacePluginMintResults.appClient.appId.toString())
 
 fs.writeFileSync('.env', envFile, 'utf-8')

@@ -3,13 +3,14 @@ import { AlgorandClient } from '@algorandfoundation/algokit-utils'
 import { getAlgodConfigFromEnvironment } from './network/getAlgoClientConfigs'
 import { AbstractedAccountClient, AbstractedAccountFactory } from '@/contracts/AbstractedAccountClient'
 import { OptInPluginClient } from '@/contracts/OptInPluginClient'
-import { getAgentPluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from './env'
+import { getMarketplacePluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from './env'
+import { MarketplacePluginClient } from '@/contracts/MarketplacePlugin'
 
 const algodConfig = getAlgodConfigFromEnvironment()
 const algorandClient = AlgorandClient.fromConfig({ algodConfig }).setDefaultValidityWindow(200)
 
 const OPTIN_PLUGIN_ID = getOptinPluginIDFromEnvironment()
-const AGENT_PLUGIN_ID = getAgentPluginIDFromEnvironment()
+const MARKETPLACE_PLUGIN_ID = getMarketplacePluginIDFromEnvironment()
 
 export interface GetAbstractedAccountFactoryParams {
     defaultSender?: string | algosdk.Address | undefined
@@ -59,10 +60,10 @@ export interface GetAgentClientParams {
     activeAddress: string
 }
 
-export async function getAgentClient({ activeAddress, signer }: GetAgentClientParams): Promise<AgentPluginClient> {
+export async function getMarketplacePluginClient({ activeAddress, signer }: GetAgentClientParams): Promise<MarketplacePluginClient> {
     algorandClient.setSigner(activeAddress, signer)
-    return algorandClient.client.getTypedAppClientById(AgentPluginClient, {
+    return algorandClient.client.getTypedAppClientById(MarketplacePluginClient, {
         defaultSender: activeAddress,
-        appId: AGENT_PLUGIN_ID,
+        appId: MARKETPLACE_PLUGIN_ID,
     })
 }

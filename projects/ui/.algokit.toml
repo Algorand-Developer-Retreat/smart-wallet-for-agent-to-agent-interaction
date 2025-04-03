@@ -3,5 +3,5 @@ min_version = "v2.0.0"
 
 [project]
 type = "frontend"
-name = 'algokit-utils-demo-retreat-2025-frontend'
+name = 'ui'
 artifacts = "src/contracts"
