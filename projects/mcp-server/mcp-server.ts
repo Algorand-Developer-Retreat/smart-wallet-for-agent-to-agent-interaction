@@ -1,5 +1,19 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import dotenv from "dotenv";
+import { Anthropic } from "@anthropic-ai/sdk";
+
+dotenv.config();
+
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+
+if (!ANTHROPIC_API_KEY) {
+  throw new Error("ANTHROPIC_API_KEY is not set");
+}
+
+const anthropic = new Anthropic({
+  apiKey: ANTHROPIC_API_KEY,
+});
 
 const server = new McpServer({
   name: "weather",
@@ -70,40 +84,64 @@ server.tool(
     rekeyBack: z.boolean().describe("Whether to rekey back after the transaction"),
   },
   async ({ sender, offerPrice, listingAppID, rekeyBack }) => {
-    // Implementation will be added later
+    // Use Claude to negotiate the price as a seller
+    const message = await anthropic.messages.create({
+      model: "claude-3-7-sonnet-20250219",
+      max_tokens: 1024,
+      messages: [
+        {
+          role: "user",
+          content: `You are a smart negotiator representing a seller. The buyer has offered ${offerPrice} tokens.
+        Your goal is to maximize profit while being reasonable. The listing ID is ${listingAppID}.
+        Respond only with a number representing your counter-offer. If you accept the offer, return the same number.
+        Consider market dynamics and be strategic but fair.`,
+        },
+      ],
+    });
+
+    const responseText = message.content[0].type === "text" ? message.content[0].text : "";
+    const counterOffer = parseInt(responseText.trim());
+
+    if (isNaN(counterOffer)) {
+      throw new Error("Failed to get a valid counter-offer from the negotiator");
+    }
+
+    const isAccepted = counterOffer === offerPrice;
+    const status = isAccepted ? "ACCEPTED" : "COUNTER-OFFER";
+
     return {
       content: [
         {
           type: "text",
-          text: `Negotiating price of ${offerPrice} for listing ${listingAppID} by sender ${sender} (rekeyBack: ${rekeyBack})`,
+          text: `${status}: ${counterOffer} for listing ${listingAppID} (Original offer: ${offerPrice})`,
         },
       ],
     };
   }
 );
 
-server.tool(
-  "recordNegotiatedPrice",
-  "Record a negotiated price for a listing",
-  {
-    sender: z.number().int().nonnegative().describe("Sender account ID"),
-    price: z.number().int().nonnegative().describe("Negotiated price amount"),
-    factoryID: z.number().int().nonnegative().describe("Factory application ID"),
-    listingAppID: z.number().int().nonnegative().describe("Listing application ID"),
-    rekeyBack: z.boolean().describe("Whether to rekey back after the transaction"),
-  },
-  async ({ sender, price, factoryID, listingAppID, rekeyBack }) => {
-    // Implementation will be added later
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Recording negotiated price of ${price} for listing ${listingAppID} from factory ${factoryID} by sender ${sender} (rekeyBack: ${rekeyBack})`,
-        },
-      ],
-    };
-  }
-);
+// server.tool(
+//   "recordNegotiatedPrice",
+//   "Record a negotiated price for a listing",
+//   {
+//     sender: z.number().int().nonnegative().describe("Sender account ID"),
+//     price: z.number().int().nonnegative().describe("Negotiated price amount"),
+//     factoryID: z.number().int().nonnegative().describe("Factory application ID"),
+//     listingAppID: z.number().int().nonnegative().describe("Listing application ID"),
+//     rekeyBack: z.boolean().describe("Whether to rekey back after the transaction"),
+//   },
+//   async ({ sender, price, factoryID, listingAppID, rekeyBack }) => {
+//     // Implementation will be added later
+//     return {
+//       content: [
+//         {
+//           type: "text",
+//           text: `Recording negotiated price of ${price} for listing ${listingAppID} from factory ${factoryID} by sender ${sender} (rekeyBack: ${rekeyBack})`,
+//         },
+//       ],
+//     };
+//   }
+// );
 
 server.tool(
   "purchaseAsset",
