@@ -86,7 +86,7 @@ class MCPClient {
 
     for (const content of response.content) {
       if (content.type === "text") {
-        finalText.push(content.text);
+        finalText.push(chalk.green(`\n[Buyer Agent: ${content.text}]`));
       } else if (content.type === "tool_use") {
         const toolName = content.name;
         const toolArgs = content.input as { [x: string]: unknown } | undefined;
@@ -98,8 +98,8 @@ class MCPClient {
 
         toolResults.push(result);
 
-        finalText.push(`\n${chalk.cyan("[Seller Agent: ")} Calling ${toolName} with args ${JSON.stringify(toolArgs)}]`);
-        finalText.push(`\n${chalk.cyan("[Seller Agent: ")} ${toolName} returned ${JSON.stringify(result.content)}]`);
+        finalText.push(chalk.cyan(`\n[Seller Agent: Calling ${toolName} with args ${JSON.stringify(toolArgs)}]`));
+        finalText.push(chalk.cyan(`\n[Seller Agent: ${toolName} returned ${JSON.stringify(result.content)}]`));
 
         messages.push({
           role: "user",
@@ -112,7 +112,7 @@ class MCPClient {
           messages,
         });
 
-        finalText.push(`\n${response.content[0].type === "text" ? response.content[0].text : ""}`);
+        finalText.push(chalk.green(`\n[Buyer Agent: ${response.content[0].type === "text" ? response.content[0].text : ""}]`));
       }
     }
 
