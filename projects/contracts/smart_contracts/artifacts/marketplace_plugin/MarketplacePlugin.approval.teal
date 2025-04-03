@@ -18,7 +18,7 @@ main_after_if_else@2:
     // export class MarketplacePlugin extends Plugin {
     txn NumAppArgs
     bz main_bare_routing@11
-    pushbytess 0xd8b5b4b8 0x144e022d 0x23dcee6c 0x59466ef2 // method "list(uint64,bool,uint64,uint64)uint64", method "recordNegotiatedPrice(uint64,uint64,uint64,uint64,bool)void", method "purchase(uint64,bool,uint64)void", method "delist(uint64,bool,uint64)void"
+    pushbytess 0xefe1a936 0x144e022d 0x23dcee6c 0x59466ef2 // method "list(uint64,bool,uint64,uint64,uint64)uint64", method "recordNegotiatedPrice(uint64,uint64,uint64,uint64,bool)void", method "purchase(uint64,bool,uint64)void", method "delist(uint64,bool,uint64)void"
     txna ApplicationArgs 0
     match main_list_route@5 main_recordNegotiatedPrice_route@6 main_purchase_route@7 main_delist_route@8
 
@@ -115,7 +115,7 @@ main_recordNegotiatedPrice_route@6:
 
 main_list_route@5:
     // smart_contracts/marketplace_plugin/contract.algo.ts:32
-    // list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64): uint64 {
+    // list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64, minimumPriceToAccept: uint64): uint64 {
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -132,8 +132,10 @@ main_list_route@5:
     btoi
     txna ApplicationArgs 4
     btoi
+    txna ApplicationArgs 5
+    btoi
     // smart_contracts/marketplace_plugin/contract.algo.ts:32
-    // list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64): uint64 {
+    // list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64, minimumPriceToAccept: uint64): uint64 {
     callsub list
     itob
     bytec_2 // 0x151f7c75
@@ -155,50 +157,43 @@ main_bare_routing@11:
     return
 
 
-// smart_contracts/marketplace_plugin/contract.algo.ts::MarketplacePlugin.list(sender: uint64, rekeyBack: uint64, asset: uint64, assetAmount: uint64) -> uint64:
+// smart_contracts/marketplace_plugin/contract.algo.ts::MarketplacePlugin.list(sender: uint64, rekeyBack: uint64, asset: uint64, assetAmount: uint64, minimumPriceToAccept: uint64) -> uint64:
 list:
     // smart_contracts/marketplace_plugin/contract.algo.ts:32
-    // list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64): uint64 {
-    proto 4 1
+    // list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64, minimumPriceToAccept: uint64): uint64 {
+    proto 5 1
     pushbytes ""
-    // smart_contracts/plugin/contract.algo.ts:7-10
-    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(
-    //   app,
-    //   Bytes(AbstractAccountGlobalStateKeysControlledAddress),
-    // )
-    frame_dig -4
-    // smart_contracts/plugin/contract.algo.ts:3
-    // const AbstractAccountGlobalStateKeysControlledAddress = 'controlled_address'
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
+    frame_dig -5
+    // smart_contracts/abstracted_account/constants.ts:2
+    // export const CONTROLLED_ADDRESS = 'controlled_address'
     bytec_1 // "controlled_address"
-    // smart_contracts/plugin/contract.algo.ts:7-10
-    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(
-    //   app,
-    //   Bytes(AbstractAccountGlobalStateKeysControlledAddress),
-    // )
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     app_global_get_ex
     pop
+    dup
     // smart_contracts/marketplace_plugin/contract.algo.ts:26
     // const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
     intc_2 // TMPL_FACTORY_APP_ID
     // smart_contracts/marketplace_plugin/contract.algo.ts:35
     // const factoryApp = Application(factoryAppID)
     dup
+    uncover 2
     // smart_contracts/marketplace_plugin/contract.algo.ts:36
-    // assert(Asset(asset).balance(senderApp.address) >= assetAmount, NOT_ENOUGH_ASSET)
-    frame_dig -4
-    app_params_get AppAddress
-    assert // application exists
-    frame_dig -2
+    // assert(Asset(asset).balance(controlledAccount) >= assetAmount, NOT_ENOUGH_ASSET)
+    frame_dig -3
     asset_holding_get AssetBalance
     assert // account opted into asset
-    frame_dig -1
+    frame_dig -2
     >=
     assert // Not enough asset
     // smart_contracts/marketplace_plugin/contract.algo.ts:38
     // const needsToOptIntoAsset = !factoryApp.address.isOptedIn(Asset(asset))
     app_params_get AppAddress
     assert // application exists
-    frame_dig -2
+    frame_dig -3
     asset_holding_get AssetBalance
     bury 1
     // smart_contracts/marketplace_plugin/contract.algo.ts:40
@@ -248,7 +243,7 @@ list:
     intc_2 // TMPL_FACTORY_APP_ID
     // smart_contracts/marketplace_plugin/contract.algo.ts:50
     // args: [optInPayment, asset],
-    frame_dig -2
+    frame_dig -3
     itob
     // smart_contracts/marketplace_plugin/contract.algo.ts:48-52
     // listingFactoryApp.call.optinToListingAsset({
@@ -306,7 +301,7 @@ list_after_if_else@4:
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
-    //   args: [mbrPayment, assetTransfer],
+    //   args: [mbrPayment, assetTransfer, minimumPriceToAccept],
     //   fee: 0,
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     //   extraProgramPages: 0,
@@ -332,11 +327,11 @@ list_after_if_else@4:
     intc_0 // 0
     itxn_field Fee
     // smart_contracts/marketplace_plugin/contract.algo.ts:79
-    // args: [mbrPayment, assetTransfer],
+    // args: [mbrPayment, assetTransfer, minimumPriceToAccept],
     itxn_next
-    frame_dig -2
+    frame_dig -3
     itxn_field XferAsset
-    frame_dig -1
+    frame_dig -2
     itxn_field AssetAmount
     itxn_field AssetReceiver
     // smart_contracts/marketplace_plugin/contract.algo.ts:69-74
@@ -356,7 +351,7 @@ list_after_if_else@4:
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
-    //   args: [mbrPayment, assetTransfer],
+    //   args: [mbrPayment, assetTransfer, minimumPriceToAccept],
     //   fee: 0,
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     //   extraProgramPages: 0,
@@ -368,21 +363,26 @@ list_after_if_else@4:
     frame_bury 0
     // smart_contracts/marketplace_plugin/contract.algo.ts:81
     // rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
-    frame_dig -3
+    frame_dig -4
     bz list_ternary_false@8
     frame_dig 1
 
 list_ternary_merge@9:
+    // smart_contracts/marketplace_plugin/contract.algo.ts:79
+    // args: [mbrPayment, assetTransfer, minimumPriceToAccept],
+    frame_dig -1
+    itob
     // smart_contracts/marketplace_plugin/contract.algo.ts:76-83
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
-    //   args: [mbrPayment, assetTransfer],
+    //   args: [mbrPayment, assetTransfer, minimumPriceToAccept],
     //   fee: 0,
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     //   extraProgramPages: 0,
     // }).returnValue
-    pushbytes 0x6f506262 // method "list(pay,axfer)uint64"
+    pushbytes 0x553fd548 // method "list(pay,axfer,uint64)uint64"
+    itxn_field ApplicationArgs
     itxn_field ApplicationArgs
     intc_0 // 0
     itxn_field OnCompletion
@@ -399,7 +399,7 @@ list_ternary_merge@9:
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
-    //   args: [mbrPayment, assetTransfer],
+    //   args: [mbrPayment, assetTransfer, minimumPriceToAccept],
     //   fee: 0,
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     //   extraProgramPages: 0,
@@ -414,7 +414,7 @@ list_ternary_merge@9:
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
-    //   args: [mbrPayment, assetTransfer],
+    //   args: [mbrPayment, assetTransfer, minimumPriceToAccept],
     //   fee: 0,
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     //   extraProgramPages: 0,
@@ -452,20 +452,14 @@ recordNegotiatedPrice:
     //   rekeyBack: boolean,
     // ): void {
     proto 5 0
-    // smart_contracts/plugin/contract.algo.ts:7-10
-    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(
-    //   app,
-    //   Bytes(AbstractAccountGlobalStateKeysControlledAddress),
-    // )
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     frame_dig -5
-    // smart_contracts/plugin/contract.algo.ts:3
-    // const AbstractAccountGlobalStateKeysControlledAddress = 'controlled_address'
+    // smart_contracts/abstracted_account/constants.ts:2
+    // export const CONTROLLED_ADDRESS = 'controlled_address'
     bytec_1 // "controlled_address"
-    // smart_contracts/plugin/contract.algo.ts:7-10
-    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(
-    //   app,
-    //   Bytes(AbstractAccountGlobalStateKeysControlledAddress),
-    // )
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     app_global_get_ex
     pop
     // smart_contracts/marketplace_plugin/contract.algo.ts:98
@@ -551,20 +545,14 @@ purchase:
     // smart_contracts/marketplace_plugin/contract.algo.ts:110
     // purchase(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
     proto 3 0
-    // smart_contracts/plugin/contract.algo.ts:7-10
-    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(
-    //   app,
-    //   Bytes(AbstractAccountGlobalStateKeysControlledAddress),
-    // )
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     frame_dig -3
-    // smart_contracts/plugin/contract.algo.ts:3
-    // const AbstractAccountGlobalStateKeysControlledAddress = 'controlled_address'
+    // smart_contracts/abstracted_account/constants.ts:2
+    // export const CONTROLLED_ADDRESS = 'controlled_address'
     bytec_1 // "controlled_address"
-    // smart_contracts/plugin/contract.algo.ts:7-10
-    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(
-    //   app,
-    //   Bytes(AbstractAccountGlobalStateKeysControlledAddress),
-    // )
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     app_global_get_ex
     pop
     dup
@@ -707,20 +695,14 @@ delist:
     // smart_contracts/marketplace_plugin/contract.algo.ts:139
     // delist(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
     proto 3 0
-    // smart_contracts/plugin/contract.algo.ts:7-10
-    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(
-    //   app,
-    //   Bytes(AbstractAccountGlobalStateKeysControlledAddress),
-    // )
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     frame_dig -3
-    // smart_contracts/plugin/contract.algo.ts:3
-    // const AbstractAccountGlobalStateKeysControlledAddress = 'controlled_address'
+    // smart_contracts/abstracted_account/constants.ts:2
+    // export const CONTROLLED_ADDRESS = 'controlled_address'
     bytec_1 // "controlled_address"
-    // smart_contracts/plugin/contract.algo.ts:7-10
-    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(
-    //   app,
-    //   Bytes(AbstractAccountGlobalStateKeysControlledAddress),
-    // )
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     app_global_get_ex
     pop
     // smart_contracts/marketplace_plugin/contract.algo.ts:26

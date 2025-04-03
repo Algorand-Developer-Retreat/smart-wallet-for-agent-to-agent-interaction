@@ -5,7 +5,7 @@
     "/Users/kylebreeding/algorand/retreat/smart-wallet-for-agent-to-agent-interaction/projects/contracts/smart_contracts/listing_factory/constants.ts",
     "/Users/kylebreeding/algorand/retreat/smart-wallet-for-agent-to-agent-interaction/projects/contracts/smart_contracts/listing_factory/contract.algo.ts"
   ],
-  "mappings": "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",
+  "mappings": "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",
   "op_pc_offset": 0,
   "pc_events": {
     "1": {
@@ -32,11 +32,11 @@
       "stack_out": []
     },
     "38": {
-      "op": "pushbytess 0xb8447b36 0x46f76533 0x6f506262 0xb6c1684f 0xee02ece7 0xc97dbb2e // method \"createApplication()void\", method \"updateApplication()void\", method \"list(pay,axfer)uint64\", method \"recordNegotiatedPrice(uint64,uint64)void\", method \"purchase(pay,uint64)void\", method \"delist(uint64)void\"",
+      "op": "pushbytess 0xb8447b36 0x46f76533 0x553fd548 0xb6c1684f 0xee02ece7 0xc97dbb2e // method \"createApplication()void\", method \"updateApplication()void\", method \"list(pay,axfer,uint64)uint64\", method \"recordNegotiatedPrice(uint64,uint64)void\", method \"purchase(pay,uint64)void\", method \"delist(uint64)void\"",
       "defined_out": [
         "Method(createApplication()void)",
         "Method(delist(uint64)void)",
-        "Method(list(pay,axfer)uint64)",
+        "Method(list(pay,axfer,uint64)uint64)",
         "Method(purchase(pay,uint64)void)",
         "Method(recordNegotiatedPrice(uint64,uint64)void)",
         "Method(updateApplication()void)"
@@ -44,7 +44,7 @@
       "stack_out": [
         "Method(createApplication()void)",
         "Method(updateApplication()void)",
-        "Method(list(pay,axfer)uint64)",
+        "Method(list(pay,axfer,uint64)uint64)",
         "Method(recordNegotiatedPrice(uint64,uint64)void)",
         "Method(purchase(pay,uint64)void)",
         "Method(delist(uint64)void)"
@@ -55,7 +55,7 @@
       "defined_out": [
         "Method(createApplication()void)",
         "Method(delist(uint64)void)",
-        "Method(list(pay,axfer)uint64)",
+        "Method(list(pay,axfer,uint64)uint64)",
         "Method(optinToListingAsset(pay,uint64)void)",
         "Method(purchase(pay,uint64)void)",
         "Method(recordNegotiatedPrice(uint64,uint64)void)",
@@ -64,7 +64,7 @@
       "stack_out": [
         "Method(createApplication()void)",
         "Method(updateApplication()void)",
-        "Method(list(pay,axfer)uint64)",
+        "Method(list(pay,axfer,uint64)uint64)",
         "Method(recordNegotiatedPrice(uint64,uint64)void)",
         "Method(purchase(pay,uint64)void)",
         "Method(delist(uint64)void)",
@@ -76,7 +76,7 @@
       "defined_out": [
         "Method(createApplication()void)",
         "Method(delist(uint64)void)",
-        "Method(list(pay,axfer)uint64)",
+        "Method(list(pay,axfer,uint64)uint64)",
         "Method(optinToListingAsset(pay,uint64)void)",
         "Method(purchase(pay,uint64)void)",
         "Method(recordNegotiatedPrice(uint64,uint64)void)",
@@ -86,7 +86,7 @@
       "stack_out": [
         "Method(createApplication()void)",
         "Method(updateApplication()void)",
-        "Method(list(pay,axfer)uint64)",
+        "Method(list(pay,axfer,uint64)uint64)",
         "Method(recordNegotiatedPrice(uint64,uint64)void)",
         "Method(purchase(pay,uint64)void)",
         "Method(delist(uint64)void)",
@@ -118,19 +118,19 @@
       "stack_in": [],
       "op": "txn OnCompletion",
       "defined_out": [
-        "tmp%35#0"
+        "tmp%36#0"
       ],
       "stack_out": [
-        "tmp%35#0"
+        "tmp%36#0"
       ]
     },
     "94": {
       "op": "!",
       "defined_out": [
-        "tmp%36#0"
+        "tmp%37#0"
       ],
       "stack_out": [
-        "tmp%36#0"
+        "tmp%37#0"
       ]
     },
     "95": {
@@ -141,10 +141,10 @@
     "96": {
       "op": "txn ApplicationID",
       "defined_out": [
-        "tmp%37#0"
+        "tmp%38#0"
       ],
       "stack_out": [
-        "tmp%37#0"
+        "tmp%38#0"
       ]
     },
     "98": {
@@ -155,20 +155,20 @@
     "99": {
       "op": "txn GroupIndex",
       "defined_out": [
-        "tmp%39#0"
+        "tmp%40#0"
       ],
       "stack_out": [
-        "tmp%39#0"
+        "tmp%40#0"
       ]
     },
     "101": {
       "op": "intc_1 // 1",
       "defined_out": [
         "1",
-        "tmp%39#0"
+        "tmp%40#0"
       ],
       "stack_out": [
-        "tmp%39#0",
+        "tmp%40#0",
         "1"
       ]
     },
@@ -238,22 +238,22 @@
       "op": "txna ApplicationArgs 1",
       "defined_out": [
         "gtxn_idx%3#0",
-        "reinterpret_bytes[8]%4#0"
+        "reinterpret_bytes[8]%5#0"
       ],
       "stack_out": [
         "gtxn_idx%3#0",
-        "reinterpret_bytes[8]%4#0"
+        "reinterpret_bytes[8]%5#0"
       ]
     },
     "112": {
       "op": "btoi",
       "defined_out": [
         "gtxn_idx%3#0",
-        "tmp%40#0"
+        "tmp%41#0"
       ],
       "stack_out": [
         "gtxn_idx%3#0",
-        "tmp%40#0"
+        "tmp%41#0"
       ]
     },
     "113": {
@@ -279,19 +279,19 @@
       "stack_in": [],
       "op": "txn OnCompletion",
       "defined_out": [
-        "tmp%30#0"
+        "tmp%31#0"
       ],
       "stack_out": [
-        "tmp%30#0"
+        "tmp%31#0"
       ]
     },
     "120": {
       "op": "!",
       "defined_out": [
-        "tmp%31#0"
+        "tmp%32#0"
       ],
       "stack_out": [
-        "tmp%31#0"
+        "tmp%32#0"
       ]
     },
     "121": {
@@ -302,10 +302,10 @@
     "122": {
       "op": "txn ApplicationID",
       "defined_out": [
-        "tmp%32#0"
+        "tmp%33#0"
       ],
       "stack_out": [
-        "tmp%32#0"
+        "tmp%33#0"
       ]
     },
     "124": {
@@ -316,19 +316,19 @@
     "125": {
       "op": "txna ApplicationArgs 1",
       "defined_out": [
-        "reinterpret_bytes[8]%3#0"
+        "reinterpret_bytes[8]%4#0"
       ],
       "stack_out": [
-        "reinterpret_bytes[8]%3#0"
+        "reinterpret_bytes[8]%4#0"
       ]
     },
     "128": {
       "op": "btoi",
       "defined_out": [
-        "tmp%34#0"
+        "tmp%35#0"
       ],
       "stack_out": [
-        "tmp%34#0"
+        "tmp%35#0"
       ]
     },
     "129": {
@@ -354,19 +354,19 @@
       "stack_in": [],
       "op": "txn OnCompletion",
       "defined_out": [
-        "tmp%24#0"
+        "tmp%25#0"
       ],
       "stack_out": [
-        "tmp%24#0"
+        "tmp%25#0"
       ]
     },
     "136": {
       "op": "!",
       "defined_out": [
-        "tmp%25#0"
+        "tmp%26#0"
       ],
       "stack_out": [
-        "tmp%25#0"
+        "tmp%26#0"
       ]
     },
     "137": {
@@ -377,10 +377,10 @@
     "138": {
       "op": "txn ApplicationID",
       "defined_out": [
-        "tmp%26#0"
+        "tmp%27#0"
       ],
       "stack_out": [
-        "tmp%26#0"
+        "tmp%27#0"
       ]
     },
     "140": {
@@ -391,20 +391,20 @@
     "141": {
       "op": "txn GroupIndex",
       "defined_out": [
-        "tmp%28#0"
+        "tmp%29#0"
       ],
       "stack_out": [
-        "tmp%28#0"
+        "tmp%29#0"
       ]
     },
     "143": {
       "op": "intc_1 // 1",
       "defined_out": [
         "1",
-        "tmp%28#0"
+        "tmp%29#0"
       ],
       "stack_out": [
-        "tmp%28#0",
+        "tmp%29#0",
         "1"
       ]
     },
@@ -474,22 +474,22 @@
       "op": "txna ApplicationArgs 1",
       "defined_out": [
         "gtxn_idx%2#0",
-        "reinterpret_bytes[8]%2#0"
+        "reinterpret_bytes[8]%3#0"
       ],
       "stack_out": [
         "gtxn_idx%2#0",
-        "reinterpret_bytes[8]%2#0"
+        "reinterpret_bytes[8]%3#0"
       ]
     },
     "154": {
       "op": "btoi",
       "defined_out": [
         "gtxn_idx%2#0",
-        "tmp%29#0"
+        "tmp%30#0"
       ],
       "stack_out": [
         "gtxn_idx%2#0",
-        "tmp%29#0"
+        "tmp%30#0"
       ]
     },
     "155": {
@@ -515,19 +515,19 @@
       "stack_in": [],
       "op": "txn OnCompletion",
       "defined_out": [
-        "tmp%18#0"
+        "tmp%19#0"
       ],
       "stack_out": [
-        "tmp%18#0"
+        "tmp%19#0"
       ]
     },
     "162": {
       "op": "!",
       "defined_out": [
-        "tmp%19#0"
+        "tmp%20#0"
       ],
       "stack_out": [
-        "tmp%19#0"
+        "tmp%20#0"
       ]
     },
     "163": {
@@ -538,10 +538,10 @@
     "164": {
       "op": "txn ApplicationID",
       "defined_out": [
-        "tmp%20#0"
+        "tmp%21#0"
       ],
       "stack_out": [
-        "tmp%20#0"
+        "tmp%21#0"
       ]
     },
     "166": {
@@ -552,41 +552,41 @@
     "167": {
       "op": "txna ApplicationArgs 1",
       "defined_out": [
-        "reinterpret_bytes[8]%0#0"
+        "reinterpret_bytes[8]%1#0"
       ],
       "stack_out": [
-        "reinterpret_bytes[8]%0#0"
+        "reinterpret_bytes[8]%1#0"
       ]
     },
     "170": {
       "op": "btoi",
       "defined_out": [
-        "tmp%22#0"
+        "tmp%23#0"
       ],
       "stack_out": [
-        "tmp%22#0"
+        "tmp%23#0"
       ]
     },
     "171": {
       "op": "txna ApplicationArgs 2",
       "defined_out": [
-        "reinterpret_bytes[8]%1#0",
-        "tmp%22#0"
+        "reinterpret_bytes[8]%2#0",
+        "tmp%23#0"
       ],
       "stack_out": [
-        "tmp%22#0",
-        "reinterpret_bytes[8]%1#0"
+        "tmp%23#0",
+        "reinterpret_bytes[8]%2#0"
       ]
     },
     "174": {
       "op": "btoi",
       "defined_out": [
-        "tmp%22#0",
-        "tmp%23#0"
+        "tmp%23#0",
+        "tmp%24#0"
       ],
       "stack_out": [
-        "tmp%22#0",
-        "tmp%23#0"
+        "tmp%23#0",
+        "tmp%24#0"
       ]
     },
     "175": {
@@ -826,6 +826,32 @@
       ]
     },
     "208": {
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "gtxn_idx%0#0",
+        "gtxn_idx%1#0",
+        "reinterpret_bytes[8]%0#0"
+      ],
+      "stack_out": [
+        "gtxn_idx%0#0",
+        "gtxn_idx%1#0",
+        "reinterpret_bytes[8]%0#0"
+      ]
+    },
+    "211": {
+      "op": "btoi",
+      "defined_out": [
+        "gtxn_idx%0#0",
+        "gtxn_idx%1#0",
+        "tmp%17#0"
+      ],
+      "stack_out": [
+        "gtxn_idx%0#0",
+        "gtxn_idx%1#0",
+        "tmp%17#0"
+      ]
+    },
+    "212": {
       "callsub": "smart_contracts/listing_factory/contract.algo.ts::ListingFactory.list",
       "op": "callsub list",
       "defined_out": [
@@ -835,7 +861,7 @@
         "to_encode%0#0"
       ]
     },
-    "211": {
+    "215": {
       "op": "itob",
       "defined_out": [
         "val_as_bytes%0#0"
@@ -844,7 +870,7 @@
         "val_as_bytes%0#0"
       ]
     },
-    "212": {
+    "216": {
       "op": "pushbytes 0x151f7c75",
       "defined_out": [
         "0x151f7c75",
@@ -855,27 +881,27 @@
         "0x151f7c75"
       ]
     },
-    "218": {
+    "222": {
       "op": "swap",
       "stack_out": [
         "0x151f7c75",
         "val_as_bytes%0#0"
       ]
     },
-    "219": {
+    "223": {
       "op": "concat",
       "defined_out": [
-        "tmp%17#0"
+        "tmp%18#0"
       ],
       "stack_out": [
-        "tmp%17#0"
+        "tmp%18#0"
       ]
     },
-    "220": {
+    "224": {
       "op": "log",
       "stack_out": []
     },
-    "221": {
+    "225": {
       "op": "intc_1 // 1",
       "defined_out": [
         "tmp%0#0"
@@ -884,11 +910,11 @@
         "tmp%0#0"
       ]
     },
-    "222": {
+    "226": {
       "op": "return",
       "stack_out": []
     },
-    "223": {
+    "227": {
       "block": "main_updateApplication_route@4",
       "stack_in": [],
       "op": "txn OnCompletion",
@@ -899,7 +925,7 @@
         "tmp%7#0"
       ]
     },
-    "225": {
+    "229": {
       "op": "intc_3 // UpdateApplication",
       "defined_out": [
         "UpdateApplication",
@@ -910,7 +936,7 @@
         "UpdateApplication"
       ]
     },
-    "226": {
+    "230": {
       "op": "==",
       "defined_out": [
         "tmp%8#0"
@@ -919,12 +945,12 @@
         "tmp%8#0"
       ]
     },
-    "227": {
+    "231": {
       "error": "OnCompletion is not UpdateApplication",
       "op": "assert // OnCompletion is not UpdateApplication",
       "stack_out": []
     },
-    "228": {
+    "232": {
       "op": "txn ApplicationID",
       "defined_out": [
         "tmp%9#0"
@@ -933,12 +959,12 @@
         "tmp%9#0"
       ]
     },
-    "230": {
+    "234": {
       "error": "can only call when not creating",
       "op": "assert // can only call when not creating",
       "stack_out": []
     },
-    "231": {
+    "235": {
       "op": "intc_1 // 1",
       "defined_out": [
         "tmp%0#0"
@@ -947,11 +973,11 @@
         "tmp%0#0"
       ]
     },
-    "232": {
+    "236": {
       "op": "return",
       "stack_out": []
     },
-    "233": {
+    "237": {
       "block": "main_createApplication_route@3",
       "stack_in": [],
       "op": "txn OnCompletion",
@@ -962,7 +988,7 @@
         "tmp%3#0"
       ]
     },
-    "235": {
+    "239": {
       "op": "!",
       "defined_out": [
         "tmp%4#0"
@@ -971,12 +997,12 @@
         "tmp%4#0"
       ]
     },
-    "236": {
+    "240": {
       "error": "OnCompletion is not NoOp",
       "op": "assert // OnCompletion is not NoOp",
       "stack_out": []
     },
-    "237": {
+    "241": {
       "op": "txn ApplicationID",
       "defined_out": [
         "tmp%5#0"
@@ -985,7 +1011,7 @@
         "tmp%5#0"
       ]
     },
-    "239": {
+    "243": {
       "op": "!",
       "defined_out": [
         "tmp%6#0"
@@ -994,16 +1020,16 @@
         "tmp%6#0"
       ]
     },
-    "240": {
+    "244": {
       "error": "can only call when creating",
       "op": "assert // can only call when creating",
       "stack_out": []
     },
-    "241": {
+    "245": {
       "callsub": "smart_contracts/listing_factory/contract.algo.ts::ListingFactory.createApplication",
       "op": "callsub createApplication"
     },
-    "244": {
+    "248": {
       "op": "intc_1 // 1",
       "defined_out": [
         "tmp%0#0"
@@ -1012,11 +1038,11 @@
         "tmp%0#0"
       ]
     },
-    "245": {
+    "249": {
       "op": "return",
       "stack_out": []
     },
-    "246": {
+    "250": {
       "subroutine": "smart_contracts/listing_factory/contract.algo.ts::ListingFactory.createApplication",
       "params": {},
       "block": "createApplication",
@@ -1029,7 +1055,7 @@
         "\"child_contract_mbr\""
       ]
     },
-    "247": {
+    "251": {
       "op": "pushint 235500 // 235500",
       "defined_out": [
         "\"child_contract_mbr\"",
@@ -1040,25 +1066,26 @@
         "235500"
       ]
     },
-    "251": {
+    "255": {
       "op": "app_global_put",
       "stack_out": []
     },
-    "252": {
+    "256": {
       "retsub": true,
       "op": "retsub"
     },
-    "253": {
+    "257": {
       "subroutine": "smart_contracts/listing_factory/contract.algo.ts::ListingFactory.list",
       "params": {
         "payment#0": "uint64",
-        "assetXfer#0": "uint64"
+        "assetXfer#0": "uint64",
+        "minimumPriceToAccept#0": "uint64"
       },
       "block": "list",
       "stack_in": [],
-      "op": "proto 2 1"
+      "op": "proto 3 1"
     },
-    "256": {
+    "260": {
       "op": "intc_0 // 0",
       "defined_out": [
         "0"
@@ -1067,7 +1094,7 @@
         "0"
       ]
     },
-    "257": {
+    "261": {
       "op": "bytec_0 // \"child_contract_mbr\"",
       "defined_out": [
         "\"child_contract_mbr\"",
@@ -1078,7 +1105,7 @@
         "\"child_contract_mbr\""
       ]
     },
-    "258": {
+    "262": {
       "op": "app_global_get_ex",
       "defined_out": [
         "maybe_exists%0#0",
@@ -1089,14 +1116,14 @@
         "maybe_exists%0#0"
       ]
     },
-    "259": {
+    "263": {
       "error": "check GlobalState exists",
       "op": "assert // check GlobalState exists",
       "stack_out": [
         "maybe_value%0#0"
       ]
     },
-    "260": {
+    "264": {
       "op": "global AssetOptInMinBalance",
       "defined_out": [
         "maybe_value%0#0",
@@ -1107,7 +1134,7 @@
         "tmp%0#0"
       ]
     },
-    "262": {
+    "266": {
       "op": "+",
       "defined_out": [
         "mbrAmount#0"
@@ -1116,8 +1143,8 @@
         "mbrAmount#0"
       ]
     },
-    "263": {
-      "op": "frame_dig -2",
+    "267": {
+      "op": "frame_dig -3",
       "defined_out": [
         "mbrAmount#0",
         "payment#0 (copy)"
@@ -1127,7 +1154,7 @@
         "payment#0 (copy)"
       ]
     },
-    "265": {
+    "269": {
       "op": "gtxns Amount",
       "defined_out": [
         "mbrAmount#0",
@@ -1138,7 +1165,7 @@
         "tmp%1#0"
       ]
     },
-    "267": {
+    "271": {
       "op": "==",
       "defined_out": [
         "tmp%2#0"
@@ -1147,18 +1174,18 @@
         "tmp%2#0"
       ]
     },
-    "268": {
+    "272": {
       "error": "Payment amount must be equal to MBR amount",
       "op": "assert // Payment amount must be equal to MBR amount",
       "stack_out": []
     },
-    "269": {
-      "op": "frame_dig -2",
+    "273": {
+      "op": "frame_dig -3",
       "stack_out": [
         "payment#0 (copy)"
       ]
     },
-    "271": {
+    "275": {
       "op": "gtxns Receiver",
       "defined_out": [
         "tmp%3#0"
@@ -1167,7 +1194,7 @@
         "tmp%3#0"
       ]
     },
-    "273": {
+    "277": {
       "op": "global CurrentApplicationAddress",
       "defined_out": [
         "tmp%3#0",
@@ -1178,7 +1205,7 @@
         "tmp%4#0"
       ]
     },
-    "275": {
+    "279": {
       "op": "==",
       "defined_out": [
         "tmp%5#0"
@@ -1187,13 +1214,13 @@
         "tmp%5#0"
       ]
     },
-    "276": {
+    "280": {
       "error": "Payment receiver must be current application address",
       "op": "assert // Payment receiver must be current application address",
       "stack_out": []
     },
-    "277": {
-      "op": "frame_dig -1",
+    "281": {
+      "op": "frame_dig -2",
       "defined_out": [
         "assetXfer#0 (copy)"
       ],
@@ -1201,7 +1228,7 @@
         "assetXfer#0 (copy)"
       ]
     },
-    "279": {
+    "283": {
       "op": "gtxns AssetAmount",
       "defined_out": [
         "tmp%6#0"
@@ -1210,7 +1237,7 @@
         "tmp%6#0"
       ]
     },
-    "281": {
+    "285": {
       "op": "dup",
       "defined_out": [
         "tmp%6#0",
@@ -1221,21 +1248,21 @@
         "tmp%6#0 (copy)"
       ]
     },
-    "282": {
+    "286": {
       "error": "Asset transfer failed",
       "op": "assert // Asset transfer failed",
       "stack_out": [
         "tmp%6#0"
       ]
     },
-    "283": {
-      "op": "frame_dig -1",
+    "287": {
+      "op": "frame_dig -2",
       "stack_out": [
         "tmp%6#0",
         "assetXfer#0 (copy)"
       ]
     },
-    "285": {
+    "289": {
       "op": "gtxns AssetReceiver",
       "defined_out": [
         "tmp%6#0",
@@ -1246,7 +1273,7 @@
         "tmp%8#0"
       ]
     },
-    "287": {
+    "291": {
       "op": "global CurrentApplicationAddress",
       "defined_out": [
         "tmp%6#0",
@@ -1259,7 +1286,7 @@
         "tmp%9#0"
       ]
     },
-    "289": {
+    "293": {
       "op": "==",
       "defined_out": [
         "tmp%10#0",
@@ -1270,17 +1297,17 @@
         "tmp%10#0"
       ]
     },
-    "290": {
+    "294": {
       "error": "Asset transfer failed",
       "op": "assert // Asset transfer failed",
       "stack_out": [
         "tmp%6#0"
       ]
     },
-    "291": {
+    "295": {
       "op": "itxn_begin"
     },
-    "292": {
+    "296": {
       "op": "txn Sender",
       "defined_out": [
         "tmp%11#0",
@@ -1291,15 +1318,20 @@
         "tmp%11#0"
       ]
     },
-    "294": {
-      "op": "intc_0 // 0",
+    "298": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "minimumPriceToAccept#0 (copy)",
+        "tmp%11#0",
+        "tmp%6#0"
+      ],
       "stack_out": [
         "tmp%6#0",
         "tmp%11#0",
-        "0"
+        "minimumPriceToAccept#0 (copy)"
       ]
     },
-    "295": {
+    "300": {
       "op": "itob",
       "defined_out": [
         "tmp%11#0",
@@ -1312,8 +1344,8 @@
         "val_as_bytes%0#0"
       ]
     },
-    "296": {
-      "op": "frame_dig -1",
+    "301": {
+      "op": "frame_dig -2",
       "stack_out": [
         "tmp%6#0",
         "tmp%11#0",
@@ -1321,7 +1353,7 @@
         "assetXfer#0 (copy)"
       ]
     },
-    "298": {
+    "303": {
       "op": "gtxns XferAsset",
       "defined_out": [
         "tmp%11#0",
@@ -1336,7 +1368,7 @@
         "tmp%12#0"
       ]
     },
-    "300": {
+    "305": {
       "op": "dup",
       "defined_out": [
         "tmp%11#0",
@@ -1353,7 +1385,7 @@
         "tmp%12#0 (copy)"
       ]
     },
-    "301": {
+    "306": {
       "op": "itxn_field Assets",
       "stack_out": [
         "tmp%6#0",
@@ -1362,7 +1394,7 @@
         "tmp%12#0"
       ]
     },
-    "303": {
+    "308": {
       "op": "pushbytes 0xc170b9fe // method \"createListingApplication(asset,address,uint64)void\"",
       "defined_out": [
         "Method(createListingApplication(asset,address,uint64)void)",
@@ -1379,7 +1411,7 @@
         "Method(createListingApplication(asset,address,uint64)void)"
       ]
     },
-    "309": {
+    "314": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "tmp%6#0",
@@ -1388,7 +1420,7 @@
         "tmp%12#0"
       ]
     },
-    "311": {
+    "316": {
       "op": "pushbytes 0x00",
       "defined_out": [
         "0x00",
@@ -1405,7 +1437,7 @@
         "0x00"
       ]
     },
-    "314": {
+    "319": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "tmp%6#0",
@@ -1414,7 +1446,7 @@
         "tmp%12#0"
       ]
     },
-    "316": {
+    "321": {
       "op": "uncover 2",
       "stack_out": [
         "tmp%6#0",
@@ -1423,7 +1455,7 @@
         "tmp%11#0"
       ]
     },
-    "318": {
+    "323": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "tmp%6#0",
@@ -1431,7 +1463,7 @@
         "tmp%12#0"
       ]
     },
-    "320": {
+    "325": {
       "op": "swap",
       "stack_out": [
         "tmp%6#0",
@@ -1439,14 +1471,14 @@
         "val_as_bytes%0#0"
       ]
     },
-    "321": {
+    "326": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "tmp%6#0",
         "tmp%12#0"
       ]
     },
-    "323": {
+    "328": {
       "op": "intc_1 // 1",
       "defined_out": [
         "1",
@@ -1459,14 +1491,14 @@
         "1"
       ]
     },
-    "324": {
+    "329": {
       "op": "itxn_field GlobalNumByteSlice",
       "stack_out": [
         "tmp%6#0",
         "tmp%12#0"
       ]
     },
-    "326": {
+    "331": {
       "op": "pushint 3 // 3",
       "defined_out": [
         "3",
@@ -1479,14 +1511,14 @@
         "3"
       ]
     },
-    "328": {
+    "333": {
       "op": "itxn_field GlobalNumUint",
       "stack_out": [
         "tmp%6#0",
         "tmp%12#0"
       ]
     },
-    "330": {
+    "335": {
       "op": "pushbytes base64(CoEBQw==)",
       "defined_out": [
         "CoEBQw==",
@@ -1499,14 +1531,14 @@
         "CoEBQw=="
       ]
     },
-    "336": {
+    "341": {
       "op": "itxn_field ClearStateProgramPages",
       "stack_out": [
         "tmp%6#0",
         "tmp%12#0"
       ]
     },
-    "338": {
+    "343": {
       "op": "pushbytes base64(CiAEAAEEBSYDBnNlbGxlcgVhc3NldBBuZWdvdGlhdGVkX3ByaWNlMRhAAAMqImcxG0EAMYIGBMFwuf4Epih1DQTGC9GEBFLJBq4EaOhjQwTfoUjWNhoAjgYAawBbAEEAJwAXAAIiQzEZFEQxGESIAYCABBUffHVMULAjQzEZJRJEMRhENhoBiAErI0MxGSUSRDEYRDEWIwlJOBAjEkQ2GgGIAJojQzEZFEQxGEQxFiMJSTgQIxJENhoBF4gAUyNDMRkURDEYRDYaAReIADUjQzEZFEQxGBRENhoBF8AwNhoCNhoDF4gAAiNDigMAMg1EKYv9ZyiL/meABXByaWNli/9niYoBADEAMgkSRCqL/2eJigIAMQAyCRJEi/44BzIKEkSL/jgIMhASRLEyCov/shEishKyFCSyECKyAbOJigIAMQAyCRJEIiplRESL/jgAMgkSRIv+OAgiKmVEEkSL/jgHMgoSRCIpZUSL/0xwAEUBQQAhsTIKIillRHAARCIpZUSyEbISi/+yFIv/shUkshAisgGzsSIoZUQiKWVEcQREgAUgU29sZFCyBbIJI7IQIrIBs4mKAQAxADIJEkQiKGVEi/8SRCIoZUQiKGVEIillRCIoZUSxTLIRTLIVTLIUJLIQIrIBtrIJI7IQIrIBs4kiKGVEiQ==)",
       "defined_out": [
         "CiAEAAEEBSYDBnNlbGxlcgVhc3NldBBuZWdvdGlhdGVkX3ByaWNlMRhAAAMqImcxG0EAMYIGBMFwuf4Epih1DQTGC9GEBFLJBq4EaOhjQwTfoUjWNhoAjgYAawBbAEEAJwAXAAIiQzEZFEQxGESIAYCABBUffHVMULAjQzEZJRJEMRhENhoBiAErI0MxGSUSRDEYRDEWIwlJOBAjEkQ2GgGIAJojQzEZFEQxGEQxFiMJSTgQIxJENhoBF4gAUyNDMRkURDEYRDYaAReIADUjQzEZFEQxGBRENhoBF8AwNhoCNhoDF4gAAiNDigMAMg1EKYv9ZyiL/meABXByaWNli/9niYoBADEAMgkSRCqL/2eJigIAMQAyCRJEi/44BzIKEkSL/jgIMhASRLEyCov/shEishKyFCSyECKyAbOJigIAMQAyCRJEIiplRESL/jgAMgkSRIv+OAgiKmVEEkSL/jgHMgoSRCIpZUSL/0xwAEUBQQAhsTIKIillRHAARCIpZUSyEbISi/+yFIv/shUkshAisgGzsSIoZUQiKWVEcQREgAUgU29sZFCyBbIJI7IQIrIBs4mKAQAxADIJEkQiKGVEi/8SRCIoZUQiKGVEIillRCIoZUSxTLIRTLIVTLIUJLIQIrIBtrIJI7IQIrIBs4kiKGVEiQ==",
@@ -1519,14 +1551,14 @@
         "CiAEAAEEBSYDBnNlbGxlcgVhc3NldBBuZWdvdGlhdGVkX3ByaWNlMRhAAAMqImcxG0EAMYIGBMFwuf4Epih1DQTGC9GEBFLJBq4EaOhjQwTfoUjWNhoAjgYAawBbAEEAJwAXAAIiQzEZFEQxGESIAYCABBUffHVMULAjQzEZJRJEMRhENhoBiAErI0MxGSUSRDEYRDEWIwlJOBAjEkQ2GgGIAJojQzEZFEQxGEQxFiMJSTgQIxJENhoBF4gAUyNDMRkURDEYRDYaAReIADUjQzEZFEQxGBRENhoBF8AwNhoCNhoDF4gAAiNDigMAMg1EKYv9ZyiL/meABXByaWNli/9niYoBADEAMgkSRCqL/2eJigIAMQAyCRJEi/44BzIKEkSL/jgIMhASRLEyCov/shEishKyFCSyECKyAbOJigIAMQAyCRJEIiplRESL/jgAMgkSRIv+OAgiKmVEEkSL/jgHMgoSRCIpZUSL/0xwAEUBQQAhsTIKIillRHAARCIpZUSyEbISi/+yFIv/shUkshAisgGzsSIoZUQiKWVEcQREgAUgU29sZFCyBbIJI7IQIrIBs4mKAQAxADIJEkQiKGVEi/8SRCIoZUQiKGVEIillRCIoZUSxTLIRTLIVTLIUJLIQIrIBtrIJI7IQIrIBs4kiKGVEiQ=="
       ]
     },
-    "843": {
+    "848": {
       "op": "itxn_field ApprovalProgramPages",
       "stack_out": [
         "tmp%6#0",
         "tmp%12#0"
       ]
     },
-    "845": {
+    "850": {
       "op": "intc_0 // 0",
       "stack_out": [
         "tmp%6#0",
@@ -1534,14 +1566,14 @@
         "0"
       ]
     },
-    "846": {
+    "851": {
       "op": "itxn_field OnCompletion",
       "stack_out": [
         "tmp%6#0",
         "tmp%12#0"
       ]
     },
-    "848": {
+    "853": {
       "op": "intc_2 // appl",
       "defined_out": [
         "appl",
@@ -1554,14 +1586,14 @@
         "appl"
       ]
     },
-    "849": {
+    "854": {
       "op": "itxn_field TypeEnum",
       "stack_out": [
         "tmp%6#0",
         "tmp%12#0"
       ]
     },
-    "851": {
+    "856": {
       "op": "intc_0 // 0",
       "stack_out": [
         "tmp%6#0",
@@ -1569,17 +1601,17 @@
         "0"
       ]
     },
-    "852": {
+    "857": {
       "op": "itxn_field Fee",
       "stack_out": [
         "tmp%6#0",
         "tmp%12#0"
       ]
     },
-    "854": {
+    "859": {
       "op": "itxn_submit"
     },
-    "855": {
+    "860": {
       "op": "gitxn 0 CreatedApplicationID",
       "defined_out": [
         "createdListingApp#0",
@@ -1592,7 +1624,7 @@
         "createdListingApp#0"
       ]
     },
-    "858": {
+    "863": {
       "op": "dup",
       "defined_out": [
         "createdListingApp#0",
@@ -1607,7 +1639,7 @@
         "createdListingApp#0 (copy)"
       ]
     },
-    "859": {
+    "864": {
       "op": "app_params_get AppAddress",
       "defined_out": [
         "check%0#0",
@@ -1624,7 +1656,7 @@
         "check%0#0"
       ]
     },
-    "861": {
+    "866": {
       "error": "application exists",
       "op": "assert // application exists",
       "stack_out": [
@@ -1634,7 +1666,7 @@
         "value%0#0"
       ]
     },
-    "862": {
+    "867": {
       "op": "global AssetOptInMinBalance",
       "defined_out": [
         "createdListingApp#0",
@@ -1651,10 +1683,10 @@
         "optInPayment%%param_Amount_idx_0#0"
       ]
     },
-    "864": {
+    "869": {
       "op": "itxn_begin"
     },
-    "865": {
+    "870": {
       "op": "itxn_field Amount",
       "stack_out": [
         "tmp%6#0",
@@ -1663,7 +1695,7 @@
         "value%0#0"
       ]
     },
-    "867": {
+    "872": {
       "op": "itxn_field Receiver",
       "stack_out": [
         "tmp%6#0",
@@ -1671,7 +1703,7 @@
         "createdListingApp#0"
       ]
     },
-    "869": {
+    "874": {
       "op": "intc_1 // 1",
       "stack_out": [
         "tmp%6#0",
@@ -1680,7 +1712,7 @@
         "1"
       ]
     },
-    "870": {
+    "875": {
       "op": "itxn_field TypeEnum",
       "stack_out": [
         "tmp%6#0",
@@ -1688,7 +1720,7 @@
         "createdListingApp#0"
       ]
     },
-    "872": {
+    "877": {
       "op": "intc_0 // 0",
       "stack_out": [
         "tmp%6#0",
@@ -1697,7 +1729,7 @@
         "0"
       ]
     },
-    "873": {
+    "878": {
       "op": "itxn_field Fee",
       "stack_out": [
         "tmp%6#0",
@@ -1705,10 +1737,10 @@
         "createdListingApp#0"
       ]
     },
-    "875": {
+    "880": {
       "op": "itxn_next"
     },
-    "876": {
+    "881": {
       "op": "dig 1",
       "stack_out": [
         "tmp%6#0",
@@ -1717,7 +1749,7 @@
         "tmp%12#0 (copy)"
       ]
     },
-    "878": {
+    "883": {
       "op": "itob",
       "defined_out": [
         "createdListingApp#0",
@@ -1732,7 +1764,7 @@
         "val_as_bytes%1#0"
       ]
     },
-    "879": {
+    "884": {
       "op": "bytec_1 // method \"optinToListingAsset(pay,uint64)void\"",
       "defined_out": [
         "Method(optinToListingAsset(pay,uint64)void)",
@@ -1749,7 +1781,7 @@
         "Method(optinToListingAsset(pay,uint64)void)"
       ]
     },
-    "880": {
+    "885": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "tmp%6#0",
@@ -1758,7 +1790,7 @@
         "val_as_bytes%1#0"
       ]
     },
-    "882": {
+    "887": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "tmp%6#0",
@@ -1766,7 +1798,7 @@
         "createdListingApp#0"
       ]
     },
-    "884": {
+    "889": {
       "op": "intc_0 // 0",
       "stack_out": [
         "tmp%6#0",
@@ -1775,7 +1807,7 @@
         "0"
       ]
     },
-    "885": {
+    "890": {
       "op": "itxn_field OnCompletion",
       "stack_out": [
         "tmp%6#0",
@@ -1783,7 +1815,7 @@
         "createdListingApp#0"
       ]
     },
-    "887": {
+    "892": {
       "op": "dup",
       "stack_out": [
         "tmp%6#0",
@@ -1792,7 +1824,7 @@
         "createdListingApp#0 (copy)"
       ]
     },
-    "888": {
+    "893": {
       "op": "itxn_field ApplicationID",
       "stack_out": [
         "tmp%6#0",
@@ -1800,7 +1832,7 @@
         "createdListingApp#0"
       ]
     },
-    "890": {
+    "895": {
       "op": "intc_2 // appl",
       "stack_out": [
         "tmp%6#0",
@@ -1809,7 +1841,7 @@
         "appl"
       ]
     },
-    "891": {
+    "896": {
       "op": "itxn_field TypeEnum",
       "stack_out": [
         "tmp%6#0",
@@ -1817,7 +1849,7 @@
         "createdListingApp#0"
       ]
     },
-    "893": {
+    "898": {
       "op": "intc_0 // 0",
       "stack_out": [
         "tmp%6#0",
@@ -1826,7 +1858,7 @@
         "0"
       ]
     },
-    "894": {
+    "899": {
       "op": "itxn_field Fee",
       "stack_out": [
         "tmp%6#0",
@@ -1834,13 +1866,13 @@
         "createdListingApp#0"
       ]
     },
-    "896": {
+    "901": {
       "op": "itxn_submit"
     },
-    "897": {
+    "902": {
       "op": "itxn_begin"
     },
-    "898": {
+    "903": {
       "op": "dup",
       "stack_out": [
         "tmp%6#0",
@@ -1849,7 +1881,7 @@
         "createdListingApp#0 (copy)"
       ]
     },
-    "899": {
+    "904": {
       "op": "app_params_get AppAddress",
       "defined_out": [
         "check%1#0",
@@ -1866,7 +1898,7 @@
         "check%1#0"
       ]
     },
-    "901": {
+    "906": {
       "error": "application exists",
       "op": "assert // application exists",
       "stack_out": [
@@ -1876,7 +1908,7 @@
         "value%1#0"
       ]
     },
-    "902": {
+    "907": {
       "op": "uncover 2",
       "stack_out": [
         "tmp%6#0",
@@ -1885,7 +1917,7 @@
         "tmp%12#0"
       ]
     },
-    "904": {
+    "909": {
       "op": "itxn_field XferAsset",
       "stack_out": [
         "tmp%6#0",
@@ -1893,7 +1925,7 @@
         "value%1#0"
       ]
     },
-    "906": {
+    "911": {
       "op": "uncover 2",
       "stack_out": [
         "createdListingApp#0",
@@ -1901,20 +1933,20 @@
         "tmp%6#0"
       ]
     },
-    "908": {
+    "913": {
       "op": "itxn_field AssetAmount",
       "stack_out": [
         "createdListingApp#0",
         "value%1#0"
       ]
     },
-    "910": {
+    "915": {
       "op": "itxn_field AssetReceiver",
       "stack_out": [
         "createdListingApp#0"
       ]
     },
-    "912": {
+    "917": {
       "op": "intc_3 // 4",
       "defined_out": [
         "4",
@@ -1925,33 +1957,33 @@
         "4"
       ]
     },
-    "913": {
+    "918": {
       "op": "itxn_field TypeEnum",
       "stack_out": [
         "createdListingApp#0"
       ]
     },
-    "915": {
+    "920": {
       "op": "intc_0 // 0",
       "stack_out": [
         "createdListingApp#0",
         "0"
       ]
     },
-    "916": {
+    "921": {
       "op": "itxn_field Fee",
       "stack_out": [
         "createdListingApp#0"
       ]
     },
-    "918": {
+    "923": {
       "op": "itxn_submit"
     },
-    "919": {
+    "924": {
       "retsub": true,
       "op": "retsub"
     },
-    "920": {
+    "925": {
       "subroutine": "smart_contracts/listing_factory/contract.algo.ts::ListingFactory.recordNegotiatedPrice",
       "params": {
         "price#0": "uint64",
@@ -1961,7 +1993,7 @@
       "stack_in": [],
       "op": "proto 2 0"
     },
-    "923": {
+    "928": {
       "op": "frame_dig -1",
       "defined_out": [
         "listingAppId#0 (copy)"
@@ -1970,7 +2002,7 @@
         "listingAppId#0 (copy)"
       ]
     },
-    "925": {
+    "930": {
       "op": "app_params_get AppCreator",
       "defined_out": [
         "check%0#0",
@@ -1981,14 +2013,14 @@
         "check%0#0"
       ]
     },
-    "927": {
+    "932": {
       "error": "application exists",
       "op": "assert // application exists",
       "stack_out": [
         "value%0#0"
       ]
     },
-    "928": {
+    "933": {
       "op": "global CurrentApplicationAddress",
       "defined_out": [
         "tmp%0#0",
@@ -1999,7 +2031,7 @@
         "tmp%0#0"
       ]
     },
-    "930": {
+    "935": {
       "op": "==",
       "defined_out": [
         "tmp%1#0"
@@ -2008,15 +2040,15 @@
         "tmp%1#0"
       ]
     },
-    "931": {
+    "936": {
       "error": "Not a listing contract",
       "op": "assert // Not a listing contract",
       "stack_out": []
     },
-    "932": {
+    "937": {
       "op": "itxn_begin"
     },
-    "933": {
+    "938": {
       "op": "frame_dig -2",
       "defined_out": [
         "price#0 (copy)"
@@ -2025,7 +2057,7 @@
         "price#0 (copy)"
       ]
     },
-    "935": {
+    "940": {
       "op": "itob",
       "defined_out": [
         "val_as_bytes%0#0"
@@ -2034,7 +2066,7 @@
         "val_as_bytes%0#0"
       ]
     },
-    "936": {
+    "941": {
       "op": "pushbytes 0xa628750d // method \"recordNegotiatedPrice(uint64)void\"",
       "defined_out": [
         "Method(recordNegotiatedPrice(uint64)void)",
@@ -2045,17 +2077,17 @@
         "Method(recordNegotiatedPrice(uint64)void)"
       ]
     },
-    "942": {
+    "947": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "val_as_bytes%0#0"
       ]
     },
-    "944": {
+    "949": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": []
     },
-    "946": {
+    "951": {
       "op": "intc_0 // 0",
       "defined_out": [
         "0"
@@ -2064,21 +2096,21 @@
         "0"
       ]
     },
-    "947": {
+    "952": {
       "op": "itxn_field OnCompletion",
       "stack_out": []
     },
-    "949": {
+    "954": {
       "op": "frame_dig -1",
       "stack_out": [
         "listingAppId#0 (copy)"
       ]
     },
-    "951": {
+    "956": {
       "op": "itxn_field ApplicationID",
       "stack_out": []
     },
-    "953": {
+    "958": {
       "op": "intc_2 // appl",
       "defined_out": [
         "appl"
@@ -2087,28 +2119,28 @@
         "appl"
       ]
     },
-    "954": {
+    "959": {
       "op": "itxn_field TypeEnum",
       "stack_out": []
     },
-    "956": {
+    "961": {
       "op": "intc_0 // 0",
       "stack_out": [
         "0"
       ]
     },
-    "957": {
+    "962": {
       "op": "itxn_field Fee",
       "stack_out": []
     },
-    "959": {
+    "964": {
       "op": "itxn_submit"
     },
-    "960": {
+    "965": {
       "retsub": true,
       "op": "retsub"
     },
-    "961": {
+    "966": {
       "subroutine": "smart_contracts/listing_factory/contract.algo.ts::ListingFactory.purchase",
       "params": {
         "payment#0": "uint64",
@@ -2118,7 +2150,7 @@
       "stack_in": [],
       "op": "proto 2 0"
     },
-    "964": {
+    "969": {
       "op": "frame_dig -1",
       "defined_out": [
         "listingAppId#0 (copy)"
@@ -2127,7 +2159,7 @@
         "listingAppId#0 (copy)"
       ]
     },
-    "966": {
+    "971": {
       "op": "app_params_get AppCreator",
       "defined_out": [
         "check%0#0",
@@ -2138,14 +2170,14 @@
         "check%0#0"
       ]
     },
-    "968": {
+    "973": {
       "error": "application exists",
       "op": "assert // application exists",
       "stack_out": [
         "value%0#0"
       ]
     },
-    "969": {
+    "974": {
       "op": "global CurrentApplicationAddress",
       "defined_out": [
         "tmp%0#0",
@@ -2156,7 +2188,7 @@
         "tmp%0#0"
       ]
     },
-    "971": {
+    "976": {
       "op": "==",
       "defined_out": [
         "tmp%1#0"
@@ -2165,12 +2197,12 @@
         "tmp%1#0"
       ]
     },
-    "972": {
+    "977": {
       "error": "Not a listing contract",
       "op": "assert // Not a listing contract",
       "stack_out": []
     },
-    "973": {
+    "978": {
       "op": "frame_dig -2",
       "defined_out": [
         "payment#0 (copy)"
@@ -2179,7 +2211,7 @@
         "payment#0 (copy)"
       ]
     },
-    "975": {
+    "980": {
       "op": "gtxns Receiver",
       "defined_out": [
         "tmp%2#0"
@@ -2188,7 +2220,7 @@
         "tmp%2#0"
       ]
     },
-    "977": {
+    "982": {
       "op": "global CurrentApplicationAddress",
       "defined_out": [
         "tmp%2#0",
@@ -2199,7 +2231,7 @@
         "tmp%3#0"
       ]
     },
-    "979": {
+    "984": {
       "op": "==",
       "defined_out": [
         "tmp%4#0"
@@ -2208,18 +2240,18 @@
         "tmp%4#0"
       ]
     },
-    "980": {
+    "985": {
       "error": "Payment receiver must be current application address",
       "op": "assert // Payment receiver must be current application address",
       "stack_out": []
     },
-    "981": {
+    "986": {
       "op": "frame_dig -2",
       "stack_out": [
         "payment#0 (copy)"
       ]
     },
-    "983": {
+    "988": {
       "op": "gtxns Amount",
       "defined_out": [
         "tmp%5#0"
@@ -2228,7 +2260,7 @@
         "tmp%5#0"
       ]
     },
-    "985": {
+    "990": {
       "op": "dup",
       "defined_out": [
         "tmp%5#0",
@@ -2239,21 +2271,21 @@
         "tmp%5#0 (copy)"
       ]
     },
-    "986": {
+    "991": {
       "error": "Payment amount must be greater than 0",
       "op": "assert // Payment amount must be greater than 0",
       "stack_out": [
         "tmp%5#0"
       ]
     },
-    "987": {
+    "992": {
       "op": "frame_dig -1",
       "stack_out": [
         "tmp%5#0",
         "listingAppId#0 (copy)"
       ]
     },
-    "989": {
+    "994": {
       "op": "pushbytes \"seller\"",
       "defined_out": [
         "\"seller\"",
@@ -2266,7 +2298,7 @@
         "\"seller\""
       ]
     },
-    "997": {
+    "1002": {
       "op": "app_global_get_ex",
       "defined_out": [
         "_#0",
@@ -2279,21 +2311,21 @@
         "_#0"
       ]
     },
-    "998": {
+    "1003": {
       "op": "pop",
       "stack_out": [
         "tmp%5#0",
         "sellerBytes#0"
       ]
     },
-    "999": {
+    "1004": {
       "op": "swap",
       "stack_out": [
         "sellerBytes#0",
         "tmp%5#0"
       ]
     },
-    "1000": {
+    "1005": {
       "op": "frame_dig -1",
       "stack_out": [
         "sellerBytes#0",
@@ -2301,7 +2333,7 @@
         "listingAppId#0 (copy)"
       ]
     },
-    "1002": {
+    "1007": {
       "op": "app_params_get AppAddress",
       "defined_out": [
         "check%1#0",
@@ -2316,7 +2348,7 @@
         "check%1#0"
       ]
     },
-    "1004": {
+    "1009": {
       "error": "application exists",
       "op": "assert // application exists",
       "stack_out": [
@@ -2325,19 +2357,19 @@
         "value%1#0"
       ]
     },
-    "1005": {
+    "1010": {
       "op": "itxn_begin"
     },
-    "1006": {
+    "1011": {
       "op": "itxn_field Receiver"
     },
-    "1008": {
+    "1013": {
       "op": "itxn_field Amount",
       "stack_out": [
         "sellerBytes#0"
       ]
     },
-    "1010": {
+    "1015": {
       "op": "intc_1 // 1",
       "defined_out": [
         "1",
@@ -2348,13 +2380,13 @@
         "1"
       ]
     },
-    "1011": {
+    "1016": {
       "op": "itxn_field TypeEnum",
       "stack_out": [
         "sellerBytes#0"
       ]
     },
-    "1013": {
+    "1018": {
       "op": "intc_0 // 0",
       "defined_out": [
         "0",
@@ -2365,16 +2397,16 @@
         "0"
       ]
     },
-    "1014": {
+    "1019": {
       "op": "itxn_field Fee",
       "stack_out": [
         "sellerBytes#0"
       ]
     },
-    "1016": {
+    "1021": {
       "op": "itxn_next"
     },
-    "1017": {
+    "1022": {
       "op": "txn Sender",
       "defined_out": [
         "sellerBytes#0",
@@ -2385,7 +2417,7 @@
         "tmp%7#0"
       ]
     },
-    "1019": {
+    "1024": {
       "op": "pushbytes 0x52c906ae // method \"purchase(pay,address)void\"",
       "defined_out": [
         "Method(purchase(pay,address)void)",
@@ -2398,33 +2430,33 @@
         "Method(purchase(pay,address)void)"
       ]
     },
-    "1025": {
+    "1030": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "sellerBytes#0",
         "tmp%7#0"
       ]
     },
-    "1027": {
+    "1032": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "sellerBytes#0"
       ]
     },
-    "1029": {
+    "1034": {
       "op": "frame_dig -1",
       "stack_out": [
         "sellerBytes#0",
         "listingAppId#0 (copy)"
       ]
     },
-    "1031": {
+    "1036": {
       "op": "itxn_field ApplicationID",
       "stack_out": [
         "sellerBytes#0"
       ]
     },
-    "1033": {
+    "1038": {
       "op": "pushint 5 // 5",
       "defined_out": [
         "5",
@@ -2435,13 +2467,13 @@
         "5"
       ]
     },
-    "1035": {
+    "1040": {
       "op": "itxn_field OnCompletion",
       "stack_out": [
         "sellerBytes#0"
       ]
     },
-    "1037": {
+    "1042": {
       "op": "intc_2 // appl",
       "defined_out": [
         "appl",
@@ -2452,30 +2484,11 @@
         "appl"
       ]
     },
-    "1038": {
+    "1043": {
       "op": "itxn_field TypeEnum",
       "stack_out": [
         "sellerBytes#0"
       ]
-    },
-    "1040": {
-      "op": "intc_0 // 0",
-      "stack_out": [
-        "sellerBytes#0",
-        "0"
-      ]
-    },
-    "1041": {
-      "op": "itxn_field Fee",
-      "stack_out": [
-        "sellerBytes#0"
-      ]
-    },
-    "1043": {
-      "op": "itxn_submit"
-    },
-    "1044": {
-      "op": "itxn_begin"
     },
     "1045": {
       "op": "intc_0 // 0",
@@ -2485,6 +2498,25 @@
       ]
     },
     "1046": {
+      "op": "itxn_field Fee",
+      "stack_out": [
+        "sellerBytes#0"
+      ]
+    },
+    "1048": {
+      "op": "itxn_submit"
+    },
+    "1049": {
+      "op": "itxn_begin"
+    },
+    "1050": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "sellerBytes#0",
+        "0"
+      ]
+    },
+    "1051": {
       "op": "bytec_0 // \"child_contract_mbr\"",
       "defined_out": [
         "\"child_contract_mbr\"",
@@ -2497,7 +2529,7 @@
         "\"child_contract_mbr\""
       ]
     },
-    "1047": {
+    "1052": {
       "op": "app_global_get_ex",
       "defined_out": [
         "maybe_exists%0#0",
@@ -2510,7 +2542,7 @@
         "maybe_exists%0#0"
       ]
     },
-    "1048": {
+    "1053": {
       "error": "check GlobalState exists",
       "op": "assert // check GlobalState exists",
       "stack_out": [
@@ -2518,41 +2550,41 @@
         "maybe_value%0#0"
       ]
     },
-    "1049": {
+    "1054": {
       "op": "itxn_field Amount"
     },
-    "1051": {
+    "1056": {
       "op": "itxn_field Receiver",
       "stack_out": []
     },
-    "1053": {
+    "1058": {
       "op": "intc_1 // 1",
       "stack_out": [
         "1"
       ]
     },
-    "1054": {
+    "1059": {
       "op": "itxn_field TypeEnum",
       "stack_out": []
     },
-    "1056": {
+    "1061": {
       "op": "intc_0 // 0",
       "stack_out": [
         "0"
       ]
     },
-    "1057": {
+    "1062": {
       "op": "itxn_field Fee",
       "stack_out": []
     },
-    "1059": {
+    "1064": {
       "op": "itxn_submit"
     },
-    "1060": {
+    "1065": {
       "retsub": true,
       "op": "retsub"
     },
-    "1061": {
+    "1066": {
       "subroutine": "smart_contracts/listing_factory/contract.algo.ts::ListingFactory.delist",
       "params": {
         "listingAppId#0": "uint64"
@@ -2561,7 +2593,7 @@
       "stack_in": [],
       "op": "proto 1 0"
     },
-    "1064": {
+    "1069": {
       "op": "frame_dig -1",
       "defined_out": [
         "listingAppId#0 (copy)"
@@ -2570,7 +2602,7 @@
         "listingAppId#0 (copy)"
       ]
     },
-    "1066": {
+    "1071": {
       "op": "app_params_get AppCreator",
       "defined_out": [
         "check%0#0",
@@ -2581,14 +2613,14 @@
         "check%0#0"
       ]
     },
-    "1068": {
+    "1073": {
       "error": "application exists",
       "op": "assert // application exists",
       "stack_out": [
         "value%0#0"
       ]
     },
-    "1069": {
+    "1074": {
       "op": "global CurrentApplicationAddress",
       "defined_out": [
         "tmp%0#0",
@@ -2599,7 +2631,7 @@
         "tmp%0#0"
       ]
     },
-    "1071": {
+    "1076": {
       "op": "==",
       "defined_out": [
         "tmp%1#0"
@@ -2608,15 +2640,15 @@
         "tmp%1#0"
       ]
     },
-    "1072": {
+    "1077": {
       "error": "Not a listing contract",
       "op": "assert // Not a listing contract",
       "stack_out": []
     },
-    "1073": {
+    "1078": {
       "op": "itxn_begin"
     },
-    "1074": {
+    "1079": {
       "op": "txn Sender",
       "defined_out": [
         "tmp%2#0"
@@ -2625,7 +2657,7 @@
         "tmp%2#0"
       ]
     },
-    "1076": {
+    "1081": {
       "op": "pushbytes 0x68e86343 // method \"delist(address)void\"",
       "defined_out": [
         "Method(delist(address)void)",
@@ -2636,27 +2668,27 @@
         "Method(delist(address)void)"
       ]
     },
-    "1082": {
+    "1087": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": [
         "tmp%2#0"
       ]
     },
-    "1084": {
+    "1089": {
       "op": "itxn_field ApplicationArgs",
       "stack_out": []
     },
-    "1086": {
+    "1091": {
       "op": "frame_dig -1",
       "stack_out": [
         "listingAppId#0 (copy)"
       ]
     },
-    "1088": {
+    "1093": {
       "op": "itxn_field ApplicationID",
       "stack_out": []
     },
-    "1090": {
+    "1095": {
       "op": "pushint 5 // 5",
       "defined_out": [
         "5"
@@ -2665,11 +2697,11 @@
         "5"
       ]
     },
-    "1092": {
+    "1097": {
       "op": "itxn_field OnCompletion",
       "stack_out": []
     },
-    "1094": {
+    "1099": {
       "op": "intc_2 // appl",
       "defined_out": [
         "appl"
@@ -2678,11 +2710,11 @@
         "appl"
       ]
     },
-    "1095": {
+    "1100": {
       "op": "itxn_field TypeEnum",
       "stack_out": []
     },
-    "1097": {
+    "1102": {
       "op": "intc_0 // 0",
       "defined_out": [
         "0"
@@ -2691,23 +2723,23 @@
         "0"
       ]
     },
-    "1098": {
+    "1103": {
       "op": "itxn_field Fee",
       "stack_out": []
     },
-    "1100": {
+    "1105": {
       "op": "itxn_submit"
     },
-    "1101": {
+    "1106": {
       "op": "itxn_begin"
     },
-    "1102": {
+    "1107": {
       "op": "intc_0 // 0",
       "stack_out": [
         "0"
       ]
     },
-    "1103": {
+    "1108": {
       "op": "bytec_0 // \"child_contract_mbr\"",
       "defined_out": [
         "\"child_contract_mbr\"",
@@ -2718,7 +2750,7 @@
         "\"child_contract_mbr\""
       ]
     },
-    "1104": {
+    "1109": {
       "op": "app_global_get_ex",
       "defined_out": [
         "maybe_exists%0#0",
@@ -2729,14 +2761,14 @@
         "maybe_exists%0#0"
       ]
     },
-    "1105": {
+    "1110": {
       "error": "check GlobalState exists",
       "op": "assert // check GlobalState exists",
       "stack_out": [
         "maybe_value%0#0"
       ]
     },
-    "1106": {
+    "1111": {
       "op": "txn Sender",
       "defined_out": [
         "inner_txn_params%1%%param_Receiver_idx_0#0",
@@ -2747,17 +2779,17 @@
         "inner_txn_params%1%%param_Receiver_idx_0#0"
       ]
     },
-    "1108": {
+    "1113": {
       "op": "itxn_field Receiver",
       "stack_out": [
         "maybe_value%0#0"
       ]
     },
-    "1110": {
+    "1115": {
       "op": "itxn_field Amount",
       "stack_out": []
     },
-    "1112": {
+    "1117": {
       "op": "intc_1 // 1",
       "defined_out": [
         "1"
@@ -2766,28 +2798,28 @@
         "1"
       ]
     },
-    "1113": {
+    "1118": {
       "op": "itxn_field TypeEnum",
       "stack_out": []
     },
-    "1115": {
+    "1120": {
       "op": "intc_0 // 0",
       "stack_out": [
         "0"
       ]
     },
-    "1116": {
+    "1121": {
       "op": "itxn_field Fee",
       "stack_out": []
     },
-    "1118": {
+    "1123": {
       "op": "itxn_submit"
     },
-    "1119": {
+    "1124": {
       "retsub": true,
       "op": "retsub"
     },
-    "1120": {
+    "1125": {
       "subroutine": "smart_contracts/listing_factory/contract.algo.ts::ListingFactory.optinToListingAsset",
       "params": {
         "payment#0": "uint64",
@@ -2797,7 +2829,7 @@
       "stack_in": [],
       "op": "proto 2 0"
     },
-    "1123": {
+    "1128": {
       "op": "frame_dig -2",
       "defined_out": [
         "payment#0 (copy)"
@@ -2806,7 +2838,7 @@
         "payment#0 (copy)"
       ]
     },
-    "1125": {
+    "1130": {
       "op": "gtxns Receiver",
       "defined_out": [
         "tmp%0#0"
@@ -2815,7 +2847,7 @@
         "tmp%0#0"
       ]
     },
-    "1127": {
+    "1132": {
       "op": "global CurrentApplicationAddress",
       "defined_out": [
         "tmp%0#0",
@@ -2826,7 +2858,7 @@
         "tmp%1#0"
       ]
     },
-    "1129": {
+    "1134": {
       "op": "==",
       "defined_out": [
         "tmp%2#0"
@@ -2835,17 +2867,17 @@
         "tmp%2#0"
       ]
     },
-    "1130": {
+    "1135": {
       "op": "assert",
       "stack_out": []
     },
-    "1131": {
+    "1136": {
       "op": "frame_dig -2",
       "stack_out": [
         "payment#0 (copy)"
       ]
     },
-    "1133": {
+    "1138": {
       "op": "gtxns Amount",
       "defined_out": [
         "tmp%3#0"
@@ -2854,7 +2886,7 @@
         "tmp%3#0"
       ]
     },
-    "1135": {
+    "1140": {
       "op": "global AssetOptInMinBalance",
       "defined_out": [
         "tmp%3#0",
@@ -2865,7 +2897,7 @@
         "tmp%4#0"
       ]
     },
-    "1137": {
+    "1142": {
       "op": "==",
       "defined_out": [
         "tmp%5#0"
@@ -2874,14 +2906,14 @@
         "tmp%5#0"
       ]
     },
-    "1138": {
+    "1143": {
       "op": "assert",
       "stack_out": []
     },
-    "1139": {
+    "1144": {
       "op": "itxn_begin"
     },
-    "1140": {
+    "1145": {
       "op": "global CurrentApplicationAddress",
       "defined_out": [
         "inner_txn_params%0%%param_AssetReceiver_idx_0#0"
@@ -2890,7 +2922,7 @@
         "inner_txn_params%0%%param_AssetReceiver_idx_0#0"
       ]
     },
-    "1142": {
+    "1147": {
       "op": "frame_dig -1",
       "defined_out": [
         "asset#0 (copy)",
@@ -2901,13 +2933,13 @@
         "asset#0 (copy)"
       ]
     },
-    "1144": {
+    "1149": {
       "op": "itxn_field XferAsset",
       "stack_out": [
         "inner_txn_params%0%%param_AssetReceiver_idx_0#0"
       ]
     },
-    "1146": {
+    "1151": {
       "op": "intc_0 // 0",
       "defined_out": [
         "0",
@@ -2918,17 +2950,17 @@
         "0"
       ]
     },
-    "1147": {
+    "1152": {
       "op": "itxn_field AssetAmount",
       "stack_out": [
         "inner_txn_params%0%%param_AssetReceiver_idx_0#0"
       ]
     },
-    "1149": {
+    "1154": {
       "op": "itxn_field AssetReceiver",
       "stack_out": []
     },
-    "1151": {
+    "1156": {
       "op": "intc_3 // 4",
       "defined_out": [
         "4"
@@ -2937,24 +2969,24 @@
         "4"
       ]
     },
-    "1152": {
+    "1157": {
       "op": "itxn_field TypeEnum",
       "stack_out": []
     },
-    "1154": {
+    "1159": {
       "op": "intc_0 // 0",
       "stack_out": [
         "0"
       ]
     },
-    "1155": {
+    "1160": {
       "op": "itxn_field Fee",
       "stack_out": []
     },
-    "1157": {
+    "1162": {
       "op": "itxn_submit"
     },
-    "1158": {
+    "1163": {
       "retsub": true,
       "op": "retsub"
     }

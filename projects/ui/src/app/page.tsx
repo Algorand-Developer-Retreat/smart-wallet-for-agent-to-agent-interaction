@@ -1,7 +1,5 @@
-import { ConnectModal } from '@/components/connectModal'
 import DotGrid from '@/components/dot-grid'
 import HomeSection from '@/components/installAgentSection'
-import InstallAgentSection from '@/components/installAgentSection'
 
 export default function Home() {
   return (

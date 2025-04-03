@@ -3,14 +3,13 @@
 import { useWallet } from "@txnlab/use-wallet-react"
 import { ConnectModal } from "./connectModal"
 import { Button } from "./ui/button"
-import { GetAbstractedAccountFactory, getMarketplacePluginClient, getOptinClient } from "@/utils/clients"
+import { GetAbstractedAccountFactory, getMarketplacePluginClient } from "@/utils/clients"
 import { useState } from "react"
-import { AbstractedAccountClient } from "@/contracts/AbstractedAccountClient"
-import { getListingFactoryIDFromEnvironment, getMarketplacePluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from "@/utils/env"
+import { AbstractedAccountClient } from "@/contracts/AbstractedAccount"
+import { getListingFactoryIDFromEnvironment, getMarketplacePluginIDFromEnvironment } from "@/utils/env"
 
 const ZERO_ADDRESS = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ'
 const maxUint64 = BigInt('18446744073709551615');
-const optInPluginID = getOptinPluginIDFromEnvironment()
 // const listingFactoryID = getListingFactoryIDFromEnvironment()
 const marketPlacePluginID = getMarketplacePluginIDFromEnvironment()
 
@@ -36,32 +35,6 @@ export default function HomeSection() {
         });
 
         setAbstractedAccountClient(results.appClient)
-    }
-
-    const installGlobalOptinPlugin = async () => {
-
-        if (!activeAddress) {
-            console.error('No active address')
-            return
-        }
-
-        if (!abstractedAccountClient) {
-            console.error('No abstracted account client')
-            return
-        }
-
-        await abstractedAccountClient.send.arc58AddPlugin({
-            sender: activeAddress,
-            signer: transactionSigner,
-            args: {
-                app: optInPluginID,
-                allowedCaller: ZERO_ADDRESS,
-                lastValidRound: maxUint64,
-                cooldown: 0,
-                adminPrivileges: false,
-                methods: []
-            }
-        });
     }
 
     const installAgentPlugin = async () => {
@@ -129,12 +102,6 @@ export default function HomeSection() {
                         <h2>Smart Wallet Created</h2>
                         <p>App ID: {abstractedAccountClient.appId.toString()}</p>
                         <p>Smart Wallet Address: {abstractedAccountClient.appAddress.toString()}</p>
-
-                        <Button
-                            onClick={installGlobalOptinPlugin}
-                        >
-                            Install Global Optin Plugin
-                        </Button>
 
                         <Button
                             onClick={installAgentPlugin}

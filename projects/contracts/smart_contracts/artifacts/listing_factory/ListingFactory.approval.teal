@@ -9,7 +9,7 @@ main:
     // export class ListingFactory extends Contract {
     txn NumAppArgs
     bz main_after_if_else@13
-    pushbytess 0xb8447b36 0x46f76533 0x6f506262 0xb6c1684f 0xee02ece7 0xc97dbb2e // method "createApplication()void", method "updateApplication()void", method "list(pay,axfer)uint64", method "recordNegotiatedPrice(uint64,uint64)void", method "purchase(pay,uint64)void", method "delist(uint64)void"
+    pushbytess 0xb8447b36 0x46f76533 0x553fd548 0xb6c1684f 0xee02ece7 0xc97dbb2e // method "createApplication()void", method "updateApplication()void", method "list(pay,axfer,uint64)uint64", method "recordNegotiatedPrice(uint64,uint64)void", method "purchase(pay,uint64)void", method "delist(uint64)void"
     bytec_1 // method "optinToListingAsset(pay,uint64)void"
     txna ApplicationArgs 0
     match main_createApplication_route@3 main_updateApplication_route@4 main_list_route@5 main_recordNegotiatedPrice_route@6 main_purchase_route@7 main_delist_route@8 main_optinToListingAsset_route@9
@@ -112,7 +112,7 @@ main_recordNegotiatedPrice_route@6:
 
 main_list_route@5:
     // smart_contracts/listing_factory/contract.algo.ts:48
-    // public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn): uint64 {
+    // public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn, minimumPriceToAccept: uint64): uint64 {
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -136,8 +136,10 @@ main_list_route@5:
     intc_3 // axfer
     ==
     assert // transaction type is axfer
+    txna ApplicationArgs 1
+    btoi
     // smart_contracts/listing_factory/contract.algo.ts:48
-    // public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn): uint64 {
+    // public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn, minimumPriceToAccept: uint64): uint64 {
     callsub list
     itob
     pushbytes 0x151f7c75
@@ -187,11 +189,11 @@ createApplication:
     retsub
 
 
-// smart_contracts/listing_factory/contract.algo.ts::ListingFactory.list(payment: uint64, assetXfer: uint64) -> uint64:
+// smart_contracts/listing_factory/contract.algo.ts::ListingFactory.list(payment: uint64, assetXfer: uint64, minimumPriceToAccept: uint64) -> uint64:
 list:
     // smart_contracts/listing_factory/contract.algo.ts:48
-    // public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn): uint64 {
-    proto 2 1
+    // public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn, minimumPriceToAccept: uint64): uint64 {
+    proto 3 1
     // smart_contracts/listing_factory/constants.ts:10
     // export const CHILD_CONTRACT_MBR = 'child_contract_mbr'
     intc_0 // 0
@@ -204,48 +206,48 @@ list:
     +
     // smart_contracts/listing_factory/contract.algo.ts:53
     // assert(payment.amount === mbrAmount, PAYMENT_AMOUNT_MUST_BE_EQUAL_TO_MBR_AMOUNT)
-    frame_dig -2
+    frame_dig -3
     gtxns Amount
     ==
     assert // Payment amount must be equal to MBR amount
     // smart_contracts/listing_factory/contract.algo.ts:54
     // assert(payment.receiver === Global.currentApplicationAddress, PAYMENT_RECEIVER_MUST_BE_CURRENT_APPLICATION_ADDRESS)
-    frame_dig -2
+    frame_dig -3
     gtxns Receiver
     global CurrentApplicationAddress
     ==
     assert // Payment receiver must be current application address
     // smart_contracts/listing_factory/contract.algo.ts:57
     // assert(assetXfer.assetAmount > 0, ASSET_TRANSFER_FAILED)
-    frame_dig -1
+    frame_dig -2
     gtxns AssetAmount
     dup
     assert // Asset transfer failed
     // smart_contracts/listing_factory/contract.algo.ts:58
     // assert(assetXfer.assetReceiver === Global.currentApplicationAddress, ASSET_TRANSFER_FAILED)
-    frame_dig -1
+    frame_dig -2
     gtxns AssetReceiver
     global CurrentApplicationAddress
     ==
     assert // Asset transfer failed
     // smart_contracts/listing_factory/contract.algo.ts:62-65
     // const createdListingApp = listingContract.call.createListingApplication({
-    //   args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    //   args: [assetXfer.xferAsset, new Address(Txn.sender), minimumPriceToAccept],
     //   fee: 0,
     // }).itxn.createdApp
     itxn_begin
     // smart_contracts/listing_factory/contract.algo.ts:63
-    // args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    // args: [assetXfer.xferAsset, new Address(Txn.sender), minimumPriceToAccept],
     txn Sender
-    intc_0 // 0
-    itob
     frame_dig -1
+    itob
+    frame_dig -2
     gtxns XferAsset
     dup
     itxn_field Assets
     // smart_contracts/listing_factory/contract.algo.ts:62-65
     // const createdListingApp = listingContract.call.createListingApplication({
-    //   args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    //   args: [assetXfer.xferAsset, new Address(Txn.sender), minimumPriceToAccept],
     //   fee: 0,
     // }).itxn.createdApp
     pushbytes 0xc170b9fe // method "createListingApplication(asset,address,uint64)void"
@@ -268,7 +270,7 @@ list:
     itxn_field ApprovalProgramPages
     // smart_contracts/listing_factory/contract.algo.ts:62-65
     // const createdListingApp = listingContract.call.createListingApplication({
-    //   args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    //   args: [assetXfer.xferAsset, new Address(Txn.sender), minimumPriceToAccept],
     //   fee: 0,
     // }).itxn.createdApp
     intc_0 // 0
@@ -281,7 +283,7 @@ list:
     itxn_field Fee
     // smart_contracts/listing_factory/contract.algo.ts:62-65
     // const createdListingApp = listingContract.call.createListingApplication({
-    //   args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    //   args: [assetXfer.xferAsset, new Address(Txn.sender), minimumPriceToAccept],
     //   fee: 0,
     // }).itxn.createdApp
     itxn_submit
