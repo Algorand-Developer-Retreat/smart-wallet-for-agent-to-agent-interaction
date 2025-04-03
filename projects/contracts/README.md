@@ -1,4 +1,4 @@
-# smart-wallet-for-agent-to-agent-interaction
+# smart-wallet-for-agent-to-agent-interaction-contracts
 
 This project has been generated using AlgoKit. See below for default getting started instructions.
 

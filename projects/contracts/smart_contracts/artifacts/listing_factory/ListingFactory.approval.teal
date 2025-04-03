@@ -1,0 +1,642 @@
+#pragma version 10
+#pragma typetrack false
+
+// @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
+main:
+    intcblock 0 1 6 4
+    bytecblock "child_contract_mbr" 0x151f7c75
+    // smart_contracts/listing_factory/contract.algo.ts:25
+    // export class ListingFactory extends Contract {
+    txn NumAppArgs
+    bz main_after_if_else@11
+    pushbytess 0xb8447b36 0x46f76533 0xe37de7b6 0xf3db1089 0x74f05339 // method "createApplication()void", method "updateApplication()void", method "list(pay,axfer,string)uint64", method "purchase(pay,application)void", method "delist(application)void"
+    txna ApplicationArgs 0
+    match main_createApplication_route@3 main_updateApplication_route@4 main_list_route@5 main_purchase_route@6 main_delist_route@7
+
+main_after_if_else@11:
+    // smart_contracts/listing_factory/contract.algo.ts:25
+    // export class ListingFactory extends Contract {
+    intc_0 // 0
+    return
+
+main_delist_route@7:
+    // smart_contracts/listing_factory/contract.algo.ts:123
+    // delist(listingApp: Application): void {
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/listing_factory/contract.algo.ts:25
+    // export class ListingFactory extends Contract {
+    txna ApplicationArgs 1
+    btoi
+    txnas Applications
+    // smart_contracts/listing_factory/contract.algo.ts:123
+    // delist(listingApp: Application): void {
+    callsub delist
+    intc_1 // 1
+    return
+
+main_purchase_route@6:
+    // smart_contracts/listing_factory/contract.algo.ts:89
+    // purchase(payment: gtxn.PaymentTxn, listingApp: Application): void {
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/listing_factory/contract.algo.ts:25
+    // export class ListingFactory extends Contract {
+    txn GroupIndex
+    intc_1 // 1
+    -
+    dup
+    gtxns TypeEnum
+    intc_1 // pay
+    ==
+    assert // transaction type is pay
+    txna ApplicationArgs 1
+    btoi
+    txnas Applications
+    // smart_contracts/listing_factory/contract.algo.ts:89
+    // purchase(payment: gtxn.PaymentTxn, listingApp: Application): void {
+    callsub purchase
+    intc_1 // 1
+    return
+
+main_list_route@5:
+    // smart_contracts/listing_factory/contract.algo.ts:44
+    // public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn, name: string): uint64 {
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/listing_factory/contract.algo.ts:25
+    // export class ListingFactory extends Contract {
+    txn GroupIndex
+    pushint 2 // 2
+    -
+    dup
+    gtxns TypeEnum
+    intc_1 // pay
+    ==
+    assert // transaction type is pay
+    txn GroupIndex
+    intc_1 // 1
+    -
+    dup
+    gtxns TypeEnum
+    intc_3 // axfer
+    ==
+    assert // transaction type is axfer
+    txna ApplicationArgs 1
+    extract 2 0
+    // smart_contracts/listing_factory/contract.algo.ts:44
+    // public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn, name: string): uint64 {
+    callsub list
+    itob
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+main_updateApplication_route@4:
+    // smart_contracts/listing_factory/contract.algo.ts:41
+    // @abimethod({ allowActions: 'UpdateApplication' })
+    txn OnCompletion
+    intc_3 // UpdateApplication
+    ==
+    assert // OnCompletion is not UpdateApplication
+    txn ApplicationID
+    assert // can only call when not creating
+    intc_1 // 1
+    return
+
+main_createApplication_route@3:
+    // smart_contracts/listing_factory/contract.algo.ts:33
+    // @abimethod({ onCreate: 'require' })
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    callsub createApplication
+    intc_1 // 1
+    return
+
+
+// smart_contracts/listing_factory/contract.algo.ts::ListingFactory.createApplication() -> void:
+createApplication:
+    // smart_contracts/listing_factory/constants.ts:10
+    // export const CHILD_CONTRACT_MBR = 'child_contract_mbr'
+    bytec_0 // "child_contract_mbr"
+    // smart_contracts/listing_factory/contract.algo.ts:30
+    // return Uint64(100_000 + 28_500 * globalUints + 50_000 * globalBytes)
+    pushint 235500 // 235500
+    // smart_contracts/listing_factory/contract.algo.ts:37
+    // this.childContractMBR.value = childContractMBR
+    app_global_put
+    retsub
+
+
+// smart_contracts/listing_factory/contract.algo.ts::ListingFactory.list(payment: uint64, assetXfer: uint64, name: bytes) -> uint64:
+list:
+    // smart_contracts/listing_factory/contract.algo.ts:44
+    // public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn, name: string): uint64 {
+    proto 3 1
+    // smart_contracts/listing_factory/constants.ts:10
+    // export const CHILD_CONTRACT_MBR = 'child_contract_mbr'
+    intc_0 // 0
+    bytec_0 // "child_contract_mbr"
+    app_global_get_ex
+    assert // check GlobalState exists
+    // smart_contracts/listing_factory/contract.algo.ts:46
+    // const mbrAmount = Uint64(this.childContractMBR.value + Global.assetOptInMinBalance)
+    global AssetOptInMinBalance
+    +
+    // smart_contracts/listing_factory/contract.algo.ts:49
+    // assert(payment.amount === mbrAmount, PAYMENT_AMOUNT_MUST_BE_EQUAL_TO_MBR_AMOUNT)
+    frame_dig -3
+    gtxns Amount
+    ==
+    assert // Payment amount must be equal to MBR amount
+    // smart_contracts/listing_factory/contract.algo.ts:50
+    // assert(payment.receiver === Global.currentApplicationAddress, PAYMENT_RECEIVER_MUST_BE_CURRENT_APPLICATION_ADDRESS)
+    frame_dig -3
+    gtxns Receiver
+    global CurrentApplicationAddress
+    ==
+    assert // Payment receiver must be current application address
+    // smart_contracts/listing_factory/contract.algo.ts:53
+    // assert(assetXfer.assetAmount > 0, ASSET_TRANSFER_FAILED)
+    frame_dig -2
+    gtxns AssetAmount
+    dup
+    assert // Asset transfer failed
+    // smart_contracts/listing_factory/contract.algo.ts:54
+    // assert(assetXfer.assetReceiver === Global.currentApplicationAddress, ASSET_TRANSFER_FAILED)
+    frame_dig -2
+    gtxns AssetReceiver
+    global CurrentApplicationAddress
+    ==
+    assert // Asset transfer failed
+    // smart_contracts/listing_factory/contract.algo.ts:58-61
+    // const createdListingApp = listingContract.call.createListingApplication({
+    //   args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    //   fee: 0,
+    // }).itxn.createdApp
+    itxn_begin
+    // smart_contracts/listing_factory/contract.algo.ts:59
+    // args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    txn Sender
+    intc_0 // 0
+    itob
+    frame_dig -2
+    gtxns XferAsset
+    dup
+    itxn_field Assets
+    // smart_contracts/listing_factory/contract.algo.ts:58-61
+    // const createdListingApp = listingContract.call.createListingApplication({
+    //   args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    //   fee: 0,
+    // }).itxn.createdApp
+    pushbytes 0xc170b9fe // method "createListingApplication(asset,address,uint64)void"
+    itxn_field ApplicationArgs
+    pushbytes 0x00
+    itxn_field ApplicationArgs
+    uncover 2
+    itxn_field ApplicationArgs
+    swap
+    itxn_field ApplicationArgs
+    // smart_contracts/listing_factory/contract.algo.ts:45
+    // const listingContract = compileArc4(Listing)
+    intc_1 // 1
+    itxn_field GlobalNumByteSlice
+    pushint 3 // 3
+    itxn_field GlobalNumUint
+    pushbytes base64(CoEBQw==)
+    itxn_field ClearStateProgramPages
+    pushbytes base64(CiAEAAEEBSYDBnNlbGxlcgVhc3NldBBuZWdvdGlhdGVkX3ByaWNlMRhAAAMqImcxG0EAMYIGBMFwuf4Epih1DQTGC9GEBFLJBq4EaOhjQwTfoUjWNhoAjgYAawBbAEEAJwAXAAIiQzEZFEQxGESIAYCABBUffHVMULAjQzEZJRJEMRhENhoBiAErI0MxGSUSRDEYRDEWIwlJOBAjEkQ2GgGIAJojQzEZFEQxGEQxFiMJSTgQIxJENhoBF4gAUyNDMRkURDEYRDYaAReIADUjQzEZFEQxGBRENhoBF8AwNhoCNhoDF4gAAiNDigMAMg1EKYv9ZyiL/meABXByaWNli/9niYoBADEAMgkSRCqL/2eJigIAMQAyCRJEi/44BzIKEkSL/jgIMhASRLEyCov/shEishKyFCSyECKyAbOJigIAMQAyCRJEIiplRESL/jgAMgkSRIv+OAgiKmVEEkSL/jgHMgoSRCIpZUSL/0xwAEUBQQAhsTIKIillRHAARCIpZUSyEbISi/+yFIv/shUkshAisgGzsSIoZUQiKWVEcQREgAUgU29sZFCyBbIJI7IQIrIBs4mKAQAxADIJEkQiKGVEi/8SRCIoZUQiKGVEIillRCIoZUSxTLIRTLIVTLIUJLIQIrIBtrIJI7IQIrIBs4kiKGVEiQ==)
+    itxn_field ApprovalProgramPages
+    // smart_contracts/listing_factory/contract.algo.ts:58-61
+    // const createdListingApp = listingContract.call.createListingApplication({
+    //   args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    //   fee: 0,
+    // }).itxn.createdApp
+    intc_0 // 0
+    itxn_field OnCompletion
+    intc_2 // appl
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:60
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:58-61
+    // const createdListingApp = listingContract.call.createListingApplication({
+    //   args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+    //   fee: 0,
+    // }).itxn.createdApp
+    itxn_submit
+    // smart_contracts/listing_factory/contract.algo.ts:61
+    // }).itxn.createdApp
+    gitxn 0 CreatedApplicationID
+    // smart_contracts/listing_factory/contract.algo.ts:64
+    // receiver: createdListingApp.address,
+    dup
+    app_params_get AppAddress
+    assert // application exists
+    // smart_contracts/listing_factory/contract.algo.ts:65
+    // amount: Global.assetOptInMinBalance,
+    global AssetOptInMinBalance
+    // smart_contracts/listing_factory/contract.algo.ts:70-74
+    // listingContract.call.optinToListingAsset({
+    //   appId: createdListingApp.id,
+    //   args: [optInPayment, assetXfer.xferAsset.id],
+    //   fee: 0,
+    // })
+    itxn_begin
+    itxn_field Amount
+    itxn_field Receiver
+    // smart_contracts/listing_factory/contract.algo.ts:63-67
+    // const optInPayment = itxn.payment({
+    //   receiver: createdListingApp.address,
+    //   amount: Global.assetOptInMinBalance,
+    //   fee: 0,
+    // })
+    intc_1 // 1
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:66
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:70-74
+    // listingContract.call.optinToListingAsset({
+    //   appId: createdListingApp.id,
+    //   args: [optInPayment, assetXfer.xferAsset.id],
+    //   fee: 0,
+    // })
+    itxn_next
+    // smart_contracts/listing_factory/contract.algo.ts:72
+    // args: [optInPayment, assetXfer.xferAsset.id],
+    dig 1
+    itob
+    // smart_contracts/listing_factory/contract.algo.ts:70-74
+    // listingContract.call.optinToListingAsset({
+    //   appId: createdListingApp.id,
+    //   args: [optInPayment, assetXfer.xferAsset.id],
+    //   fee: 0,
+    // })
+    pushbytes 0xc60bd184 // method "optinToListingAsset(pay,uint64)void"
+    itxn_field ApplicationArgs
+    itxn_field ApplicationArgs
+    intc_0 // 0
+    itxn_field OnCompletion
+    dup
+    itxn_field ApplicationID
+    intc_2 // appl
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:73
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:70-74
+    // listingContract.call.optinToListingAsset({
+    //   appId: createdListingApp.id,
+    //   args: [optInPayment, assetXfer.xferAsset.id],
+    //   fee: 0,
+    // })
+    itxn_submit
+    // smart_contracts/listing_factory/contract.algo.ts:77-84
+    // itxn
+    //   .assetTransfer({
+    //     assetReceiver: createdListingApp.address,
+    //     assetAmount: assetXfer.assetAmount,
+    //     xferAsset: assetXfer.xferAsset,
+    //     fee: 0,
+    //   })
+    //   .submit()
+    itxn_begin
+    // smart_contracts/listing_factory/contract.algo.ts:79
+    // assetReceiver: createdListingApp.address,
+    dup
+    app_params_get AppAddress
+    assert // application exists
+    uncover 2
+    itxn_field XferAsset
+    uncover 2
+    itxn_field AssetAmount
+    itxn_field AssetReceiver
+    // smart_contracts/listing_factory/contract.algo.ts:77-83
+    // itxn
+    //   .assetTransfer({
+    //     assetReceiver: createdListingApp.address,
+    //     assetAmount: assetXfer.assetAmount,
+    //     xferAsset: assetXfer.xferAsset,
+    //     fee: 0,
+    //   })
+    intc_3 // 4
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:82
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:77-84
+    // itxn
+    //   .assetTransfer({
+    //     assetReceiver: createdListingApp.address,
+    //     assetAmount: assetXfer.assetAmount,
+    //     xferAsset: assetXfer.xferAsset,
+    //     fee: 0,
+    //   })
+    //   .submit()
+    itxn_submit
+    // smart_contracts/listing_factory/contract.algo.ts:86
+    // return createdListingApp.id
+    retsub
+
+
+// smart_contracts/listing_factory/contract.algo.ts::ListingFactory.purchase(payment: uint64, listingApp: uint64) -> void:
+purchase:
+    // smart_contracts/listing_factory/contract.algo.ts:89
+    // purchase(payment: gtxn.PaymentTxn, listingApp: Application): void {
+    proto 2 0
+    // smart_contracts/listing_factory/contract.algo.ts:90
+    // assert(listingApp.creator === Global.currentApplicationAddress, NOT_A_LISTING)
+    frame_dig -1
+    app_params_get AppCreator
+    assert // application exists
+    global CurrentApplicationAddress
+    ==
+    assert // Not a listing contract
+    // smart_contracts/listing_factory/contract.algo.ts:91
+    // assert(payment.receiver === Global.currentApplicationAddress, PAYMENT_RECEIVER_MUST_BE_CURRENT_APPLICATION_ADDRESS)
+    frame_dig -2
+    gtxns Receiver
+    global CurrentApplicationAddress
+    ==
+    assert // Payment receiver must be current application address
+    // smart_contracts/listing_factory/contract.algo.ts:92
+    // assert(payment.amount > 0, PAYMENT_AMOUNT_MUST_BE_GREATER_THAN_0)
+    frame_dig -2
+    gtxns Amount
+    dup
+    assert // Payment amount must be greater than 0
+    // smart_contracts/listing_factory/contract.algo.ts:96-99
+    // const seller = listingContract.call.getSeller({
+    //   appId: listingApp.id,
+    //   fee: 0,
+    // }).returnValue
+    itxn_begin
+    pushbytes 0xdfa148d6 // method "getSeller()address"
+    itxn_field ApplicationArgs
+    intc_0 // 0
+    itxn_field OnCompletion
+    frame_dig -1
+    itxn_field ApplicationID
+    intc_2 // appl
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:98
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:96-99
+    // const seller = listingContract.call.getSeller({
+    //   appId: listingApp.id,
+    //   fee: 0,
+    // }).returnValue
+    itxn_submit
+    itxn LastLog
+    dup
+    extract 4 0
+    swap
+    extract 0 4
+    bytec_1 // 0x151f7c75
+    ==
+    assert // Bytes has valid prefix
+    // smart_contracts/listing_factory/contract.algo.ts:102
+    // receiver: listingApp.address,
+    frame_dig -1
+    app_params_get AppAddress
+    assert // application exists
+    // smart_contracts/listing_factory/contract.algo.ts:107-112
+    // listingContract.call.purchase({
+    //   onCompletion: OnCompleteAction.DeleteApplication,
+    //   appId: listingApp.id,
+    //   args: [purchasePayment, new Address(Txn.sender)],
+    //   fee: 0,
+    // })
+    itxn_begin
+    uncover 2
+    itxn_field Amount
+    itxn_field Receiver
+    // smart_contracts/listing_factory/contract.algo.ts:101-105
+    // const purchasePayment = itxn.payment({
+    //   receiver: listingApp.address,
+    //   amount: payment.amount,
+    //   fee: 0,
+    // })
+    intc_1 // 1
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:104
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:107-112
+    // listingContract.call.purchase({
+    //   onCompletion: OnCompleteAction.DeleteApplication,
+    //   appId: listingApp.id,
+    //   args: [purchasePayment, new Address(Txn.sender)],
+    //   fee: 0,
+    // })
+    itxn_next
+    // smart_contracts/listing_factory/contract.algo.ts:110
+    // args: [purchasePayment, new Address(Txn.sender)],
+    txn Sender
+    // smart_contracts/listing_factory/contract.algo.ts:107-112
+    // listingContract.call.purchase({
+    //   onCompletion: OnCompleteAction.DeleteApplication,
+    //   appId: listingApp.id,
+    //   args: [purchasePayment, new Address(Txn.sender)],
+    //   fee: 0,
+    // })
+    pushbytes 0x52c906ae // method "purchase(pay,address)void"
+    itxn_field ApplicationArgs
+    itxn_field ApplicationArgs
+    frame_dig -1
+    itxn_field ApplicationID
+    // smart_contracts/listing_factory/contract.algo.ts:108
+    // onCompletion: OnCompleteAction.DeleteApplication,
+    pushint 5 // 5
+    itxn_field OnCompletion
+    // smart_contracts/listing_factory/contract.algo.ts:107-112
+    // listingContract.call.purchase({
+    //   onCompletion: OnCompleteAction.DeleteApplication,
+    //   appId: listingApp.id,
+    //   args: [purchasePayment, new Address(Txn.sender)],
+    //   fee: 0,
+    // })
+    intc_2 // appl
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:111
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:107-112
+    // listingContract.call.purchase({
+    //   onCompletion: OnCompleteAction.DeleteApplication,
+    //   appId: listingApp.id,
+    //   args: [purchasePayment, new Address(Txn.sender)],
+    //   fee: 0,
+    // })
+    itxn_submit
+    // smart_contracts/listing_factory/contract.algo.ts:114-120
+    // itxn
+    //   .payment({
+    //     amount: Uint64(this.childContractMBR.value),
+    //     receiver: seller.native,
+    //     fee: 0,
+    //   })
+    //   .submit()
+    itxn_begin
+    // smart_contracts/listing_factory/constants.ts:10
+    // export const CHILD_CONTRACT_MBR = 'child_contract_mbr'
+    intc_0 // 0
+    bytec_0 // "child_contract_mbr"
+    app_global_get_ex
+    assert // check GlobalState exists
+    itxn_field Amount
+    itxn_field Receiver
+    // smart_contracts/listing_factory/contract.algo.ts:114-119
+    // itxn
+    //   .payment({
+    //     amount: Uint64(this.childContractMBR.value),
+    //     receiver: seller.native,
+    //     fee: 0,
+    //   })
+    intc_1 // 1
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:118
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:114-120
+    // itxn
+    //   .payment({
+    //     amount: Uint64(this.childContractMBR.value),
+    //     receiver: seller.native,
+    //     fee: 0,
+    //   })
+    //   .submit()
+    itxn_submit
+    retsub
+
+
+// smart_contracts/listing_factory/contract.algo.ts::ListingFactory.delist(listingApp: uint64) -> void:
+delist:
+    // smart_contracts/listing_factory/contract.algo.ts:123
+    // delist(listingApp: Application): void {
+    proto 1 0
+    // smart_contracts/listing_factory/contract.algo.ts:124
+    // assert(listingApp.creator === Global.currentApplicationAddress, NOT_A_LISTING)
+    frame_dig -1
+    app_params_get AppCreator
+    assert // application exists
+    global CurrentApplicationAddress
+    ==
+    assert // Not a listing contract
+    // smart_contracts/listing_factory/contract.algo.ts:128-133
+    // listingContract.call.delist({
+    //   onCompletion: OnCompleteAction.DeleteApplication,
+    //   appId: listingApp.id,
+    //   args: [new Address(Txn.sender)],
+    //   fee: 0,
+    // })
+    itxn_begin
+    // smart_contracts/listing_factory/contract.algo.ts:131
+    // args: [new Address(Txn.sender)],
+    txn Sender
+    // smart_contracts/listing_factory/contract.algo.ts:128-133
+    // listingContract.call.delist({
+    //   onCompletion: OnCompleteAction.DeleteApplication,
+    //   appId: listingApp.id,
+    //   args: [new Address(Txn.sender)],
+    //   fee: 0,
+    // })
+    pushbytes 0x68e86343 // method "delist(address)void"
+    itxn_field ApplicationArgs
+    itxn_field ApplicationArgs
+    frame_dig -1
+    itxn_field ApplicationID
+    // smart_contracts/listing_factory/contract.algo.ts:129
+    // onCompletion: OnCompleteAction.DeleteApplication,
+    pushint 5 // 5
+    itxn_field OnCompletion
+    // smart_contracts/listing_factory/contract.algo.ts:128-133
+    // listingContract.call.delist({
+    //   onCompletion: OnCompleteAction.DeleteApplication,
+    //   appId: listingApp.id,
+    //   args: [new Address(Txn.sender)],
+    //   fee: 0,
+    // })
+    intc_2 // appl
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:132
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:128-133
+    // listingContract.call.delist({
+    //   onCompletion: OnCompleteAction.DeleteApplication,
+    //   appId: listingApp.id,
+    //   args: [new Address(Txn.sender)],
+    //   fee: 0,
+    // })
+    itxn_submit
+    // smart_contracts/listing_factory/contract.algo.ts:135-141
+    // itxn
+    //   .payment({
+    //     amount: Uint64(this.childContractMBR.value),
+    //     receiver: Txn.sender,
+    //     fee: 0,
+    //   })
+    //   .submit()
+    itxn_begin
+    // smart_contracts/listing_factory/constants.ts:10
+    // export const CHILD_CONTRACT_MBR = 'child_contract_mbr'
+    intc_0 // 0
+    bytec_0 // "child_contract_mbr"
+    app_global_get_ex
+    assert // check GlobalState exists
+    // smart_contracts/listing_factory/contract.algo.ts:138
+    // receiver: Txn.sender,
+    txn Sender
+    itxn_field Receiver
+    itxn_field Amount
+    // smart_contracts/listing_factory/contract.algo.ts:135-140
+    // itxn
+    //   .payment({
+    //     amount: Uint64(this.childContractMBR.value),
+    //     receiver: Txn.sender,
+    //     fee: 0,
+    //   })
+    intc_1 // 1
+    itxn_field TypeEnum
+    // smart_contracts/listing_factory/contract.algo.ts:139
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/listing_factory/contract.algo.ts:135-141
+    // itxn
+    //   .payment({
+    //     amount: Uint64(this.childContractMBR.value),
+    //     receiver: Txn.sender,
+    //     fee: 0,
+    //   })
+    //   .submit()
+    itxn_submit
+    retsub
