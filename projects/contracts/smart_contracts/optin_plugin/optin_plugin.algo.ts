@@ -3,7 +3,7 @@ import { Plugin } from "../plugin/contract.algo";
 
 export class OptInPlugin extends Plugin {
 
-  optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn): void {
+  optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn) {
 
     const controlledAccount = this.getControlledAccount(Application(sender));
 

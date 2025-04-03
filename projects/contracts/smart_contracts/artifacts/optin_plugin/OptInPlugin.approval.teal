@@ -20,7 +20,7 @@ main_after_if_else@10:
 
 main_optInToAsset_route@3:
     // smart_contracts/optin_plugin/optin_plugin.algo.ts:6
-    // optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn): void {
+    // optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn) {
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -44,7 +44,7 @@ main_optInToAsset_route@3:
     ==
     assert // transaction type is pay
     // smart_contracts/optin_plugin/optin_plugin.algo.ts:6
-    // optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn): void {
+    // optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn) {
     callsub optInToAsset
     intc_1 // 1
     return
@@ -64,7 +64,7 @@ main_bare_routing@6:
 // smart_contracts/optin_plugin/optin_plugin.algo.ts::OptInPlugin.optInToAsset(sender: uint64, rekeyBack: uint64, asset: uint64, mbrPayment: uint64) -> void:
 optInToAsset:
     // smart_contracts/optin_plugin/optin_plugin.algo.ts:6
-    // optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn): void {
+    // optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn) {
     proto 4 0
     // smart_contracts/plugin/contract.algo.ts:7-10
     // const [controlledAccountBytes] = op.AppGlobal.getExBytes(
