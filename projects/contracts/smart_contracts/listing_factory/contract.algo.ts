@@ -1,17 +1,21 @@
 import {
   abimethod,
+  Account,
   Application,
   assert,
+  Bytes,
   GlobalState,
   gtxn,
   itxn,
   OnCompleteAction,
+  op,
   Uint64,
   uint64,
 } from '@algorandfoundation/algorand-typescript'
 import { Address, compileArc4, Contract } from '@algorandfoundation/algorand-typescript/arc4'
 import { Global, Txn } from '@algorandfoundation/algorand-typescript/op'
 
+import { SELLER_KEY } from '../listing_contract/constants'
 import { Listing } from '../listing_contract/contract.algo'
 import {
   ASSET_TRANSFER_FAILED,
@@ -41,7 +45,7 @@ export class ListingFactory extends Contract {
   @abimethod({ allowActions: 'UpdateApplication' })
   public updateApplication(): void {}
 
-  public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn, name: string): uint64 {
+  public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn): uint64 {
     const listingContract = compileArc4(Listing)
     const mbrAmount = Uint64(this.childContractMBR.value + Global.assetOptInMinBalance)
 
@@ -86,18 +90,32 @@ export class ListingFactory extends Contract {
     return createdListingApp.id
   }
 
-  purchase(payment: gtxn.PaymentTxn, listingApp: Application): void {
+  recordNegotiatedPrice(price: uint64, listingAppId: uint64): void {
+    const listingApp = Application(listingAppId)
+    assert(listingApp.creator === Global.currentApplicationAddress, NOT_A_LISTING)
+    const listingContract = compileArc4(Listing)
+    listingContract.call.recordNegotiatedPrice({
+      appId: listingAppId,
+      args: [price],
+      fee: 0,
+    })
+  }
+
+  purchase(payment: gtxn.PaymentTxn, listingAppId: uint64): void {
+    const listingApp = Application(listingAppId)
     assert(listingApp.creator === Global.currentApplicationAddress, NOT_A_LISTING)
     assert(payment.receiver === Global.currentApplicationAddress, PAYMENT_RECEIVER_MUST_BE_CURRENT_APPLICATION_ADDRESS)
     assert(payment.amount > 0, PAYMENT_AMOUNT_MUST_BE_GREATER_THAN_0)
 
     const listingContract = compileArc4(Listing)
 
-    const seller = listingContract.call.getSeller({
-      appId: listingApp.id,
-      fee: 0,
-    }).returnValue
+    // const seller = listingContract.call.getSeller({
+    //   appId: listingApp.id,
+    //   fee: 0,
+    // }).returnValue
 
+    const [sellerBytes] = op.AppGlobal.getExBytes(listingApp, Bytes(SELLER_KEY))
+    const seller = Account(Bytes(sellerBytes))
     const purchasePayment = itxn.payment({
       receiver: listingApp.address,
       amount: payment.amount,
@@ -114,13 +132,14 @@ export class ListingFactory extends Contract {
     itxn
       .payment({
         amount: Uint64(this.childContractMBR.value),
-        receiver: seller.native,
+        receiver: seller,
         fee: 0,
       })
       .submit()
   }
 
-  delist(listingApp: Application): void {
+  delist(listingAppId: uint64): void {
+    const listingApp = Application(listingAppId)
     assert(listingApp.creator === Global.currentApplicationAddress, NOT_A_LISTING)
 
     const listingContract = compileArc4(Listing)
@@ -136,6 +155,25 @@ export class ListingFactory extends Contract {
       .payment({
         amount: Uint64(this.childContractMBR.value),
         receiver: Txn.sender,
+        fee: 0,
+      })
+      .submit()
+  }
+
+  /**
+   * optin tells the contract to opt into an asa
+   * @param payment The payment transaction
+   * @param asset The asset to be opted into
+   */
+  public optinToListingAsset(payment: gtxn.PaymentTxn, asset: uint64): void {
+    assert(payment.receiver === Global.currentApplicationAddress)
+    assert(payment.amount === Global.assetOptInMinBalance)
+
+    itxn
+      .assetTransfer({
+        assetReceiver: Global.currentApplicationAddress,
+        assetAmount: 0,
+        xferAsset: asset,
         fee: 0,
       })
       .submit()
