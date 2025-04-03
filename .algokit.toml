@@ -8,3 +8,6 @@ projects_root_path = 'projects'
 [generate.devcontainer]
 description = "Generate a default 'devcontainer.json' configuration that pre-installs algokit and launches Algorand sandbox as part of codespace container provisioning."
 path = ".algokit/generators/create-devcontainer"
+
+[project.run]
+build = ['contracts', 'ui']
