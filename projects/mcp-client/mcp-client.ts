@@ -4,6 +4,7 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import readline from "readline/promises";
 import dotenv from "dotenv";
+import chalk from "chalk";
 
 dotenv.config();
 
@@ -90,18 +91,19 @@ class MCPClient {
         const toolName = content.name;
         const toolArgs = content.input as { [x: string]: unknown } | undefined;
 
-        const result = await this.mcp.callTool({
+        const result = (await this.mcp.callTool({
           name: toolName,
           arguments: toolArgs,
-        });
+        })) as { content: Array<{ type: string; text: string }> };
 
         toolResults.push(result);
 
-        finalText.push(`[Calling tool ${toolName} with args ${JSON.stringify(toolArgs)}]`);
+        finalText.push(`\n${chalk.cyan("[Seller Agent: ")} Calling ${toolName} with args ${JSON.stringify(toolArgs)}]`);
+        finalText.push(`\n${chalk.cyan("[Seller Agent: ")} ${toolName} returned ${JSON.stringify(result.content)}]`);
 
         messages.push({
           role: "user",
-          content: result.content as string,
+          content: result.content[0].text,
         });
 
         const response = await this.anthropic.messages.create({
@@ -110,7 +112,7 @@ class MCPClient {
           messages,
         });
 
-        finalText.push(response.content[0].type === "text" ? response.content[0].text : "");
+        finalText.push(`\n${response.content[0].type === "text" ? response.content[0].text : ""}`);
       }
     }
 
