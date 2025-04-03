@@ -1,4 +1,4 @@
-import { Contract, GlobalState, BoxMap, assert, arc4, uint64, Account, TransactionType, Application, abimethod, gtxn, itxn } from '@algorandfoundation/algorand-typescript'
+import { Contract, GlobalState, BoxMap, assert, arc4, uint64, Account, TransactionType, Application, abimethod, gtxn, itxn, OnCompleteAction } from '@algorandfoundation/algorand-typescript'
 import { methodSelector } from '@algorandfoundation/algorand-typescript/arc4';
 import { btoi, Global, len, Txn } from '@algorandfoundation/algorand-typescript/op'
 import { ADMIN_KEY, CONTROLLED_ADDRESS, NAMED_PLUGINS_BOX_PREFIX, PLUGINS_BOX_PREFIX } from './constants';
@@ -55,8 +55,7 @@ export class AbstractedAccount extends Contract {
       txn.type === TransactionType.ApplicationCall
       && txn.appId === Global.currentApplicationId
       && txn.numAppArgs === 1
-      // @ts-expect-error
-      && txn.onCompletion === arc4.OnCompleteAction.NoOp
+      && txn.onCompletion === OnCompleteAction.NoOp
       && txn.appArgs(0) === methodSelector('arc58_verifyAuthAddr()void')
     )
   }
@@ -191,8 +190,7 @@ export class AbstractedAccount extends Contract {
       }
 
       assert(txn.appId.id === plugin.id, 'cannot call other apps during plugin rekey');
-      // @ts-expect-error
-      assert(txn.onCompletion === arc4.OnCompleteAction.NoOp, 'invalid onComplete');
+      assert(txn.onCompletion === OnCompleteAction.NoOp, 'invalid onComplete');
       // ensure the first arg to a method call is the app id itself
       // index 1 is used because arg[0] is the method selector
       assert(txn.numAppArgs > 1, 'no app id provided');
