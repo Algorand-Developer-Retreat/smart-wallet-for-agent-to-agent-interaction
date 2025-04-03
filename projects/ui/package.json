@@ -4,8 +4,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "generate:app-clients": "algokit project link --all",
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run generate:app-clients && tsc && next build",
     "start": "next start",
     "init": "tsx --env-file=.env.template init.ts",
     "lint": "next lint"
