@@ -8,3 +8,4 @@ artifacts = "src/contracts"
 
 [project.run]
 build = { commands = ['npm run build'], description = 'Build frontend' }
+init = { commands = ['algokit localnet reset && npm run init'], description = 'bootstrap the contracts' }

@@ -1,0 +1,160 @@
+#pragma version 10
+#pragma typetrack false
+
+// @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
+main:
+    intcblock 0 1
+    // smart_contracts/optin_plugin/contract.algo.ts:4
+    // export class OptInPlugin extends Plugin {
+    txn NumAppArgs
+    bz main_after_if_else@8
+    pushbytess 0xb8447b36 0xbfcbeee9 // method "createApplication()void", method "optInToAsset(uint64,bool,uint64,pay)void"
+    txna ApplicationArgs 0
+    match main_createApplication_route@3 main_optInToAsset_route@4
+
+main_after_if_else@8:
+    // smart_contracts/optin_plugin/contract.algo.ts:4
+    // export class OptInPlugin extends Plugin {
+    intc_0 // 0
+    return
+
+main_optInToAsset_route@4:
+    // smart_contracts/optin_plugin/contract.algo.ts:9
+    // optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn): void {
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/optin_plugin/contract.algo.ts:4
+    // export class OptInPlugin extends Plugin {
+    txna ApplicationArgs 1
+    btoi
+    txna ApplicationArgs 2
+    intc_0 // 0
+    getbit
+    txna ApplicationArgs 3
+    btoi
+    txn GroupIndex
+    intc_1 // 1
+    -
+    dup
+    gtxns TypeEnum
+    intc_1 // pay
+    ==
+    assert // transaction type is pay
+    // smart_contracts/optin_plugin/contract.algo.ts:9
+    // optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn): void {
+    callsub optInToAsset
+    intc_1 // 1
+    return
+
+main_createApplication_route@3:
+    // smart_contracts/optin_plugin/contract.algo.ts:6
+    // @abimethod({ onCreate: 'require' })
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    intc_1 // 1
+    return
+
+
+// smart_contracts/optin_plugin/contract.algo.ts::OptInPlugin.optInToAsset(sender: uint64, rekeyBack: uint64, asset: uint64, mbrPayment: uint64) -> void:
+optInToAsset:
+    // smart_contracts/optin_plugin/contract.algo.ts:9
+    // optInToAsset(sender: uint64, rekeyBack: boolean, asset: uint64, mbrPayment: gtxn.PaymentTxn): void {
+    proto 4 0
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
+    frame_dig -4
+    // smart_contracts/abstracted_account/constants.ts:2
+    // export const CONTROLLED_ADDRESS = 'controlled_address'
+    pushbytes "controlled_address"
+    // smart_contracts/plugin/contract.algo.ts:7
+    // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
+    app_global_get_ex
+    pop
+    dup
+    // smart_contracts/optin_plugin/contract.algo.ts:13
+    // assert(mbrPayment.receiver === controlledAccount, 'receiver mismatch');
+    frame_dig -1
+    gtxns Receiver
+    ==
+    assert // receiver mismatch
+    // smart_contracts/optin_plugin/contract.algo.ts:14
+    // assert(mbrPayment.amount >= Global.assetOptInMinBalance, 'asset mismatch');
+    frame_dig -1
+    gtxns Amount
+    global AssetOptInMinBalance
+    >=
+    assert // asset mismatch
+    // smart_contracts/optin_plugin/contract.algo.ts:16-25
+    // itxn
+    //   .assetTransfer({
+    //     sender: controlledAccount,
+    //     assetReceiver: controlledAccount,
+    //     assetAmount: 0,
+    //     xferAsset: Asset(asset),
+    //     rekeyTo: rekeyBack ? Application(sender).address : Global.zeroAddress,
+    //     fee: 0,
+    //   })
+    //   .submit();
+    itxn_begin
+    // smart_contracts/optin_plugin/contract.algo.ts:22
+    // rekeyTo: rekeyBack ? Application(sender).address : Global.zeroAddress,
+    frame_dig -3
+    bz optInToAsset_ternary_false@2
+    frame_dig -4
+    app_params_get AppAddress
+    assert // application exists
+
+optInToAsset_ternary_merge@3:
+    itxn_field RekeyTo
+    frame_dig -2
+    itxn_field XferAsset
+    // smart_contracts/optin_plugin/contract.algo.ts:20
+    // assetAmount: 0,
+    intc_0 // 0
+    itxn_field AssetAmount
+    frame_dig 0
+    dup
+    itxn_field AssetReceiver
+    itxn_field Sender
+    // smart_contracts/optin_plugin/contract.algo.ts:16-24
+    // itxn
+    //   .assetTransfer({
+    //     sender: controlledAccount,
+    //     assetReceiver: controlledAccount,
+    //     assetAmount: 0,
+    //     xferAsset: Asset(asset),
+    //     rekeyTo: rekeyBack ? Application(sender).address : Global.zeroAddress,
+    //     fee: 0,
+    //   })
+    pushint 4 // 4
+    itxn_field TypeEnum
+    // smart_contracts/optin_plugin/contract.algo.ts:23
+    // fee: 0,
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/optin_plugin/contract.algo.ts:16-25
+    // itxn
+    //   .assetTransfer({
+    //     sender: controlledAccount,
+    //     assetReceiver: controlledAccount,
+    //     assetAmount: 0,
+    //     xferAsset: Asset(asset),
+    //     rekeyTo: rekeyBack ? Application(sender).address : Global.zeroAddress,
+    //     fee: 0,
+    //   })
+    //   .submit();
+    itxn_submit
+    retsub
+
+optInToAsset_ternary_false@2:
+    // smart_contracts/optin_plugin/contract.algo.ts:22
+    // rekeyTo: rekeyBack ? Application(sender).address : Global.zeroAddress,
+    global ZeroAddress
+    b optInToAsset_ternary_merge@3

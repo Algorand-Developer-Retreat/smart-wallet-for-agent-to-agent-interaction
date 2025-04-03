@@ -31,7 +31,7 @@ export class ListingFactory extends Contract {
   childContractMBR = GlobalState<uint64>({ key: CHILD_CONTRACT_MBR })
 
   private calculateChildContractMbr(globalUints: uint64, globalBytes: uint64): uint64 {
-    return Uint64(100_000 + 28_500 * globalUints + 50_000 * globalBytes)
+    return Uint64(200_000 + 28_500 * globalUints + 50_000 * globalBytes)
   }
 
   @abimethod({ onCreate: 'require' })
@@ -45,9 +45,9 @@ export class ListingFactory extends Contract {
   @abimethod({ allowActions: 'UpdateApplication' })
   public updateApplication(): void {}
 
-  public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn, minimumPriceToAccept: uint64): uint64 {
+  public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn): uint64 {
     const listingContract = compileArc4(Listing)
-    const mbrAmount = Uint64(this.childContractMBR.value + Global.assetOptInMinBalance)
+    const mbrAmount = Uint64(this.childContractMBR.value + (Global.assetOptInMinBalance * 2))
 
     // ensure they paid enough to cover the contract mint + mbr costs
     assert(payment.amount === mbrAmount, PAYMENT_AMOUNT_MUST_BE_EQUAL_TO_MBR_AMOUNT)
@@ -59,14 +59,14 @@ export class ListingFactory extends Contract {
 
     // mint listing contract
     // initialize child
-    const createdListingApp = listingContract.call.createListingApplication({
-      args: [assetXfer.xferAsset, new Address(Txn.sender), minimumPriceToAccept],
+    const createdListingApp = listingContract.call.createApplication({
+      args: [assetXfer.xferAsset, new Address(Txn.sender)],
       fee: 0,
     }).itxn.createdApp
 
     const optInPayment = itxn.payment({
       receiver: createdListingApp.address,
-      amount: Global.assetOptInMinBalance,
+      amount: (Global.assetOptInMinBalance * 2),
       fee: 0,
     })
 
