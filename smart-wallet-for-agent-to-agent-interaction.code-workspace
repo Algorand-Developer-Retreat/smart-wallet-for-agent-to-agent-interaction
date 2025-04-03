@@ -6,6 +6,9 @@
     },
     {
       "path": "projects/smart-wallet-for-agent-to-agent-interaction"
+    },
+    {
+      "path": "projects/ui"
     }
   ],
   "settings": {
