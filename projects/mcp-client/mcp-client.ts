@@ -10,7 +10,12 @@ dotenv.config();
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
+const log = (message: string) => {
+  process.stderr.write(message + "\n");
+};
+
 if (!ANTHROPIC_API_KEY) {
+  log("ANTHROPIC_API_KEY is not set");
   throw new Error("ANTHROPIC_API_KEY is not set");
 }
 
@@ -37,12 +42,20 @@ For example, to buy an asset you might:
 
 Always maintain context between steps and use information from previous tool calls to inform your next actions.`;
 
+interface ToolUse {
+  name: string;
+  input: any;
+}
+
 class MCPClient {
   private mcp: Client;
   private anthropic: Anthropic;
   private transport: StdioClientTransport | null = null;
   private tools: Tool[] = [];
   private conversationHistory: MessageParam[] = [];
+  private currentText: string = "";
+  private currentToolUse: ToolUse | null = null;
+  private accumulatedJson: string = "";
 
   constructor() {
     this.anthropic = new Anthropic({
@@ -50,142 +63,119 @@ class MCPClient {
     });
 
     this.mcp = new Client({ name: "mcp-client-cli", version: "1.0.0" });
-
-    // Initialize conversation with system prompt
-    this.conversationHistory = [
-      {
-        role: "assistant",
-        content: SYSTEM_PROMPT,
-      },
-    ];
+    this.conversationHistory = [{ role: "assistant", content: SYSTEM_PROMPT }];
   }
 
   async connectToServer(serverScriptPath: string) {
     try {
-      const isJs = serverScriptPath.endsWith(".js");
-      const isPy = serverScriptPath.endsWith(".py");
-
-      if (!isJs && !isPy) {
-        throw new Error("Server script must be a .js or .py file");
-      }
-
-      const command = isPy ? (process.platform === "win32" ? "python" : "python3") : process.execPath;
-
       this.transport = new StdioClientTransport({
-        command,
+        command: process.execPath,
         args: [serverScriptPath],
       });
 
       this.mcp.connect(this.transport);
-
-      const toolsResult = await this.mcp.listTools();
-
-      this.tools = toolsResult.tools.map((tool) => {
-        return {
-          name: tool.name,
-          description: tool.description,
-          input_schema: tool.inputSchema,
-        };
-      });
-
-      console.log(
-        "Connected to server with tools:",
-        this.tools.map(({ name }) => name)
-      );
+      await this.initializeTools();
     } catch (e) {
-      console.log("Failed to connect to MCP server: ", e);
+      log(`Failed to connect to MCP server: ${e}`);
       throw e;
     }
   }
 
-  async processQuery(query: string) {
-    // Add user query to conversation history
-    this.conversationHistory.push({
-      role: "user",
-      content: query,
-    });
+  private async initializeTools() {
+    const toolsResult = await this.mcp.listTools();
+    this.tools = toolsResult.tools.map((tool) => ({
+      name: tool.name,
+      description: tool.description,
+      input_schema: tool.inputSchema,
+    }));
 
+    log(`Connected to server with tools: ${this.tools.map(({ name }) => name).join(", ")}`);
+  }
+
+  async processQuery(query: string) {
+    this.conversationHistory.push({ role: "user", content: query });
     let keepProcessing = true;
-    let currentText = "";
+    this.currentText = "";
 
     while (keepProcessing) {
-      const stream = await this.anthropic.messages.stream({
-        model: "claude-3-7-sonnet-20250219",
-        max_tokens: 1000,
-        messages: this.conversationHistory,
-        tools: this.tools,
-      });
-
+      const stream = await this.getAnthropicStream();
       keepProcessing = false; // Will be set to true if we need another iteration
-      let currentToolUse: { name: string; input: any } | null = null;
-      let accumulatedJson = "";
 
       for await (const event of stream) {
         if (event.type === "content_block_start") {
-          if (event.content_block.type === "tool_use") {
-            currentToolUse = {
-              name: event.content_block.name,
+          if (event.content_block?.type === "tool_use") {
+            // If we have accumulated text, output it before starting tool use
+            if (this.currentText) {
+              process.stderr.write(chalk.green("]\n"));
+              this.conversationHistory.push({
+                role: "assistant",
+                content: this.currentText,
+              });
+              this.currentText = "";
+            }
+            this.currentToolUse = {
+              name: event.content_block.name || "",
               input: {},
             };
-          } else if (event.content_block.type === "text") {
-            // Start a new text block
-            currentText = "";
-            process.stdout.write(chalk.green("\n[Buyer Agent: "));
+          } else if (event.content_block?.type === "text") {
+            // If we're starting a new text block and have existing text, add a newline
+            if (this.currentText) {
+              process.stderr.write(chalk.green("\n"));
+            }
+            this.currentText = "";
+            process.stderr.write(chalk.green("\n[Buyer Agent: "));
           }
         } else if (event.type === "content_block_delta") {
-          if (event.delta.type === "text_delta") {
-            const text = event.delta.text;
-            currentText += text;
-            // Immediately display the text
-            process.stdout.write(chalk.green(text));
-          } else if (event.delta.type === "input_json_delta" && currentToolUse) {
-            // Accumulate JSON input
-            accumulatedJson += event.delta.partial_json || "";
+          if (event.delta?.type === "text_delta" && event.delta.text) {
+            this.currentText += event.delta.text;
+            process.stderr.write(chalk.green(event.delta.text));
+          } else if (event.delta?.type === "input_json_delta" && this.currentToolUse) {
+            this.accumulatedJson += event.delta.partial_json || "";
             try {
-              if (accumulatedJson.trim().startsWith("{") && accumulatedJson.trim().endsWith("}")) {
-                const jsonObj = JSON.parse(accumulatedJson);
-                currentToolUse.input = jsonObj;
+              if (this.accumulatedJson.trim().startsWith("{") && this.accumulatedJson.trim().endsWith("}")) {
+                const jsonObj = JSON.parse(this.accumulatedJson);
+                this.currentToolUse.input = jsonObj;
               }
             } catch (e) {
               // Ignore JSON parse errors for partial JSON
             }
           }
         } else if (event.type === "content_block_stop") {
-          if (currentText) {
-            process.stdout.write(chalk.green("]\n"));
-            // Add assistant's response to conversation history
+          if (this.currentText) {
+            process.stderr.write(chalk.green("]\n"));
             this.conversationHistory.push({
               role: "assistant",
-              content: currentText,
+              content: this.currentText,
             });
+            this.currentText = "";
           }
 
-          if (currentToolUse) {
+          if (this.currentToolUse) {
             const toolOutput = chalk.cyan(
-              `\n[Seller Agent: Calling ${currentToolUse.name} with args ${JSON.stringify(currentToolUse.input)}]\n`
+              `\n[Seller Agent: Calling ${this.currentToolUse.name} with args ${JSON.stringify(this.currentToolUse.input)}]\n`
             );
-            process.stdout.write(toolOutput);
+            process.stderr.write(toolOutput);
 
             try {
               const result = (await this.mcp.callTool({
-                name: currentToolUse.name,
-                arguments: currentToolUse.input,
+                name: this.currentToolUse.name,
+                arguments: this.currentToolUse.input,
               })) as { content: Array<{ type: string; text: string }> };
 
-              const resultOutput = chalk.cyan(`[Seller Agent: ${currentToolUse.name} returned ${JSON.stringify(result.content)}]\n`);
-              process.stdout.write(resultOutput);
+              const resultOutput = chalk.cyan(`[Seller Agent: ${this.currentToolUse.name} returned ${JSON.stringify(result.content)}]\n`);
+              process.stderr.write(resultOutput);
 
               // Add tool result to conversation history
               this.conversationHistory.push({
                 role: "assistant",
-                content: `I called ${currentToolUse.name} and got result: ${result.content[0].text}`,
+                content: `I called ${this.currentToolUse.name} and got result: ${result.content[0].text}`,
               });
 
               // Continue processing if the tool call was successful
               keepProcessing = true;
             } catch (error: any) {
-              const errorMessage = `Error calling ${currentToolUse.name}: ${error.message}`;
-              process.stdout.write(chalk.red(`\n[Error: ${errorMessage}]\n`));
+              const errorMessage = `Error calling ${this.currentToolUse.name}: ${error.message}`;
+              process.stderr.write(chalk.red(`\n[Error: ${errorMessage}]\n`));
 
               // Add error to conversation history
               this.conversationHistory.push({
@@ -194,25 +184,34 @@ class MCPClient {
               });
             }
 
-            currentToolUse = null;
-            accumulatedJson = "";
+            this.currentToolUse = null;
+            this.accumulatedJson = "";
           }
         }
       }
     }
 
-    return ""; // We've already written the output using process.stdout
+    return "";
+  }
+
+  private async getAnthropicStream() {
+    return this.anthropic.messages.stream({
+      model: "claude-3-7-sonnet-20250219",
+      max_tokens: 1000,
+      messages: this.conversationHistory,
+      tools: this.tools,
+    });
   }
 
   async chatLoop() {
     const rl = readline.createInterface({
       input: process.stdin,
-      output: process.stdout,
+      output: process.stderr,
     });
 
     try {
-      console.log("\nMCP Client Started!");
-      console.log("Type your queries or 'quit' to exit.");
+      log("\nMCP Client Started!");
+      log("Type your queries or 'quit' to exit.");
 
       while (true) {
         const message = await rl.question("\nBuyer Agent: ");
@@ -222,7 +221,9 @@ class MCPClient {
         }
 
         const response = await this.processQuery(message);
-        console.log("\n" + response);
+        if (response) {
+          log("\n" + response);
+        }
       }
     } finally {
       rl.close();
