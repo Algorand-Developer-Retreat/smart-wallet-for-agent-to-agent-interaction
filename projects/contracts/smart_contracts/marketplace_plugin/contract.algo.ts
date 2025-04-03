@@ -29,11 +29,11 @@ export class MarketplacePlugin extends Plugin {
   /** whether the price has been negotiated */
   priceNegotiated = GlobalState<boolean>({ initialValue: false, key: 'priceNegotiated' })
 
-  list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64): uint64 {
+  list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64, minimumPriceToAccept: uint64): uint64 {
     const senderApp = Application(sender)
     const controlledAccount = this.getControlledAccount(senderApp)
     const factoryApp = Application(factoryAppID)
-    assert(Asset(asset).balance(senderApp.address) >= assetAmount, NOT_ENOUGH_ASSET)
+    assert(Asset(asset).balance(controlledAccount) >= assetAmount, NOT_ENOUGH_ASSET)
 
     const needsToOptIntoAsset = !factoryApp.address.isOptedIn(Asset(asset))
     const listingFactoryApp = compileArc4(ListingFactory)
@@ -76,7 +76,7 @@ export class MarketplacePlugin extends Plugin {
     const createdListingApp = listingFactoryApp.call.list({
       sender: controlledAccount,
       appId: factoryAppID,
-      args: [mbrPayment, assetTransfer],
+      args: [mbrPayment, assetTransfer, minimumPriceToAccept],
       fee: 0,
       rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
       extraProgramPages: 0,

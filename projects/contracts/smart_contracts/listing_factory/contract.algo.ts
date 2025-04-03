@@ -45,7 +45,7 @@ export class ListingFactory extends Contract {
   @abimethod({ allowActions: 'UpdateApplication' })
   public updateApplication(): void {}
 
-  public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn): uint64 {
+  public list(payment: gtxn.PaymentTxn, assetXfer: gtxn.AssetTransferTxn, minimumPriceToAccept: uint64): uint64 {
     const listingContract = compileArc4(Listing)
     const mbrAmount = Uint64(this.childContractMBR.value + Global.assetOptInMinBalance)
 
@@ -60,7 +60,7 @@ export class ListingFactory extends Contract {
     // mint listing contract
     // initialize child
     const createdListingApp = listingContract.call.createListingApplication({
-      args: [assetXfer.xferAsset, new Address(Txn.sender), 0],
+      args: [assetXfer.xferAsset, new Address(Txn.sender), minimumPriceToAccept],
       fee: 0,
     }).itxn.createdApp
 
