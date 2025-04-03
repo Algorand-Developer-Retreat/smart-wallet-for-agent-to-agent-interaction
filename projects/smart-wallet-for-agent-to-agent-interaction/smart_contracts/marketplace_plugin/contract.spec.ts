@@ -1,14 +1,14 @@
 import { TestExecutionContext } from '@algorandfoundation/algorand-typescript-testing'
 import { describe, expect, it } from 'vitest'
-import { ListingPlugin } from './contract.algo'
+import { MarketplacePlugin } from './contract.algo'
 
-describe('ListingPlugin contract', () => {
+describe('MarketplacePlugin contract', () => {
   const ctx = new TestExecutionContext()
   it('Logs the returned value when sayHello is called', () => {
-    const contract = ctx.contract.create(ListingPlugin)
+    const contract = ctx.contract.create(MarketplacePlugin)
 
     const result = contract.hello('Sally')
 
-    expect(result).toBe('Hello, Sally')
+    expect(result).toBe('Hello Sally')
   })
 })
