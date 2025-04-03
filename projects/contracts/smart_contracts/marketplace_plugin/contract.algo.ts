@@ -29,7 +29,7 @@ export class MarketplacePlugin extends Plugin {
   /** whether the price has been negotiated */
   priceNegotiated = GlobalState<boolean>({ initialValue: false, key: 'priceNegotiated' })
 
-  list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64, minimumPriceToAccept: uint64): uint64 {
+  list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64): uint64 {
     const senderApp = Application(sender)
     const controlledAccount = this.getControlledAccount(senderApp)
     const factoryApp = Application(factoryAppID)
@@ -53,10 +53,10 @@ export class MarketplacePlugin extends Plugin {
     }
     const listingContract = compileArc4(Listing)
     const childContractMBR = Uint64(
-      100_000 +
+      200_000 +
         28_500 * listingContract.globalUints +
         50_000 * listingContract.globalBytes +
-        Global.assetOptInMinBalance,
+        (Global.assetOptInMinBalance * 2),
     )
 
     const mbrPayment = itxn.payment({
@@ -67,6 +67,7 @@ export class MarketplacePlugin extends Plugin {
     })
 
     const assetTransfer = itxn.assetTransfer({
+      sender: controlledAccount,
       assetReceiver: factoryApp.address,
       assetAmount: assetAmount,
       xferAsset: asset,
@@ -76,9 +77,9 @@ export class MarketplacePlugin extends Plugin {
     const createdListingApp = listingFactoryApp.call.list({
       sender: controlledAccount,
       appId: factoryAppID,
-      args: [mbrPayment, assetTransfer, minimumPriceToAccept],
+      args: [mbrPayment, assetTransfer],
       fee: 0,
-      rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
+      rekeyTo: rekeyBack ? senderApp.address : Global.zeroAddress,
       extraProgramPages: 0,
     }).returnValue
 

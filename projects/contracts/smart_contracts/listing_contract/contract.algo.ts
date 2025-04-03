@@ -31,9 +31,6 @@ export class Listing extends Contract {
   /** the asset for sale */
   asset = GlobalState<Asset>({ key: ASSET_KEY })
 
-  /** the price of the asset */
-  minimumPriceToAccept = GlobalState<uint64>({ key: PRICE_KEY })
-
   negotiatedPrice = GlobalState<uint64>({ initialValue: 0, key: NEGOTIATED_PRICE_KEY })
 
   /** the address selling the asset */
@@ -70,17 +67,15 @@ export class Listing extends Contract {
    * create the listing application
    * @param {uint64} asset the asa ID that is to be sold
    * @param {Address} seller the wallet of the account selling the asset
-   * @param {uint64} minimumPriceToAccept the price the asset should be sold for
    * @throws {Error} - if the caller is not the factory
    */
   // @ts-ignore
   @abimethod({ onCreate: 'require' })
-  public createListingApplication(asset: Asset, seller: Address, minimumPriceToAccept: uint64): void {
+  public createApplication(asset: Asset, seller: Address): void {
     assert(Global.callerApplicationId !== 0, MUST_BE_CALLED_FROM_FACTORY)
 
     this.asset.value = asset
     this.seller.value = seller
-    this.minimumPriceToAccept.value = minimumPriceToAccept
   }
 
   public recordNegotiatedPrice(price: uint64): void {
@@ -94,9 +89,9 @@ export class Listing extends Contract {
    * @param asset The asset to be opted into
    */
   public optinToListingAsset(payment: gtxn.PaymentTxn, asset: uint64): void {
-    assert(Txn.sender === Global.creatorAddress)
-    assert(payment.receiver === Global.currentApplicationAddress)
-    assert(payment.amount === Global.assetOptInMinBalance)
+    assert(Txn.sender === Global.creatorAddress, 'optinToListingAsset must be called by creator')
+    assert(payment.receiver === Global.currentApplicationAddress, 'payment receiver must be this app')
+    assert(payment.amount === (Global.assetOptInMinBalance * 2), 'payment amount must be asset optin min balance + min account mbr')
 
     itxn
       .assetTransfer({
