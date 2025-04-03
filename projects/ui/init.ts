@@ -1,6 +1,6 @@
 import { ListingFactoryFactory } from '@/contracts/ListingFactory';
 import { MarketplacePluginFactory } from '@/contracts/MarketplacePlugin';
-import { OptInPluginFactory } from '@/contracts/OptInPluginClient';
+import { OptInPluginFactory } from '@/contracts/OptInPlugin';
 import { getAlgodConfigFromEnvironment } from '@/utils/network/getAlgoClientConfigs';
 import { AlgorandClient } from '@algorandfoundation/algokit-utils';
 import fs from 'node:fs';
@@ -16,7 +16,7 @@ const optinPluginMinter = new OptInPluginFactory({
     algorand
 })
 
-const optInMintResults = await optinPluginMinter.send.create.createApplication();
+const optInMintResults = await optinPluginMinter.send.create.bare()
 
 envFile = envFile.replace('<REPLACE_WITH_OPTIN_PLUGIN_ID>', optInMintResults.appClient.appId.toString())
 

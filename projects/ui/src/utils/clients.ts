@@ -1,8 +1,8 @@
 import algosdk from 'algosdk'
 import { AlgorandClient } from '@algorandfoundation/algokit-utils'
 import { getAlgodConfigFromEnvironment } from './network/getAlgoClientConfigs'
-import { AbstractedAccountClient, AbstractedAccountFactory } from '@/contracts/AbstractedAccountClient'
-import { OptInPluginClient } from '@/contracts/OptInPluginClient'
+import { AbstractedAccountClient, AbstractedAccountFactory } from '@/contracts/AbstractedAccount'
+import { OptInPluginClient } from '@/contracts/OptInPlugin'
 import { getMarketplacePluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from './env'
 import { MarketplacePluginClient } from '@/contracts/MarketplacePlugin'
 

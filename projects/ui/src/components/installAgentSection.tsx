@@ -3,9 +3,9 @@
 import { useWallet } from "@txnlab/use-wallet-react"
 import { ConnectModal } from "./connectModal"
 import { Button } from "./ui/button"
-import { GetAbstractedAccountFactory, getMarketplacePluginClient, getOptinClient } from "@/utils/clients"
+import { GetAbstractedAccountFactory, getMarketplacePluginClient } from "@/utils/clients"
 import { useState } from "react"
-import { AbstractedAccountClient } from "@/contracts/AbstractedAccountClient"
+import { AbstractedAccountClient } from "@/contracts/AbstractedAccount"
 import { getListingFactoryIDFromEnvironment, getMarketplacePluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from "@/utils/env"
 
 const ZERO_ADDRESS = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ'
