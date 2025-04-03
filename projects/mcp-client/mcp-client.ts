@@ -20,7 +20,6 @@ You have access to several tools that let you interact with the marketplace:
 - showAssets: Shows all available assets for sale
 - listAsset: List an asset for sale with specified parameters
 - negotiatePrice: Negotiate a price for a listing
-- recordNegotiatedPrice: Record a negotiated price for a listing
 - purchaseAsset: Purchase an asset from a listing
 - delistAsset: Remove a listing from sale
 
@@ -106,11 +105,11 @@ class MCPClient {
       content: query,
     });
 
-    const finalText = [];
     let keepProcessing = true;
+    let currentText = "";
 
     while (keepProcessing) {
-      const response = await this.anthropic.messages.create({
+      const stream = await this.anthropic.messages.stream({
         model: "claude-3-7-sonnet-20250219",
         max_tokens: 1000,
         messages: this.conversationHistory,
@@ -118,53 +117,91 @@ class MCPClient {
       });
 
       keepProcessing = false; // Will be set to true if we need another iteration
+      let currentToolUse: { name: string; input: any } | null = null;
+      let accumulatedJson = "";
 
-      for (const content of response.content) {
-        if (content.type === "text") {
-          finalText.push(chalk.green(`\n[Buyer Agent: ${content.text}]`));
-
-          // Add assistant's response to conversation history
-          this.conversationHistory.push({
-            role: "assistant",
-            content: content.text,
-          });
-        } else if (content.type === "tool_use") {
-          const toolName = content.name;
-          const toolArgs = content.input as { [x: string]: unknown } | undefined;
-
-          finalText.push(chalk.cyan(`\n[Seller Agent: Calling ${toolName} with args ${JSON.stringify(toolArgs)}]`));
-
-          try {
-            const result = (await this.mcp.callTool({
-              name: toolName,
-              arguments: toolArgs,
-            })) as { content: Array<{ type: string; text: string }> };
-
-            finalText.push(chalk.cyan(`\n[Seller Agent: ${toolName} returned ${JSON.stringify(result.content)}]`));
-
-            // Add tool result to conversation history
+      for await (const event of stream) {
+        if (event.type === "content_block_start") {
+          if (event.content_block.type === "tool_use") {
+            currentToolUse = {
+              name: event.content_block.name,
+              input: {},
+            };
+          } else if (event.content_block.type === "text") {
+            // Start a new text block
+            currentText = "";
+            process.stdout.write(chalk.green("\n[Buyer Agent: "));
+          }
+        } else if (event.type === "content_block_delta") {
+          if (event.delta.type === "text_delta") {
+            const text = event.delta.text;
+            currentText += text;
+            // Immediately display the text
+            process.stdout.write(chalk.green(text));
+          } else if (event.delta.type === "input_json_delta" && currentToolUse) {
+            // Accumulate JSON input
+            accumulatedJson += event.delta.partial_json || "";
+            try {
+              if (accumulatedJson.trim().startsWith("{") && accumulatedJson.trim().endsWith("}")) {
+                const jsonObj = JSON.parse(accumulatedJson);
+                currentToolUse.input = jsonObj;
+              }
+            } catch (e) {
+              // Ignore JSON parse errors for partial JSON
+            }
+          }
+        } else if (event.type === "content_block_stop") {
+          if (currentText) {
+            process.stdout.write(chalk.green("]\n"));
+            // Add assistant's response to conversation history
             this.conversationHistory.push({
               role: "assistant",
-              content: `I called ${toolName} and got result: ${result.content[0].text}`,
+              content: currentText,
             });
+          }
 
-            // Continue processing if the tool call was successful
-            keepProcessing = true;
-          } catch (error: any) {
-            const errorMessage = `Error calling ${toolName}: ${error.message}`;
-            finalText.push(chalk.red(`\n[Error: ${errorMessage}]`));
+          if (currentToolUse) {
+            const toolOutput = chalk.cyan(
+              `\n[Seller Agent: Calling ${currentToolUse.name} with args ${JSON.stringify(currentToolUse.input)}]\n`
+            );
+            process.stdout.write(toolOutput);
 
-            // Add error to conversation history
-            this.conversationHistory.push({
-              role: "assistant",
-              content: errorMessage,
-            });
+            try {
+              const result = (await this.mcp.callTool({
+                name: currentToolUse.name,
+                arguments: currentToolUse.input,
+              })) as { content: Array<{ type: string; text: string }> };
+
+              const resultOutput = chalk.cyan(`[Seller Agent: ${currentToolUse.name} returned ${JSON.stringify(result.content)}]\n`);
+              process.stdout.write(resultOutput);
+
+              // Add tool result to conversation history
+              this.conversationHistory.push({
+                role: "assistant",
+                content: `I called ${currentToolUse.name} and got result: ${result.content[0].text}`,
+              });
+
+              // Continue processing if the tool call was successful
+              keepProcessing = true;
+            } catch (error: any) {
+              const errorMessage = `Error calling ${currentToolUse.name}: ${error.message}`;
+              process.stdout.write(chalk.red(`\n[Error: ${errorMessage}]\n`));
+
+              // Add error to conversation history
+              this.conversationHistory.push({
+                role: "assistant",
+                content: errorMessage,
+              });
+            }
+
+            currentToolUse = null;
+            accumulatedJson = "";
           }
         }
       }
     }
 
-    return finalText.join("\n");
+    return ""; // We've already written the output using process.stdout
   }
 
   async chatLoop() {
