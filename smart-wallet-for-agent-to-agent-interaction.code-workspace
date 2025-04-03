@@ -8,22 +8,25 @@
       "path": "projects/contracts"
     },
     {
-      "path": "projects/ui" 
+      "path": "projects/ui"
+    },
+    {
+      "path": "projects/mcp-client",
+      "name": "MCP Client"
+    },
+    {
+      "path": "projects/mcp-server",
+      "name": "MCP Server"
     }
   ],
   "settings": {
     "files.exclude": {
       "projects/": true
     },
-    "jest.disabledWorkspaceFolders": [
-      "ROOT",
-      "projects"
-    ]
+    "jest.disabledWorkspaceFolders": ["ROOT", "projects"]
   },
   "extensions": {
-    "recommendations": [
-      "joshx.workspace-terminals"
-    ]
+    "recommendations": ["joshx.workspace-terminals"]
   },
   "tasks": {
     "version": "2.0.0",
