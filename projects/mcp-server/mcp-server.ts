@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { Anthropic } from "@anthropic-ai/sdk";
 import { AlgorandClient } from "@algorandfoundation/algokit-utils";
 import algosdk from "algosdk";
-import { AbstractedAccountClient, AbstractedAccountFactory } from "./contracts/AbstractedAccount.js"
+import { AbstractedAccountClient, AbstractedAccountFactory } from "./contracts/AbstractedAccount.js";
 import { MarketplacePluginClient } from "./contracts/MarketplacePlugin.js";
 import { OptInPluginClient } from "./contracts/OptInPlugin.js";
 import { ListingFactoryClient } from "./contracts/ListingFactory.js";
@@ -12,21 +12,21 @@ import { ListingClient, ListingInfo } from "./contracts/Listing.js";
 
 dotenv.config();
 
-export const FEE_SINK = 'A7NMWS3NT3IUDMLVO26ULGXGIIOUQ3ND2TXSER6EBGRZNOBOUIQXHIBGDE'
+export const FEE_SINK = "A7NMWS3NT3IUDMLVO26ULGXGIIOUQ3ND2TXSER6EBGRZNOBOUIQXHIBGDE";
 
 const algorand = AlgorandClient.defaultLocalNet().setDefaultValidityWindow(200);
 
-const LISTING_FACTORY_ID = BigInt(process.env.LISTING_FACTORY_ID!)
+const LISTING_FACTORY_ID = BigInt(process.env.LISTING_FACTORY_ID!);
 if (!LISTING_FACTORY_ID) {
   console.error("LISTING_FACTORY_ID is not set");
 }
 
-const OPTIN_PLUGIN_ID = BigInt(process.env.OPTIN_PLUGIN_ID!)
+const OPTIN_PLUGIN_ID = BigInt(process.env.OPTIN_PLUGIN_ID!);
 if (!OPTIN_PLUGIN_ID) {
   throw new Error("OPTIN_PLUGIN_ID is not set");
 }
 
-const MARKETPLACE_PLUGIN_ID = BigInt(process.env.MARKETPLACE_PLUGIN_ID!)
+const MARKETPLACE_PLUGIN_ID = BigInt(process.env.MARKETPLACE_PLUGIN_ID!);
 if (!MARKETPLACE_PLUGIN_ID) {
   throw new Error("MARKETPLACE_PLUGIN_ID is not set");
 }
@@ -36,7 +36,7 @@ if (!AGENT_MNEMONIC) {
   throw new Error("AGENT_MNEMONIC is not set");
 }
 
-const SELLER_WALLET_APP_ID = BigInt(process.env.SELLER_SMART_WALLET_APP_ID!)
+const SELLER_WALLET_APP_ID = BigInt(process.env.SELLER_SMART_WALLET_APP_ID!);
 if (!SELLER_WALLET_APP_ID) {
   throw new Error("SELLER_WALLET_APP_ID is not set");
 }
@@ -107,22 +107,24 @@ export async function getListingFactoryClient(activeAddress = FEE_SINK): Promise
   return algorand.client.getTypedAppClientById(ListingFactoryClient, {
     defaultSender: activeAddress,
     appId: LISTING_FACTORY_ID,
-  })
+  });
 }
 
-const listingFactoryClient = await getListingFactoryClient()
+const listingFactoryClient = await getListingFactoryClient();
 
 async function getAllListings(): Promise<ListingInfo[]> {
   const response = await algorand.client.algod.accountInformation(listingFactoryClient.appAddress).do();
 
   if (response.createdApps === undefined || response.createdApps?.length === 0) {
-    return []
+    return [];
   }
 
-  return await Promise.all(response.createdApps.map(async (app) => {
-    const listingClient = await algorand.client.getTypedAppClientById(ListingClient, { appId: app.id })
-    return await listingClient.getInfo()
-  }))
+  return await Promise.all(
+    response.createdApps.map(async (app) => {
+      const listingClient = await algorand.client.getTypedAppClientById(ListingClient, { appId: app.id });
+      return await listingClient.getInfo();
+    })
+  );
 }
 
 const anthropic = new Anthropic({
@@ -150,15 +152,17 @@ function getAgentAccount() {
 }
 
 server.tool("showListings", "Show all asset listings", async () => {
-
-  const listings = await getAllListings()
+  const listings = await getAllListings();
 
   return {
     content: [
       {
         type: "text",
         text: `Available listings:\n${listings
-          .map((asset) => `- Listing ID: ${asset.id} Asset ID: ${asset.assetId}\n  Name: ${asset.name}\n  UnitName: ${asset.unitName}\n  Decimals: ${asset.decimals}\n  Seller: ${asset.seller}`)
+          .map(
+            (asset) =>
+              `- Listing ID: ${asset.id} Asset ID: ${asset.assetId}\n  Name: ${asset.name}\n  UnitName: ${asset.unitName}\n  Decimals: ${asset.decimals}\n  Seller: ${asset.seller}`
+          )
           .join("\n\n")}`,
       },
     ],
@@ -222,25 +226,30 @@ server.tool(
     const status = isAccepted ? "ACCEPTED" : "COUNTER-OFFER";
 
     if (status === "ACCEPTED") {
-      const agentAccount = getAgentAccount()
-      const marketPlacePluginClient = await getMarketplacePluginClient({ activeAddress: agentAccount.addr.toString(), signer: agentAccount.signer })
+      const agentAccount = getAgentAccount();
+      const marketPlacePluginClient = await getMarketplacePluginClient({
+        activeAddress: agentAccount.addr.toString(),
+        signer: agentAccount.signer,
+      });
       const abstractedAccountClient = await getAbstractAccountClient({
         activeAddress: agentAccount.addr.toString(),
         signer: agentAccount.signer,
-        appId: SELLER_WALLET_APP_ID
-      })
+        appId: SELLER_WALLET_APP_ID,
+      });
 
-      const recordNegotiatedPriceCall = (await marketPlacePluginClient.createTransaction.recordNegotiatedPrice({
-        sender: agentAccount,
-        signer: agentAccount.signer,
-        args: {
-          sender: abstractedAccountClient.appId,
-          rekeyBack: true,
-          price: offerPrice,
-          listingAppId: listingAppID!,
-        },
-        extraFee: (1000).microAlgos(),
-      })).transactions[0]
+      const recordNegotiatedPriceCall = (
+        await marketPlacePluginClient.createTransaction.recordNegotiatedPrice({
+          sender: agentAccount,
+          signer: agentAccount.signer,
+          args: {
+            sender: abstractedAccountClient.appId,
+            rekeyBack: true,
+            price: offerPrice,
+            listingAppId: listingAppID!,
+          },
+          extraFee: (1000).microAlgos(),
+        })
+      ).transactions[0];
 
       try {
         const recordPriceResult = await abstractedAccountClient
@@ -250,7 +259,7 @@ server.tool(
             signer: agentAccount.signer,
             args: {
               plugin: marketPlacePluginClient.appId,
-              methodOffsets: []
+              methodOffsets: [],
             },
             extraFee: (1000).microAlgos(),
           })
@@ -260,12 +269,11 @@ server.tool(
             signer: agentAccount.signer,
             args: {},
           })
-          .send()
+          .send();
 
-        console.log('accepted 10,000 price, txId', recordPriceResult.txIds)
-
+        console.log("accepted 10,000 price, txId", recordPriceResult.txIds);
       } catch (e: any) {
-        console.log(`Error: ${e}`)
+        console.log(`Error: ${e}`);
       }
     }
 
@@ -307,28 +315,32 @@ server.tool(
   "purchaseAsset",
   "Purchase an asset from a listing",
   {
-    sender: z.bigint().nonnegative().describe("Buyer Wallet App ID"),
+    sender: z.number().nonnegative().describe("Buyer Wallet App ID"),
     listingAppID: z.number().int().nonnegative().describe("Listing application ID"),
   },
   async ({ sender, listingAppID }) => {
-
-    const agentAccount = getAgentAccount()
-    const marketPlacePluginClient = await getMarketplacePluginClient({ activeAddress: agentAccount.addr.toString(), signer: agentAccount.signer })
+    const agentAccount = getAgentAccount();
+    const marketPlacePluginClient = await getMarketplacePluginClient({
+      activeAddress: agentAccount.addr.toString(),
+      signer: agentAccount.signer,
+    });
     const abstractedAccountClient = await getAbstractAccountClient({
       activeAddress: agentAccount.addr.toString(),
       signer: agentAccount.signer,
-      appId: sender
-    })
-    const purchaseCall = (await marketPlacePluginClient.createTransaction.purchase({
-      sender: agentAccount.addr,
-      signer: agentAccount.signer,
-      args: {
-        sender: abstractedAccountClient.appId,
-        rekeyBack: true,
-        listingAppId: listingAppID!,
-      },
-      extraFee: (8000).microAlgos(),
-    })).transactions[0]
+      appId: BigInt(sender),
+    });
+    const purchaseCall = (
+      await marketPlacePluginClient.createTransaction.purchase({
+        sender: agentAccount.addr,
+        signer: agentAccount.signer,
+        args: {
+          sender: abstractedAccountClient.appId,
+          rekeyBack: true,
+          listingAppId: listingAppID!,
+        },
+        extraFee: (8000).microAlgos(),
+      })
+    ).transactions[0];
 
     try {
       const purchaseResult = await abstractedAccountClient
@@ -338,7 +350,7 @@ server.tool(
           signer: agentAccount.signer,
           args: {
             plugin: marketPlacePluginClient.appId,
-            methodOffsets: []
+            methodOffsets: [],
           },
           extraFee: (1000).microAlgos(),
         })
@@ -348,12 +360,11 @@ server.tool(
           signer: agentAccount.signer,
           args: {},
         })
-        .send()
+        .send();
 
-      console.log('purchased NFT, txId', purchaseResult.txIds)
-
+      console.log("purchased NFT, txId", purchaseResult.txIds);
     } catch (e: any) {
-      console.log(`Error: ${e}`)
+      console.log(`Error: ${e}`);
     }
 
     return {
