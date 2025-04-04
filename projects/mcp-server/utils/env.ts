@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
 export function getListingFactoryIDFromEnvironment(): bigint {
   if (!process.env.LISTING_FACTORY_ID!) {
     throw new Error("Attempt to get Listing Factory ID without specifying LISTING_FACTORY_ID in the environment variables");
