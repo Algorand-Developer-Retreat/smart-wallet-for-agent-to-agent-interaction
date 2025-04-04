@@ -6,22 +6,24 @@ import { getListingFactoryIDFromEnvironment, getMarketplacePluginIDFromEnvironme
 import { MarketplacePluginClient } from "../contracts/MarketplacePlugin.js";
 import { OptInPluginClient } from "../contracts/OptInPlugin.js";
 import { ListingFactoryClient } from "../contracts/ListingFactory.js";
+import dotenv from "dotenv";
 
-export const FEE_SINK = 'A7NMWS3NT3IUDMLVO26ULGXGIIOUQ3ND2TXSER6EBGRZNOBOUIQXHIBGDE'
+dotenv.config();
 
-const algodConfig = getAlgodConfigFromEnvironment();
-const algorand = AlgorandClient.fromConfig({ algodConfig }).setDefaultValidityWindow(200);
+const FEE_SINK = 'A7NMWS3NT3IUDMLVO26ULGXGIIOUQ3ND2TXSER6EBGRZNOBOUIQXHIBGDE'
+
+const algorand = AlgorandClient.defaultLocalNet().setDefaultValidityWindow(200);
 
 const OPTIN_PLUGIN_ID = getOptinPluginIDFromEnvironment();
 const MARKETPLACE_PLUGIN_ID = getMarketplacePluginIDFromEnvironment();
 const LISTING_FACTORY_ID = getListingFactoryIDFromEnvironment()
 
-export interface GetAbstractedAccountFactoryParams {
+interface GetAbstractedAccountFactoryParams {
   defaultSender?: string | algosdk.Address | undefined;
   defaultSigner?: algosdk.TransactionSigner | undefined;
 }
 
-export function GetAbstractedAccountFactory({ defaultSender, defaultSigner }: GetAbstractedAccountFactoryParams): AbstractedAccountFactory {
+function GetAbstractedAccountFactory({ defaultSender, defaultSigner }: GetAbstractedAccountFactoryParams): AbstractedAccountFactory {
   return new AbstractedAccountFactory({
     defaultSender,
     defaultSigner,
@@ -29,13 +31,13 @@ export function GetAbstractedAccountFactory({ defaultSender, defaultSigner }: Ge
   });
 }
 
-export interface GetAbstractAccountClientParams {
+interface GetAbstractAccountClientParams {
   signer: algosdk.TransactionSigner;
   activeAddress: string;
   appId?: bigint;
 }
 
-export async function getAbstractAccountClient({
+async function getAbstractAccountClient({
   activeAddress,
   signer,
   appId = 0n,
@@ -47,12 +49,12 @@ export async function getAbstractAccountClient({
   });
 }
 
-export interface GetOptinPluginClientParams {
+interface GetOptinPluginClientParams {
   signer: algosdk.TransactionSigner;
   activeAddress: string;
 }
 
-export async function getOptinPluginClient({ activeAddress, signer }: GetOptinPluginClientParams): Promise<OptInPluginClient> {
+async function getOptinPluginClient({ activeAddress, signer }: GetOptinPluginClientParams): Promise<OptInPluginClient> {
   algorand.setSigner(activeAddress, signer);
   return algorand.client.getTypedAppClientById(OptInPluginClient, {
     defaultSender: activeAddress,
@@ -60,12 +62,12 @@ export async function getOptinPluginClient({ activeAddress, signer }: GetOptinPl
   });
 }
 
-export interface GetAgentClientParams {
+interface GetAgentClientParams {
   signer: algosdk.TransactionSigner;
   activeAddress: string;
 }
 
-export async function getMarketplacePluginClient({ activeAddress, signer }: GetAgentClientParams): Promise<MarketplacePluginClient> {
+async function getMarketplacePluginClient({ activeAddress, signer }: GetAgentClientParams): Promise<MarketplacePluginClient> {
   algorand.setSigner(activeAddress, signer);
   return algorand.client.getTypedAppClientById(MarketplacePluginClient, {
     defaultSender: activeAddress,
@@ -73,7 +75,7 @@ export async function getMarketplacePluginClient({ activeAddress, signer }: GetA
   });
 }
 
-export async function getListingFactoryClient(activeAddress = FEE_SINK): Promise<ListingFactoryClient> {
+async function getListingFactoryClient(activeAddress = FEE_SINK): Promise<ListingFactoryClient> {
   return algorand.client.getTypedAppClientById(ListingFactoryClient, {
       defaultSender: activeAddress,
       appId: LISTING_FACTORY_ID,

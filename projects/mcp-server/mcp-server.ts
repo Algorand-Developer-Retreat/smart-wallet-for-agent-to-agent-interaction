@@ -3,17 +3,126 @@ import { z } from "zod";
 import dotenv from "dotenv";
 import { Anthropic } from "@anthropic-ai/sdk";
 import { AlgorandClient } from "@algorandfoundation/algokit-utils";
-import { getAllListings } from "./algorand/listings.js";
-import { getAbstractAccountClient, getMarketplacePluginClient } from "./utils/clients.js";
+import algosdk from "algosdk";
+import { AbstractedAccountClient, AbstractedAccountFactory } from "./contracts/AbstractedAccount.js"
+import { MarketplacePluginClient } from "./contracts/MarketplacePlugin.js";
+import { OptInPluginClient } from "./contracts/OptInPlugin.js";
+import { ListingFactoryClient } from "./contracts/ListingFactory.js";
+import { ListingClient, ListingInfo } from "./contracts/Listing.js";
 
 dotenv.config();
 
-const AGENT_MNEMONIC = process.env.AGENT_MNEMONIC;
-const SELLER_WALLET_APP_ID = BigInt(process.env.SELLER_SMART_WALLET_APP_ID!)
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+export const FEE_SINK = 'A7NMWS3NT3IUDMLVO26ULGXGIIOUQ3ND2TXSER6EBGRZNOBOUIQXHIBGDE'
 
+const algorand = AlgorandClient.defaultLocalNet().setDefaultValidityWindow(200);
+
+const LISTING_FACTORY_ID = BigInt(process.env.LISTING_FACTORY_ID!)
+if (!LISTING_FACTORY_ID) {
+  console.error("LISTING_FACTORY_ID is not set");
+}
+
+const OPTIN_PLUGIN_ID = BigInt(process.env.OPTIN_PLUGIN_ID!)
+if (!OPTIN_PLUGIN_ID) {
+  throw new Error("ANTHROPIC_API_KEY is not set");
+}
+
+const MARKETPLACE_PLUGIN_ID = BigInt(process.env.MARKETPLACE_PLUGIN_ID!)
+if (!MARKETPLACE_PLUGIN_ID) {
+  throw new Error("ANTHROPIC_API_KEY is not set");
+}
+
+const AGENT_MNEMONIC = process.env.AGENT_MNEMONIC;
+if (!AGENT_MNEMONIC) {
+  throw new Error("ANTHROPIC_API_KEY is not set");
+}
+
+const SELLER_WALLET_APP_ID = BigInt(process.env.SELLER_SMART_WALLET_APP_ID!)
+if (!SELLER_WALLET_APP_ID) {
+  throw new Error("ANTHROPIC_API_KEY is not set");
+}
+
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 if (!ANTHROPIC_API_KEY) {
   throw new Error("ANTHROPIC_API_KEY is not set");
+}
+
+export interface GetAbstractedAccountFactoryParams {
+  defaultSender?: string | algosdk.Address | undefined;
+  defaultSigner?: algosdk.TransactionSigner | undefined;
+}
+
+export function GetAbstractedAccountFactory({ defaultSender, defaultSigner }: GetAbstractedAccountFactoryParams): AbstractedAccountFactory {
+  return new AbstractedAccountFactory({
+    defaultSender,
+    defaultSigner,
+    algorand: algorand,
+  });
+}
+
+export interface GetAbstractAccountClientParams {
+  signer: algosdk.TransactionSigner;
+  activeAddress: string;
+  appId?: bigint;
+}
+
+export async function getAbstractAccountClient({
+  activeAddress,
+  signer,
+  appId = 0n,
+}: GetAbstractAccountClientParams): Promise<AbstractedAccountClient> {
+  algorand.setSigner(activeAddress, signer);
+  return algorand.client.getTypedAppClientById(AbstractedAccountClient, {
+    defaultSender: activeAddress,
+    appId: appId,
+  });
+}
+
+export interface GetOptinPluginClientParams {
+  signer: algosdk.TransactionSigner;
+  activeAddress: string;
+}
+
+export async function getOptinPluginClient({ activeAddress, signer }: GetOptinPluginClientParams): Promise<OptInPluginClient> {
+  algorand.setSigner(activeAddress, signer);
+  return algorand.client.getTypedAppClientById(OptInPluginClient, {
+    defaultSender: activeAddress,
+    appId: OPTIN_PLUGIN_ID,
+  });
+}
+
+export interface GetAgentClientParams {
+  signer: algosdk.TransactionSigner;
+  activeAddress: string;
+}
+
+export async function getMarketplacePluginClient({ activeAddress, signer }: GetAgentClientParams): Promise<MarketplacePluginClient> {
+  algorand.setSigner(activeAddress, signer);
+  return algorand.client.getTypedAppClientById(MarketplacePluginClient, {
+    defaultSender: activeAddress,
+    appId: MARKETPLACE_PLUGIN_ID,
+  });
+}
+
+export async function getListingFactoryClient(activeAddress = FEE_SINK): Promise<ListingFactoryClient> {
+  return algorand.client.getTypedAppClientById(ListingFactoryClient, {
+    defaultSender: activeAddress,
+    appId: LISTING_FACTORY_ID,
+  })
+}
+
+const listingFactoryClient = await getListingFactoryClient()
+
+async function getAllListings(): Promise<ListingInfo[]> {
+  const response = await algorand.client.algod.accountInformation(listingFactoryClient.appAddress).do();
+
+  if (response.createdApps === undefined || response.createdApps?.length === 0) {
+    return []
+  }
+
+  return await Promise.all(response.createdApps.map(async (app) => {
+    const listingClient = await algorand.client.getTypedAppClientById(ListingClient, { appId: app.id })
+    return await listingClient.getInfo()
+  }))
 }
 
 const anthropic = new Anthropic({
@@ -39,8 +148,6 @@ function getAgentAccount() {
 
   return agentAccount;
 }
-
-
 
 server.tool("showListings", "Show all asset listings", async () => {
 
