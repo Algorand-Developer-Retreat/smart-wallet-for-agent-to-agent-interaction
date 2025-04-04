@@ -17,14 +17,18 @@ import {
   MUST_BE_CALLED_FROM_FACTORY,
   NEGOTIATED_PRICE_KEY,
   ONLY_SELLER_CAN_DELIST,
-  PRICE_KEY,
   PRICE_NOT_NEGOTIATED,
   SELLER_KEY,
 } from './constants'
 
-export type Royalties = {
-  creator: uint64
-  marketplace: uint64
+
+export type ListingInfo = {
+  id: uint64,
+  assetID: uint64,
+  name: string,
+  unitName: string,
+  decimals: uint64,
+  seller: Address
 }
 
 export class Listing extends Contract {
@@ -54,8 +58,9 @@ export class Listing extends Contract {
 
   private completeAlgoPayments(): void {
     // pay the seller
-    const sellerPay = itxn
+    itxn
       .payment({
+        receiver: this.seller.value.native,
         closeRemainderTo: this.seller.value.native,
         fee: 0,
         note: this.asset.value.name.toString() + ' Sold',
@@ -79,7 +84,7 @@ export class Listing extends Contract {
   }
 
   public recordNegotiatedPrice(price: uint64): void {
-    assert(Txn.sender === Global.creatorAddress, MUST_BE_CALLED_FROM_FACTORY)
+    assert(Txn.sender === this.seller.value.native, MUST_BE_CALLED_FROM_FACTORY)
     this.negotiatedPrice.value = price
   }
 
@@ -148,7 +153,14 @@ export class Listing extends Contract {
   }
 
   @abimethod({ readonly: true })
-  public getSeller(): Address {
-    return this.seller.value
+  getInfo(): ListingInfo {
+    return {
+      id: Global.currentApplicationId.id,
+      assetID: this.asset.value.id,
+      name: String(this.asset.value.name),
+      unitName: String(this.asset.value.unitName),
+      decimals: this.asset.value.decimals,
+      seller: this.seller.value,
+    }
   }
 }

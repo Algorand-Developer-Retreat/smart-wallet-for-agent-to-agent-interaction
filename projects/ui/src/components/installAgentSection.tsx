@@ -9,12 +9,12 @@ import { AbstractedAccountClient } from "@/contracts/AbstractedAccount"
 import { getAgentAddressFromEnvironment, getMarketplacePluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from "@/utils/env"
 import { AlgorandClient } from "@algorandfoundation/algokit-utils"
 import { getAlgodConfigFromEnvironment } from "@/utils/network/getAlgoClientConfigs"
+import { getAllListings } from "@/api/listings"
 
 const ZERO_ADDRESS = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ'
 const maxUint64 = BigInt('18446744073709551615');
 
 const algodConfig = getAlgodConfigFromEnvironment()
-
 
 const optinPluginID = getOptinPluginIDFromEnvironment()
 const marketPlacePluginID = getMarketplacePluginIDFromEnvironment()
@@ -23,6 +23,7 @@ const agentAddress = getAgentAddressFromEnvironment()
 export default function HomeSection() {
     const { activeWallet, activeAddress, transactionSigner, signTransactions } = useWallet()
     const [abstractedAccountClient, setAbstractedAccountClient] = useState<AbstractedAccountClient | null>(null)
+    const [listingAppID, setListingAppID] = useState<bigint | null>(null)
 
     const createSmartWallet = async () => {
 
@@ -53,6 +54,8 @@ export default function HomeSection() {
             receiver: results.appClient.appAddress,
             amount: (10000000n).algo(),
         })
+
+        console.log('Created smart wallet, txId:', results.result.txIds)
     }
 
     const installOptinPlugin = async () => {
@@ -66,7 +69,7 @@ export default function HomeSection() {
             return
         }
 
-        await abstractedAccountClient.send.arc58AddPlugin({
+        const addPluginresults = await abstractedAccountClient.send.arc58AddPlugin({
             sender: activeAddress,
             signer: transactionSigner,
             args: {
@@ -78,6 +81,8 @@ export default function HomeSection() {
                 methods: []
             }
         });
+
+        console.log('Added optin plugin, txId:', addPluginresults.txIds)
     }
 
     const installAgentPlugin = async () => {
@@ -97,7 +102,7 @@ export default function HomeSection() {
             return
         }
 
-        await abstractedAccountClient.send.arc58AddPlugin({
+        const addPluginresults = await abstractedAccountClient.send.arc58AddPlugin({
             sender: activeAddress,
             signer: transactionSigner,
             args: {
@@ -110,6 +115,8 @@ export default function HomeSection() {
                 methods: []
             }
         });
+
+        console.log('Added agent plugin, txId:', addPluginresults.txIds)
     }
 
     const listNFT = async () => {
@@ -175,7 +182,7 @@ export default function HomeSection() {
             amount: 1n,
         })
 
-        const optinResults = await abstractedAccountClient
+        await abstractedAccountClient
             .newGroup()
             .arc58RekeyToPlugin({
                 sender: activeAddress,
@@ -194,8 +201,6 @@ export default function HomeSection() {
             .addTransaction(sendAsa, transactionSigner) // sendAsa
             .send()
 
-        console.log('optinResults', optinResults)
-
         const marketPlacePluginClient = await getMarketplacePluginClient({ activeAddress: activeAddress, signer: transactionSigner })
 
         const listCall = (await marketPlacePluginClient.createTransaction.list({
@@ -211,7 +216,8 @@ export default function HomeSection() {
         })).transactions[0]
 
         try {
-            await abstractedAccountClient
+            // TODO: BUG: get the actual listing app id from the list call
+            const listCallResults = await abstractedAccountClient
                 .newGroup()
                 .arc58RekeyToPlugin({
                     sender: activeAddress,
@@ -229,22 +235,125 @@ export default function HomeSection() {
                     args: {},
                 })
                 .send()
+
+                console.log('listed NFT, txId:', listCallResults.txIds)
+
+                const listings = await getAllListings()
+
+                console.log('listing ids', listings)
+
+                setListingAppID(listings[0].id)
         } catch (e: any) {
             alert(`Error: ${e.message}`)
         }
     }
 
-    const recordNegotiatedPrice = async () => {
+    const acceptOffer = async () => {
+        if (!activeAddress) {
+            console.error('No active address')
+            return
+        }
 
+        if (!abstractedAccountClient) {
+            console.error('No abstracted account client')
+            return
+        }
+
+        const marketPlacePluginClient = await getMarketplacePluginClient({ activeAddress: activeAddress, signer: transactionSigner })
+
+        const recordNegotiatedPriceCall = (await marketPlacePluginClient.createTransaction.recordNegotiatedPrice({
+            sender: activeAddress,
+            signer: transactionSigner,
+            args: {
+                sender: abstractedAccountClient.appId,
+                rekeyBack: true,
+                price: 10_000n,
+                listingAppId: listingAppID!,
+            },
+            extraFee: (1000).microAlgos(),
+        })).transactions[0]
+
+        try {
+            const recordPriceResult = await abstractedAccountClient
+                .newGroup()
+                .arc58RekeyToPlugin({
+                    sender: activeAddress,
+                    signer: transactionSigner,
+                    args: {
+                        plugin: marketPlacePluginID,
+                        methodOffsets: []
+                    },
+                    extraFee: (1000).microAlgos(),
+                })
+                .addTransaction(recordNegotiatedPriceCall, transactionSigner) // list asset
+                .arc58VerifyAuthAddr({
+                    sender: activeAddress,
+                    signer: transactionSigner,
+                    args: {},
+                })
+                .send()
+
+            console.log('accepted 10,000 price, txId', recordPriceResult.txIds)
+
+        } catch (e: any) {
+            alert(`Error: ${e}`)
+        }
     }
 
     const purchase = async () => {
+        if (!activeAddress) {
+            console.error('No active address')
+            return
+        }
 
+        if (!abstractedAccountClient) {
+            console.error('No abstracted account client')
+            return
+        }
+
+        const marketPlacePluginClient = await getMarketplacePluginClient({ activeAddress: activeAddress, signer: transactionSigner })
+
+        const purchaseCall = (await marketPlacePluginClient.createTransaction.purchase({
+            sender: activeAddress,
+            signer: transactionSigner,
+            args: {
+                sender: abstractedAccountClient.appId,
+                rekeyBack: true,
+                listingAppId: listingAppID!,
+            },
+            extraFee: (8000).microAlgos(),
+        })).transactions[0]
+
+        try {
+            const purchaseResult = await abstractedAccountClient
+                .newGroup()
+                .arc58RekeyToPlugin({
+                    sender: activeAddress,
+                    signer: transactionSigner,
+                    args: {
+                        plugin: marketPlacePluginID,
+                        methodOffsets: []
+                    },
+                    extraFee: (1000).microAlgos(),
+                })
+                .addTransaction(purchaseCall, transactionSigner) // list asset
+                .arc58VerifyAuthAddr({
+                    sender: activeAddress,
+                    signer: transactionSigner,
+                    args: {},
+                })
+                .send()
+
+            console.log('purchased NFT, txId', purchaseResult.txIds)
+
+        } catch (e: any) {
+            alert(`Error: ${e}`)
+        }
     }
 
-    const delistNFT = async () => {
-        
-    }
+    // const delistNFT = async () => {
+
+    // }
 
     if (!activeAddress) {
         return <ConnectModal />
@@ -287,6 +396,18 @@ export default function HomeSection() {
                             onClick={listNFT}
                         >
                             List NFT
+                        </Button>
+
+                        <Button
+                            onClick={acceptOffer}
+                        >
+                            Accept Offer of 10,000 mAlgo
+                        </Button>
+
+                        <Button
+                            onClick={purchase}
+                        >
+                            Purchase NFT
                         </Button>
                     </div>
                 )

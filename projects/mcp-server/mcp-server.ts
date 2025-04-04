@@ -3,10 +3,13 @@ import { z } from "zod";
 import dotenv from "dotenv";
 import { Anthropic } from "@anthropic-ai/sdk";
 import { AlgorandClient } from "@algorandfoundation/algokit-utils";
+import { getAllListings } from "./algorand/listings.js";
+import { getAbstractAccountClient, getMarketplacePluginClient } from "./utils/clients.js";
 
 dotenv.config();
 
 const AGENT_MNEMONIC = process.env.AGENT_MNEMONIC;
+const SELLER_WALLET_APP_ID = BigInt(process.env.SELLER_SMART_WALLET_APP_ID!)
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 if (!ANTHROPIC_API_KEY) {
@@ -37,27 +40,18 @@ function getAgentAccount() {
   return agentAccount;
 }
 
-server.tool("showAssets", "Show all assets", async () => {
-  // Mock data for demonstration
-  const assets = [
-    {
-      id: 123,
-      name: "CoolToken",
-      balance: 100,
-    },
-    {
-      id: 456,
-      name: "SuperCoin",
-      balance: 50,
-    },
-  ];
+
+
+server.tool("showListings", "Show all asset listings", async () => {
+
+  const listings = await getAllListings()
 
   return {
     content: [
       {
         type: "text",
-        text: `Available assets:\n${assets
-          .map((asset) => `- Asset ID: ${asset.id}\n  Name: ${asset.name}\n  Balance: ${asset.balance}`)
+        text: `Available listings:\n${listings
+          .map((asset) => `- Listing ID: ${asset.id} Asset ID: ${asset.assetId}\n  Name: ${asset.name}\n  UnitName: ${asset.unitName}\n  Decimals: ${asset.decimals}\n  Seller: ${asset.seller}`)
           .join("\n\n")}`,
       },
     ],
@@ -91,12 +85,10 @@ server.tool(
   "negotiatePrice",
   "Negotiate a price for a listing",
   {
-    sender: z.number().int().nonnegative().describe("Sender account ID"),
     offerPrice: z.number().int().nonnegative().describe("Negotiated price amount"),
     listingAppID: z.number().int().nonnegative().describe("Listing application ID"),
-    rekeyBack: z.boolean().describe("Whether to rekey back after the transaction"),
   },
-  async ({ sender, offerPrice, listingAppID, rekeyBack }) => {
+  async ({ offerPrice, listingAppID }) => {
     // Use Claude to negotiate the price as a seller
     const message = await anthropic.messages.create({
       model: "claude-3-7-sonnet-20250219",
@@ -121,6 +113,54 @@ server.tool(
 
     const isAccepted = counterOffer === offerPrice;
     const status = isAccepted ? "ACCEPTED" : "COUNTER-OFFER";
+
+    if (status === "ACCEPTED") {
+      const agentAccount = getAgentAccount()
+      const marketPlacePluginClient = await getMarketplacePluginClient({ activeAddress: agentAccount.addr.toString(), signer: agentAccount.signer })
+      const abstractedAccountClient = await getAbstractAccountClient({
+        activeAddress: agentAccount.addr.toString(),
+        signer: agentAccount.signer,
+        appId: SELLER_WALLET_APP_ID
+      })
+
+      const recordNegotiatedPriceCall = (await marketPlacePluginClient.createTransaction.recordNegotiatedPrice({
+        sender: agentAccount,
+        signer: agentAccount.signer,
+        args: {
+          sender: abstractedAccountClient.appId,
+          rekeyBack: true,
+          price: offerPrice,
+          listingAppId: listingAppID!,
+        },
+        extraFee: (1000).microAlgos(),
+      })).transactions[0]
+
+      try {
+        const recordPriceResult = await abstractedAccountClient
+          .newGroup()
+          .arc58RekeyToPlugin({
+            sender: agentAccount,
+            signer: agentAccount.signer,
+            args: {
+              plugin: marketPlacePluginClient.appId,
+              methodOffsets: []
+            },
+            extraFee: (1000).microAlgos(),
+          })
+          .addTransaction(recordNegotiatedPriceCall, agentAccount.signer) // list asset
+          .arc58VerifyAuthAddr({
+            sender: agentAccount,
+            signer: agentAccount.signer,
+            args: {},
+          })
+          .send()
+
+        console.log('accepted 10,000 price, txId', recordPriceResult.txIds)
+
+      } catch (e: any) {
+        console.log(`Error: ${e}`)
+      }
+    }
 
     return {
       content: [
@@ -160,42 +200,85 @@ server.tool(
   "purchaseAsset",
   "Purchase an asset from a listing",
   {
-    sender: z.number().int().nonnegative().describe("Sender account ID"),
-    rekeyBack: z.boolean().describe("Whether to rekey back after the transaction"),
+    sender: z.bigint().nonnegative().describe("Buyer Wallet App ID"),
     listingAppID: z.number().int().nonnegative().describe("Listing application ID"),
   },
-  async ({ sender, rekeyBack, listingAppID }) => {
-    // Implementation will be added later
+  async ({ sender, listingAppID }) => {
+
+    const agentAccount = getAgentAccount()
+    const marketPlacePluginClient = await getMarketplacePluginClient({ activeAddress: agentAccount.addr.toString(), signer: agentAccount.signer })
+    const abstractedAccountClient = await getAbstractAccountClient({
+      activeAddress: agentAccount.addr.toString(),
+      signer: agentAccount.signer,
+      appId: sender
+    })
+    const purchaseCall = (await marketPlacePluginClient.createTransaction.purchase({
+      sender: agentAccount.addr,
+      signer: agentAccount.signer,
+      args: {
+        sender: abstractedAccountClient.appId,
+        rekeyBack: true,
+        listingAppId: listingAppID!,
+      },
+      extraFee: (8000).microAlgos(),
+    })).transactions[0]
+
+    try {
+      const purchaseResult = await abstractedAccountClient
+        .newGroup()
+        .arc58RekeyToPlugin({
+          sender: agentAccount.addr,
+          signer: agentAccount.signer,
+          args: {
+            plugin: marketPlacePluginClient.appId,
+            methodOffsets: []
+          },
+          extraFee: (1000).microAlgos(),
+        })
+        .addTransaction(purchaseCall, agentAccount.signer) // list asset
+        .arc58VerifyAuthAddr({
+          sender: agentAccount.addr,
+          signer: agentAccount.signer,
+          args: {},
+        })
+        .send()
+
+      console.log('purchased NFT, txId', purchaseResult.txIds)
+
+    } catch (e: any) {
+      console.log(`Error: ${e}`)
+    }
+
     return {
       content: [
         {
           type: "text",
-          text: `Purchasing from listing ${listingAppID} by sender ${sender} (rekeyBack: ${rekeyBack})`,
+          text: `Purchasing from listing ${listingAppID} by sender ${sender}`,
         },
       ],
     };
   }
 );
 
-server.tool(
-  "delistAsset",
-  "Remove a listing from sale",
-  {
-    sender: z.number().int().nonnegative().describe("Sender account ID"),
-    rekeyBack: z.boolean().describe("Whether to rekey back after the transaction"),
-    listingAppID: z.number().int().nonnegative().describe("Listing application ID"),
-  },
-  async ({ sender, rekeyBack, listingAppID }) => {
-    // Implementation will be added later
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Delisting listing ${listingAppID} by sender ${sender} (rekeyBack: ${rekeyBack})`,
-        },
-      ],
-    };
-  }
-);
+// server.tool(
+//   "delistAsset",
+//   "Remove a listing from sale",
+//   {
+//     sender: z.number().int().nonnegative().describe("Sender account ID"),
+//     rekeyBack: z.boolean().describe("Whether to rekey back after the transaction"),
+//     listingAppID: z.number().int().nonnegative().describe("Listing application ID"),
+//   },
+//   async ({ sender, rekeyBack, listingAppID }) => {
+//     // Implementation will be added later
+//     return {
+//       content: [
+//         {
+//           type: "text",
+//           text: `Delisting listing ${listingAppID} by sender ${sender} (rekeyBack: ${rekeyBack})`,
+//         },
+//       ],
+//     };
+//   }
+// );
 
 export default server;

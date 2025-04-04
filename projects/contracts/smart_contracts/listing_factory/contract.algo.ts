@@ -2,20 +2,24 @@ import {
   abimethod,
   Account,
   Application,
+  arc4,
   assert,
+  Asset,
+  bytes,
   Bytes,
   GlobalState,
   gtxn,
   itxn,
+  MutableArray,
   OnCompleteAction,
   op,
   Uint64,
   uint64,
 } from '@algorandfoundation/algorand-typescript'
-import { Address, compileArc4, Contract } from '@algorandfoundation/algorand-typescript/arc4'
+import { Address, compileArc4, Contract, DynamicArray } from '@algorandfoundation/algorand-typescript/arc4'
 import { Global, Txn } from '@algorandfoundation/algorand-typescript/op'
 
-import { SELLER_KEY } from '../listing_contract/constants'
+import { ASSET_KEY, SELLER_KEY } from '../listing_contract/constants'
 import { Listing } from '../listing_contract/contract.algo'
 import {
   ASSET_TRANSFER_FAILED,
@@ -31,7 +35,7 @@ export class ListingFactory extends Contract {
   childContractMBR = GlobalState<uint64>({ key: CHILD_CONTRACT_MBR })
 
   private calculateChildContractMbr(globalUints: uint64, globalBytes: uint64): uint64 {
-    return Uint64(200_000 + 28_500 * globalUints + 50_000 * globalBytes)
+    return Uint64(100_000 + 28_500 * globalUints + 50_000 * globalBytes)
   }
 
   @abimethod({ onCreate: 'require' })
@@ -90,17 +94,6 @@ export class ListingFactory extends Contract {
     return createdListingApp.id
   }
 
-  recordNegotiatedPrice(price: uint64, listingAppId: uint64): void {
-    const listingApp = Application(listingAppId)
-    assert(listingApp.creator === Global.currentApplicationAddress, NOT_A_LISTING)
-    const listingContract = compileArc4(Listing)
-    listingContract.call.recordNegotiatedPrice({
-      appId: listingAppId,
-      args: [price],
-      fee: 0,
-    })
-  }
-
   purchase(payment: gtxn.PaymentTxn, listingAppId: uint64): void {
     const listingApp = Application(listingAppId)
     assert(listingApp.creator === Global.currentApplicationAddress, NOT_A_LISTING)
@@ -108,11 +101,6 @@ export class ListingFactory extends Contract {
     assert(payment.amount > 0, PAYMENT_AMOUNT_MUST_BE_GREATER_THAN_0)
 
     const listingContract = compileArc4(Listing)
-
-    // const seller = listingContract.call.getSeller({
-    //   appId: listingApp.id,
-    //   fee: 0,
-    // }).returnValue
 
     const [sellerBytes] = op.AppGlobal.getExBytes(listingApp, Bytes(SELLER_KEY))
     const seller = Account(Bytes(sellerBytes))

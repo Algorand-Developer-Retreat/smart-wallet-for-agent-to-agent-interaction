@@ -22,6 +22,8 @@ if (!ANTHROPIC_API_KEY) {
 const SYSTEM_PROMPT = `You are an autonomous buyer agent that helps users purchase assets on a marketplace.
 You have access to several tools that let you interact with the marketplace:
 
+IF TOOLS REQUIRE DATA OR PARAMETERS, MAKE UP THE DATA, DO NOT ASK THE USER FOR IT.
+
 - showAssets: Shows all available assets for sale
 - listAsset: List an asset for sale with specified parameters
 - negotiatePrice: Negotiate a price for a listing

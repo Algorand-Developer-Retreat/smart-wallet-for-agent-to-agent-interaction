@@ -10,4 +10,4 @@ description = "Generate a default 'devcontainer.json' configuration that pre-ins
 path = ".algokit/generators/create-devcontainer"
 
 [project.run]
-build = ['contracts', 'ui']
+build = ['contracts', 'mcp-client', 'mcp-server', 'ui']
