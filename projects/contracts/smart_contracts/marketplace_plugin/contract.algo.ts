@@ -4,14 +4,13 @@ import {
   Asset,
   Bytes,
   Global,
-  GlobalState,
   itxn,
   op,
   TemplateVar,
   Uint64,
   uint64,
 } from '@algorandfoundation/algorand-typescript'
-import { compileArc4 } from '@algorandfoundation/algorand-typescript/arc4'
+import { abiCall, compileArc4 } from '@algorandfoundation/algorand-typescript/arc4'
 
 import { Listing } from '../listing_contract/contract.algo'
 import { Plugin } from '../plugin/contract.algo'
@@ -26,8 +25,6 @@ const LISTING_CREATOR_NOT_MARKETPLACE = 'Creator is not the marketplace'
 const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
 
 export class MarketplacePlugin extends Plugin {
-  /** whether the price has been negotiated */
-  priceNegotiated = GlobalState<boolean>({ initialValue: false, key: 'priceNegotiated' })
 
   list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64): uint64 {
     const senderApp = Application(sender)
@@ -53,7 +50,7 @@ export class MarketplacePlugin extends Plugin {
     }
     const listingContract = compileArc4(Listing)
     const childContractMBR = Uint64(
-      200_000 +
+      100_000 +
         28_500 * listingContract.globalUints +
         50_000 * listingContract.globalBytes +
         (Global.assetOptInMinBalance * 2),
@@ -88,24 +85,25 @@ export class MarketplacePlugin extends Plugin {
 
   recordNegotiatedPrice(
     sender: uint64,
-    price: uint64,
-    factoryID: uint64,
-    listingAppID: uint64,
     rekeyBack: boolean,
+    listingAppID: uint64,
+    price: uint64,
   ): void {
     const senderApp = Application(sender)
     const controlledAccount = this.getControlledAccount(senderApp)
-    const factoryApp = Application(factoryID)
-    assert(factoryApp.id === factoryAppID, 'Passed in app id is not the listing factory')
-    const listingFactoryContract = compileArc4(ListingFactory)
-    listingFactoryContract.call.recordNegotiatedPrice({
-      appId: factoryApp.id,
-      args: [price, listingAppID],
-      fee: 0,
-      rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
-    })
 
-    this.priceNegotiated.value = true
+    const factoryAddress = Application(factoryAppID).address
+    const listingApp = Application(listingAppID)
+
+    assert(listingApp.creator === factoryAddress, 'listing is not from factory')
+
+    abiCall(Listing.prototype.recordNegotiatedPrice, {
+      sender: controlledAccount,
+      appId: listingAppID,
+      args: [price],
+      rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
+      fee: 0,
+    })
   }
 
   purchase(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
@@ -115,7 +113,6 @@ export class MarketplacePlugin extends Plugin {
     const listingApp = Application(listingAppID)
 
     assert(listingApp.creator === factoryApp.address, LISTING_CREATOR_NOT_MARKETPLACE)
-    assert(this.priceNegotiated.value, 'Price has not been negotiated')
 
     const [negotiatedPrice] = op.AppGlobal.getExUint64(listingApp, Bytes(NEGOTIATED_PRICE_KEY))
 
@@ -125,16 +122,14 @@ export class MarketplacePlugin extends Plugin {
       amount: negotiatedPrice,
       fee: 0,
     })
-    const listingFactoryApp = compileArc4(ListingFactory)
-    listingFactoryApp.call.purchase({
+
+    abiCall(ListingFactory.prototype.purchase, {
       sender: controlledAccount,
       appId: factoryAppID,
       args: [purchasePayment, listingAppID],
       fee: 0,
       rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     })
-
-    this.priceNegotiated.value = false
   }
 
   delist(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
@@ -152,7 +147,5 @@ export class MarketplacePlugin extends Plugin {
       fee: 0,
       rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     })
-
-    this.priceNegotiated.value = false
   }
 }

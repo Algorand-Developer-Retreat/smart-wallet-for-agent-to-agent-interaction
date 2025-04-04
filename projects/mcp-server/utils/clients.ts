@@ -2,15 +2,19 @@ import algosdk from "algosdk";
 import { AlgorandClient } from "@algorandfoundation/algokit-utils";
 import { getAlgodConfigFromEnvironment } from "./network/getAlgoClientConfigs.js";
 import { AbstractedAccountClient, AbstractedAccountFactory } from "../contracts/AbstractedAccount.js";
-import { getMarketplacePluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from "./env.js";
+import { getListingFactoryIDFromEnvironment, getMarketplacePluginIDFromEnvironment, getOptinPluginIDFromEnvironment } from "./env.js";
 import { MarketplacePluginClient } from "../contracts/MarketplacePlugin.js";
 import { OptInPluginClient } from "../contracts/OptInPlugin.js";
+import { ListingFactoryClient } from "../contracts/ListingFactory.js";
+
+export const FEE_SINK = 'A7NMWS3NT3IUDMLVO26ULGXGIIOUQ3ND2TXSER6EBGRZNOBOUIQXHIBGDE'
 
 const algodConfig = getAlgodConfigFromEnvironment();
 const algorand = AlgorandClient.fromConfig({ algodConfig }).setDefaultValidityWindow(200);
 
 const OPTIN_PLUGIN_ID = getOptinPluginIDFromEnvironment();
 const MARKETPLACE_PLUGIN_ID = getMarketplacePluginIDFromEnvironment();
+const LISTING_FACTORY_ID = getListingFactoryIDFromEnvironment()
 
 export interface GetAbstractedAccountFactoryParams {
   defaultSender?: string | algosdk.Address | undefined;
@@ -67,4 +71,11 @@ export async function getMarketplacePluginClient({ activeAddress, signer }: GetA
     defaultSender: activeAddress,
     appId: MARKETPLACE_PLUGIN_ID,
   });
+}
+
+export async function getListingFactoryClient(activeAddress = FEE_SINK): Promise<ListingFactoryClient> {
+  return algorand.client.getTypedAppClientById(ListingFactoryClient, {
+      defaultSender: activeAddress,
+      appId: LISTING_FACTORY_ID,
+  })
 }

@@ -4,39 +4,30 @@
 // @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
 main:
     intcblock 0 1 TMPL_FACTORY_APP_ID 6
-    bytecblock "priceNegotiated" "controlled_address" 0x151f7c75
-    txn ApplicationID
-    bnz main_after_if_else@2
-    // smart_contracts/marketplace_plugin/contract.algo.ts:30
-    // priceNegotiated = GlobalState<boolean>({ initialValue: false, key: 'priceNegotiated' })
-    bytec_0 // "priceNegotiated"
-    intc_0 // 0
-    app_global_put
-
-main_after_if_else@2:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:28
+    bytecblock "controlled_address" 0x151f7c75
+    // smart_contracts/marketplace_plugin/contract.algo.ts:27
     // export class MarketplacePlugin extends Plugin {
     txn NumAppArgs
-    bz main_bare_routing@11
-    pushbytess 0xd8b5b4b8 0x144e022d 0x23dcee6c 0x59466ef2 // method "list(uint64,bool,uint64,uint64)uint64", method "recordNegotiatedPrice(uint64,uint64,uint64,uint64,bool)void", method "purchase(uint64,bool,uint64)void", method "delist(uint64,bool,uint64)void"
+    bz main_bare_routing@9
+    pushbytess 0xd8b5b4b8 0x13df22d4 0x23dcee6c 0x59466ef2 // method "list(uint64,bool,uint64,uint64)uint64", method "recordNegotiatedPrice(uint64,bool,uint64,uint64)void", method "purchase(uint64,bool,uint64)void", method "delist(uint64,bool,uint64)void"
     txna ApplicationArgs 0
-    match main_list_route@5 main_recordNegotiatedPrice_route@6 main_purchase_route@7 main_delist_route@8
+    match main_list_route@3 main_recordNegotiatedPrice_route@4 main_purchase_route@5 main_delist_route@6
 
-main_after_if_else@15:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:28
+main_after_if_else@13:
+    // smart_contracts/marketplace_plugin/contract.algo.ts:27
     // export class MarketplacePlugin extends Plugin {
     intc_0 // 0
     return
 
-main_delist_route@8:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:140
+main_delist_route@6:
+    // smart_contracts/marketplace_plugin/contract.algo.ts:135
     // delist(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
     txn ApplicationID
     assert // can only call when not creating
-    // smart_contracts/marketplace_plugin/contract.algo.ts:28
+    // smart_contracts/marketplace_plugin/contract.algo.ts:27
     // export class MarketplacePlugin extends Plugin {
     txna ApplicationArgs 1
     btoi
@@ -45,21 +36,21 @@ main_delist_route@8:
     getbit
     txna ApplicationArgs 3
     btoi
-    // smart_contracts/marketplace_plugin/contract.algo.ts:140
+    // smart_contracts/marketplace_plugin/contract.algo.ts:135
     // delist(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
     callsub delist
     intc_1 // 1
     return
 
-main_purchase_route@7:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:111
+main_purchase_route@5:
+    // smart_contracts/marketplace_plugin/contract.algo.ts:109
     // purchase(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
     txn ApplicationID
     assert // can only call when not creating
-    // smart_contracts/marketplace_plugin/contract.algo.ts:28
+    // smart_contracts/marketplace_plugin/contract.algo.ts:27
     // export class MarketplacePlugin extends Plugin {
     txna ApplicationArgs 1
     btoi
@@ -68,60 +59,56 @@ main_purchase_route@7:
     getbit
     txna ApplicationArgs 3
     btoi
-    // smart_contracts/marketplace_plugin/contract.algo.ts:111
+    // smart_contracts/marketplace_plugin/contract.algo.ts:109
     // purchase(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
     callsub purchase
     intc_1 // 1
     return
 
-main_recordNegotiatedPrice_route@6:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:89-95
+main_recordNegotiatedPrice_route@4:
+    // smart_contracts/marketplace_plugin/contract.algo.ts:86-91
     // recordNegotiatedPrice(
     //   sender: uint64,
-    //   price: uint64,
-    //   factoryID: uint64,
-    //   listingAppID: uint64,
     //   rekeyBack: boolean,
+    //   listingAppID: uint64,
+    //   price: uint64,
     // ): void {
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
     txn ApplicationID
     assert // can only call when not creating
-    // smart_contracts/marketplace_plugin/contract.algo.ts:28
+    // smart_contracts/marketplace_plugin/contract.algo.ts:27
     // export class MarketplacePlugin extends Plugin {
     txna ApplicationArgs 1
     btoi
     txna ApplicationArgs 2
-    btoi
+    intc_0 // 0
+    getbit
     txna ApplicationArgs 3
     btoi
     txna ApplicationArgs 4
     btoi
-    txna ApplicationArgs 5
-    intc_0 // 0
-    getbit
-    // smart_contracts/marketplace_plugin/contract.algo.ts:89-95
+    // smart_contracts/marketplace_plugin/contract.algo.ts:86-91
     // recordNegotiatedPrice(
     //   sender: uint64,
-    //   price: uint64,
-    //   factoryID: uint64,
-    //   listingAppID: uint64,
     //   rekeyBack: boolean,
+    //   listingAppID: uint64,
+    //   price: uint64,
     // ): void {
     callsub recordNegotiatedPrice
     intc_1 // 1
     return
 
-main_list_route@5:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:32
+main_list_route@3:
+    // smart_contracts/marketplace_plugin/contract.algo.ts:29
     // list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64): uint64 {
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
     txn ApplicationID
     assert // can only call when not creating
-    // smart_contracts/marketplace_plugin/contract.algo.ts:28
+    // smart_contracts/marketplace_plugin/contract.algo.ts:27
     // export class MarketplacePlugin extends Plugin {
     txna ApplicationArgs 1
     btoi
@@ -132,22 +119,22 @@ main_list_route@5:
     btoi
     txna ApplicationArgs 4
     btoi
-    // smart_contracts/marketplace_plugin/contract.algo.ts:32
+    // smart_contracts/marketplace_plugin/contract.algo.ts:29
     // list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64): uint64 {
     callsub list
     itob
-    bytec_2 // 0x151f7c75
+    bytec_1 // 0x151f7c75
     swap
     concat
     log
     intc_1 // 1
     return
 
-main_bare_routing@11:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:28
+main_bare_routing@9:
+    // smart_contracts/marketplace_plugin/contract.algo.ts:27
     // export class MarketplacePlugin extends Plugin {
     txn OnCompletion
-    bnz main_after_if_else@15
+    bnz main_after_if_else@13
     txn ApplicationID
     !
     assert // can only call when creating
@@ -157,7 +144,7 @@ main_bare_routing@11:
 
 // smart_contracts/marketplace_plugin/contract.algo.ts::MarketplacePlugin.list(sender: uint64, rekeyBack: uint64, asset: uint64, assetAmount: uint64) -> uint64:
 list:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:32
+    // smart_contracts/marketplace_plugin/contract.algo.ts:29
     // list(sender: uint64, rekeyBack: boolean, asset: uint64, assetAmount: uint64): uint64 {
     proto 4 1
     pushbytes ""
@@ -166,20 +153,20 @@ list:
     frame_dig -4
     // smart_contracts/abstracted_account/constants.ts:2
     // export const CONTROLLED_ADDRESS = 'controlled_address'
-    bytec_1 // "controlled_address"
+    bytec_0 // "controlled_address"
     // smart_contracts/plugin/contract.algo.ts:7
     // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     app_global_get_ex
     pop
     dup
-    // smart_contracts/marketplace_plugin/contract.algo.ts:26
+    // smart_contracts/marketplace_plugin/contract.algo.ts:25
     // const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
     intc_2 // TMPL_FACTORY_APP_ID
-    // smart_contracts/marketplace_plugin/contract.algo.ts:35
+    // smart_contracts/marketplace_plugin/contract.algo.ts:32
     // const factoryApp = Application(factoryAppID)
     dup
     uncover 2
-    // smart_contracts/marketplace_plugin/contract.algo.ts:36
+    // smart_contracts/marketplace_plugin/contract.algo.ts:33
     // assert(Asset(asset).balance(controlledAccount) >= assetAmount, NOT_ENOUGH_ASSET)
     frame_dig -2
     asset_holding_get AssetBalance
@@ -187,25 +174,25 @@ list:
     frame_dig -1
     >=
     assert // Not enough asset
-    // smart_contracts/marketplace_plugin/contract.algo.ts:38
+    // smart_contracts/marketplace_plugin/contract.algo.ts:35
     // const needsToOptIntoAsset = !factoryApp.address.isOptedIn(Asset(asset))
     app_params_get AppAddress
     assert // application exists
     frame_dig -2
     asset_holding_get AssetBalance
     bury 1
-    // smart_contracts/marketplace_plugin/contract.algo.ts:40
+    // smart_contracts/marketplace_plugin/contract.algo.ts:37
     // if (needsToOptIntoAsset) {
     bnz list_after_if_else@4
-    // smart_contracts/marketplace_plugin/contract.algo.ts:43
+    // smart_contracts/marketplace_plugin/contract.algo.ts:40
     // receiver: factoryApp.address,
     frame_dig 2
     app_params_get AppAddress
     assert // application exists
-    // smart_contracts/marketplace_plugin/contract.algo.ts:44
+    // smart_contracts/marketplace_plugin/contract.algo.ts:41
     // amount: Global.assetOptInMinBalance,
     global AssetOptInMinBalance
-    // smart_contracts/marketplace_plugin/contract.algo.ts:48-52
+    // smart_contracts/marketplace_plugin/contract.algo.ts:45-49
     // listingFactoryApp.call.optinToListingAsset({
     //   appId: factoryAppID,
     //   args: [optInPayment, asset],
@@ -216,7 +203,7 @@ list:
     itxn_field Receiver
     frame_dig 1
     itxn_field Sender
-    // smart_contracts/marketplace_plugin/contract.algo.ts:41-46
+    // smart_contracts/marketplace_plugin/contract.algo.ts:38-43
     // const optInPayment = itxn.payment({
     //   sender: controlledAccount,
     //   receiver: factoryApp.address,
@@ -225,25 +212,25 @@ list:
     // })
     intc_1 // 1
     itxn_field TypeEnum
-    // smart_contracts/marketplace_plugin/contract.algo.ts:45
+    // smart_contracts/marketplace_plugin/contract.algo.ts:42
     // fee: 0,
     intc_0 // 0
     itxn_field Fee
-    // smart_contracts/marketplace_plugin/contract.algo.ts:48-52
+    // smart_contracts/marketplace_plugin/contract.algo.ts:45-49
     // listingFactoryApp.call.optinToListingAsset({
     //   appId: factoryAppID,
     //   args: [optInPayment, asset],
     //   fee: 0,
     // })
     itxn_next
-    // smart_contracts/marketplace_plugin/contract.algo.ts:26
+    // smart_contracts/marketplace_plugin/contract.algo.ts:25
     // const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
     intc_2 // TMPL_FACTORY_APP_ID
-    // smart_contracts/marketplace_plugin/contract.algo.ts:50
+    // smart_contracts/marketplace_plugin/contract.algo.ts:47
     // args: [optInPayment, asset],
     frame_dig -2
     itob
-    // smart_contracts/marketplace_plugin/contract.algo.ts:48-52
+    // smart_contracts/marketplace_plugin/contract.algo.ts:45-49
     // listingFactoryApp.call.optinToListingAsset({
     //   appId: factoryAppID,
     //   args: [optInPayment, asset],
@@ -257,11 +244,11 @@ list:
     itxn_field ApplicationID
     intc_3 // appl
     itxn_field TypeEnum
-    // smart_contracts/marketplace_plugin/contract.algo.ts:51
+    // smart_contracts/marketplace_plugin/contract.algo.ts:48
     // fee: 0,
     intc_0 // 0
     itxn_field Fee
-    // smart_contracts/marketplace_plugin/contract.algo.ts:48-52
+    // smart_contracts/marketplace_plugin/contract.algo.ts:45-49
     // listingFactoryApp.call.optinToListingAsset({
     //   appId: factoryAppID,
     //   args: [optInPayment, asset],
@@ -270,34 +257,34 @@ list:
     itxn_submit
 
 list_after_if_else@4:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:59
+    // smart_contracts/marketplace_plugin/contract.algo.ts:56
     // (Global.assetOptInMinBalance * 2),
     global AssetOptInMinBalance
     pushint 2 // 2
     *
-    // smart_contracts/marketplace_plugin/contract.algo.ts:56-58
-    // 200_000 +
+    // smart_contracts/marketplace_plugin/contract.algo.ts:53-55
+    // 100_000 +
     //   28_500 * listingContract.globalUints +
     //   50_000 * listingContract.globalBytes +
-    pushint 307000 // 307000
-    // smart_contracts/marketplace_plugin/contract.algo.ts:56-59
-    // 200_000 +
+    pushint 207000 // 207000
+    // smart_contracts/marketplace_plugin/contract.algo.ts:53-56
+    // 100_000 +
     //   28_500 * listingContract.globalUints +
     //   50_000 * listingContract.globalBytes +
     //   (Global.assetOptInMinBalance * 2),
     +
-    // smart_contracts/marketplace_plugin/contract.algo.ts:64
+    // smart_contracts/marketplace_plugin/contract.algo.ts:61
     // receiver: factoryApp.address,
     frame_dig 2
     dup
     app_params_get AppAddress
     assert // application exists
-    // smart_contracts/marketplace_plugin/contract.algo.ts:71
+    // smart_contracts/marketplace_plugin/contract.algo.ts:68
     // assetReceiver: factoryApp.address,
     swap
     app_params_get AppAddress
     assert // application exists
-    // smart_contracts/marketplace_plugin/contract.algo.ts:77-84
+    // smart_contracts/marketplace_plugin/contract.algo.ts:74-81
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
@@ -314,7 +301,7 @@ list_after_if_else@4:
     frame_dig 1
     dup
     itxn_field Sender
-    // smart_contracts/marketplace_plugin/contract.algo.ts:62-67
+    // smart_contracts/marketplace_plugin/contract.algo.ts:59-64
     // const mbrPayment = itxn.payment({
     //   sender: controlledAccount,
     //   receiver: factoryApp.address,
@@ -323,11 +310,11 @@ list_after_if_else@4:
     // })
     intc_1 // 1
     itxn_field TypeEnum
-    // smart_contracts/marketplace_plugin/contract.algo.ts:66
+    // smart_contracts/marketplace_plugin/contract.algo.ts:63
     // fee: 0,
     intc_0 // 0
     itxn_field Fee
-    // smart_contracts/marketplace_plugin/contract.algo.ts:80
+    // smart_contracts/marketplace_plugin/contract.algo.ts:77
     // args: [mbrPayment, assetTransfer],
     itxn_next
     frame_dig -2
@@ -336,7 +323,7 @@ list_after_if_else@4:
     itxn_field AssetAmount
     itxn_field Sender
     itxn_field AssetReceiver
-    // smart_contracts/marketplace_plugin/contract.algo.ts:69-75
+    // smart_contracts/marketplace_plugin/contract.algo.ts:66-72
     // const assetTransfer = itxn.assetTransfer({
     //   sender: controlledAccount,
     //   assetReceiver: factoryApp.address,
@@ -346,11 +333,11 @@ list_after_if_else@4:
     // })
     pushint 4 // 4
     itxn_field TypeEnum
-    // smart_contracts/marketplace_plugin/contract.algo.ts:74
+    // smart_contracts/marketplace_plugin/contract.algo.ts:71
     // fee: 0,
     intc_0 // 0
     itxn_field Fee
-    // smart_contracts/marketplace_plugin/contract.algo.ts:77-84
+    // smart_contracts/marketplace_plugin/contract.algo.ts:74-81
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
@@ -360,11 +347,11 @@ list_after_if_else@4:
     //   extraProgramPages: 0,
     // }).returnValue
     itxn_next
-    // smart_contracts/marketplace_plugin/contract.algo.ts:26
+    // smart_contracts/marketplace_plugin/contract.algo.ts:25
     // const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
     intc_2 // TMPL_FACTORY_APP_ID
     frame_bury 0
-    // smart_contracts/marketplace_plugin/contract.algo.ts:82
+    // smart_contracts/marketplace_plugin/contract.algo.ts:79
     // rekeyTo: rekeyBack ? senderApp.address : Global.zeroAddress,
     frame_dig -3
     bz list_ternary_false@8
@@ -373,7 +360,7 @@ list_after_if_else@4:
     assert // application exists
 
 list_ternary_merge@9:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:77-84
+    // smart_contracts/marketplace_plugin/contract.algo.ts:74-81
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
@@ -386,7 +373,7 @@ list_ternary_merge@9:
     itxn_field ApplicationArgs
     intc_0 // 0
     itxn_field OnCompletion
-    // smart_contracts/marketplace_plugin/contract.algo.ts:83
+    // smart_contracts/marketplace_plugin/contract.algo.ts:80
     // extraProgramPages: 0,
     intc_0 // 0
     itxn_field ExtraProgramPages
@@ -395,7 +382,7 @@ list_ternary_merge@9:
     itxn_field ApplicationID
     frame_dig 1
     itxn_field Sender
-    // smart_contracts/marketplace_plugin/contract.algo.ts:77-84
+    // smart_contracts/marketplace_plugin/contract.algo.ts:74-81
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
@@ -406,11 +393,11 @@ list_ternary_merge@9:
     // }).returnValue
     intc_3 // appl
     itxn_field TypeEnum
-    // smart_contracts/marketplace_plugin/contract.algo.ts:81
+    // smart_contracts/marketplace_plugin/contract.algo.ts:78
     // fee: 0,
     intc_0 // 0
     itxn_field Fee
-    // smart_contracts/marketplace_plugin/contract.algo.ts:77-84
+    // smart_contracts/marketplace_plugin/contract.algo.ts:74-81
     // const createdListingApp = listingFactoryApp.call.list({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
@@ -425,116 +412,111 @@ list_ternary_merge@9:
     extract 4 0
     swap
     extract 0 4
-    bytec_2 // 0x151f7c75
+    bytec_1 // 0x151f7c75
     ==
     assert // Bytes has valid prefix
     btoi
-    // smart_contracts/marketplace_plugin/contract.algo.ts:86
+    // smart_contracts/marketplace_plugin/contract.algo.ts:83
     // return createdListingApp
     frame_bury 0
     retsub
 
 list_ternary_false@8:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:82
+    // smart_contracts/marketplace_plugin/contract.algo.ts:79
     // rekeyTo: rekeyBack ? senderApp.address : Global.zeroAddress,
     global ZeroAddress
     b list_ternary_merge@9
 
 
-// smart_contracts/marketplace_plugin/contract.algo.ts::MarketplacePlugin.recordNegotiatedPrice(sender: uint64, price: uint64, factoryID: uint64, listingAppID: uint64, rekeyBack: uint64) -> void:
+// smart_contracts/marketplace_plugin/contract.algo.ts::MarketplacePlugin.recordNegotiatedPrice(sender: uint64, rekeyBack: uint64, listingAppID: uint64, price: uint64) -> void:
 recordNegotiatedPrice:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:89-95
+    // smart_contracts/marketplace_plugin/contract.algo.ts:86-91
     // recordNegotiatedPrice(
     //   sender: uint64,
-    //   price: uint64,
-    //   factoryID: uint64,
-    //   listingAppID: uint64,
     //   rekeyBack: boolean,
+    //   listingAppID: uint64,
+    //   price: uint64,
     // ): void {
-    proto 5 0
+    proto 4 0
     // smart_contracts/plugin/contract.algo.ts:7
     // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
-    frame_dig -5
+    frame_dig -4
     // smart_contracts/abstracted_account/constants.ts:2
     // export const CONTROLLED_ADDRESS = 'controlled_address'
-    bytec_1 // "controlled_address"
+    bytec_0 // "controlled_address"
     // smart_contracts/plugin/contract.algo.ts:7
     // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     app_global_get_ex
     pop
-    // smart_contracts/marketplace_plugin/contract.algo.ts:99
-    // assert(factoryApp.id === factoryAppID, 'Passed in app id is not the listing factory')
-    frame_dig -3
-    // smart_contracts/marketplace_plugin/contract.algo.ts:26
+    // smart_contracts/marketplace_plugin/contract.algo.ts:25
     // const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
     intc_2 // TMPL_FACTORY_APP_ID
-    // smart_contracts/marketplace_plugin/contract.algo.ts:99
-    // assert(factoryApp.id === factoryAppID, 'Passed in app id is not the listing factory')
+    // smart_contracts/marketplace_plugin/contract.algo.ts:95
+    // const factoryAddress = Application(factoryAppID).address
+    app_params_get AppAddress
+    assert // application exists
+    // smart_contracts/marketplace_plugin/contract.algo.ts:98
+    // assert(listingApp.creator === factoryAddress, 'listing is not from factory')
+    frame_dig -2
+    app_params_get AppCreator
+    assert // application exists
     ==
-    assert // Passed in app id is not the listing factory
-    // smart_contracts/marketplace_plugin/contract.algo.ts:101-106
-    // listingFactoryContract.call.recordNegotiatedPrice({
-    //   appId: factoryApp.id,
-    //   args: [price, listingAppID],
-    //   fee: 0,
+    assert // listing is not from factory
+    // smart_contracts/marketplace_plugin/contract.algo.ts:100-106
+    // abiCall(Listing.prototype.recordNegotiatedPrice, {
+    //   sender: controlledAccount,
+    //   appId: listingAppID,
+    //   args: [price],
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
+    //   fee: 0,
     // })
     itxn_begin
-    // smart_contracts/marketplace_plugin/contract.algo.ts:105
+    // smart_contracts/marketplace_plugin/contract.algo.ts:104
     // rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
-    frame_dig -1
+    frame_dig -3
     bz recordNegotiatedPrice_ternary_false@2
     frame_dig 0
 
 recordNegotiatedPrice_ternary_merge@3:
     // smart_contracts/marketplace_plugin/contract.algo.ts:103
-    // args: [price, listingAppID],
-    frame_dig -4
+    // args: [price],
+    frame_dig -1
     itob
-    frame_dig -2
-    itob
-    // smart_contracts/marketplace_plugin/contract.algo.ts:101-106
-    // listingFactoryContract.call.recordNegotiatedPrice({
-    //   appId: factoryApp.id,
-    //   args: [price, listingAppID],
-    //   fee: 0,
+    // smart_contracts/marketplace_plugin/contract.algo.ts:100-106
+    // abiCall(Listing.prototype.recordNegotiatedPrice, {
+    //   sender: controlledAccount,
+    //   appId: listingAppID,
+    //   args: [price],
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
+    //   fee: 0,
     // })
-    pushbytes 0xb6c1684f // method "recordNegotiatedPrice(uint64,uint64)void"
-    itxn_field ApplicationArgs
-    swap
+    pushbytes 0xa628750d // method "recordNegotiatedPrice(uint64)void"
     itxn_field ApplicationArgs
     itxn_field ApplicationArgs
-    intc_0 // 0
-    itxn_field OnCompletion
     itxn_field RekeyTo
-    frame_dig -3
+    frame_dig -2
     itxn_field ApplicationID
+    frame_dig 0
+    itxn_field Sender
     intc_3 // appl
     itxn_field TypeEnum
-    // smart_contracts/marketplace_plugin/contract.algo.ts:104
+    // smart_contracts/marketplace_plugin/contract.algo.ts:105
     // fee: 0,
     intc_0 // 0
     itxn_field Fee
-    // smart_contracts/marketplace_plugin/contract.algo.ts:101-106
-    // listingFactoryContract.call.recordNegotiatedPrice({
-    //   appId: factoryApp.id,
-    //   args: [price, listingAppID],
-    //   fee: 0,
+    // smart_contracts/marketplace_plugin/contract.algo.ts:100-106
+    // abiCall(Listing.prototype.recordNegotiatedPrice, {
+    //   sender: controlledAccount,
+    //   appId: listingAppID,
+    //   args: [price],
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
+    //   fee: 0,
     // })
     itxn_submit
-    // smart_contracts/marketplace_plugin/contract.algo.ts:30
-    // priceNegotiated = GlobalState<boolean>({ initialValue: false, key: 'priceNegotiated' })
-    bytec_0 // "priceNegotiated"
-    // smart_contracts/marketplace_plugin/contract.algo.ts:108
-    // this.priceNegotiated.value = true
-    intc_1 // 1
-    app_global_put
     retsub
 
 recordNegotiatedPrice_ternary_false@2:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:105
+    // smart_contracts/marketplace_plugin/contract.algo.ts:104
     // rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     global ZeroAddress
     b recordNegotiatedPrice_ternary_merge@3
@@ -542,7 +524,7 @@ recordNegotiatedPrice_ternary_false@2:
 
 // smart_contracts/marketplace_plugin/contract.algo.ts::MarketplacePlugin.purchase(sender: uint64, rekeyBack: uint64, listingAppID: uint64) -> void:
 purchase:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:111
+    // smart_contracts/marketplace_plugin/contract.algo.ts:109
     // purchase(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
     proto 3 0
     // smart_contracts/plugin/contract.algo.ts:7
@@ -550,16 +532,16 @@ purchase:
     frame_dig -3
     // smart_contracts/abstracted_account/constants.ts:2
     // export const CONTROLLED_ADDRESS = 'controlled_address'
-    bytec_1 // "controlled_address"
+    bytec_0 // "controlled_address"
     // smart_contracts/plugin/contract.algo.ts:7
     // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     app_global_get_ex
     pop
     dup
-    // smart_contracts/marketplace_plugin/contract.algo.ts:26
+    // smart_contracts/marketplace_plugin/contract.algo.ts:25
     // const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
     intc_2 // TMPL_FACTORY_APP_ID
-    // smart_contracts/marketplace_plugin/contract.algo.ts:117
+    // smart_contracts/marketplace_plugin/contract.algo.ts:115
     // assert(listingApp.creator === factoryApp.address, LISTING_CREATOR_NOT_MARKETPLACE)
     frame_dig -1
     app_params_get AppCreator
@@ -569,32 +551,23 @@ purchase:
     assert // application exists
     ==
     assert // Creator is not the marketplace
-    // smart_contracts/marketplace_plugin/contract.algo.ts:30
-    // priceNegotiated = GlobalState<boolean>({ initialValue: false, key: 'priceNegotiated' })
-    intc_0 // 0
-    bytec_0 // "priceNegotiated"
-    app_global_get_ex
-    assert // check GlobalState exists
-    // smart_contracts/marketplace_plugin/contract.algo.ts:118
-    // assert(this.priceNegotiated.value, 'Price has not been negotiated')
-    assert // Price has not been negotiated
-    // smart_contracts/marketplace_plugin/contract.algo.ts:120
+    // smart_contracts/marketplace_plugin/contract.algo.ts:117
     // const [negotiatedPrice] = op.AppGlobal.getExUint64(listingApp, Bytes(NEGOTIATED_PRICE_KEY))
     frame_dig -1
     // smart_contracts/listing_contract/constants.ts:7
     // export const NEGOTIATED_PRICE_KEY = 'negotiated_price'
     pushbytes "negotiated_price"
-    // smart_contracts/marketplace_plugin/contract.algo.ts:120
+    // smart_contracts/marketplace_plugin/contract.algo.ts:117
     // const [negotiatedPrice] = op.AppGlobal.getExUint64(listingApp, Bytes(NEGOTIATED_PRICE_KEY))
     app_global_get_ex
     pop
-    // smart_contracts/marketplace_plugin/contract.algo.ts:124
+    // smart_contracts/marketplace_plugin/contract.algo.ts:121
     // receiver: factoryApp.address,
     swap
     app_params_get AppAddress
     assert // application exists
-    // smart_contracts/marketplace_plugin/contract.algo.ts:129-135
-    // listingFactoryApp.call.purchase({
+    // smart_contracts/marketplace_plugin/contract.algo.ts:126-132
+    // abiCall(ListingFactory.prototype.purchase, {
     //   sender: controlledAccount,
     //   appId: factoryAppID,
     //   args: [purchasePayment, listingAppID],
@@ -605,7 +578,7 @@ purchase:
     itxn_field Receiver
     itxn_field Amount
     itxn_field Sender
-    // smart_contracts/marketplace_plugin/contract.algo.ts:122-127
+    // smart_contracts/marketplace_plugin/contract.algo.ts:119-124
     // const purchasePayment = itxn.payment({
     //   sender: controlledAccount,
     //   receiver: factoryApp.address,
@@ -614,12 +587,12 @@ purchase:
     // })
     intc_1 // 1
     itxn_field TypeEnum
-    // smart_contracts/marketplace_plugin/contract.algo.ts:126
+    // smart_contracts/marketplace_plugin/contract.algo.ts:123
     // fee: 0,
     intc_0 // 0
     itxn_field Fee
-    // smart_contracts/marketplace_plugin/contract.algo.ts:129-135
-    // listingFactoryApp.call.purchase({
+    // smart_contracts/marketplace_plugin/contract.algo.ts:126-132
+    // abiCall(ListingFactory.prototype.purchase, {
     //   sender: controlledAccount,
     //   appId: factoryAppID,
     //   args: [purchasePayment, listingAppID],
@@ -627,22 +600,22 @@ purchase:
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     // })
     itxn_next
-    // smart_contracts/marketplace_plugin/contract.algo.ts:26
+    // smart_contracts/marketplace_plugin/contract.algo.ts:25
     // const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
     intc_2 // TMPL_FACTORY_APP_ID
-    // smart_contracts/marketplace_plugin/contract.algo.ts:134
+    // smart_contracts/marketplace_plugin/contract.algo.ts:131
     // rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     frame_dig -2
     bz purchase_ternary_false@3
     frame_dig 0
 
 purchase_ternary_merge@4:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:132
+    // smart_contracts/marketplace_plugin/contract.algo.ts:129
     // args: [purchasePayment, listingAppID],
     frame_dig -1
     itob
-    // smart_contracts/marketplace_plugin/contract.algo.ts:129-135
-    // listingFactoryApp.call.purchase({
+    // smart_contracts/marketplace_plugin/contract.algo.ts:126-132
+    // abiCall(ListingFactory.prototype.purchase, {
     //   sender: controlledAccount,
     //   appId: factoryAppID,
     //   args: [purchasePayment, listingAppID],
@@ -652,8 +625,6 @@ purchase_ternary_merge@4:
     pushbytes 0xee02ece7 // method "purchase(pay,uint64)void"
     itxn_field ApplicationArgs
     itxn_field ApplicationArgs
-    intc_0 // 0
-    itxn_field OnCompletion
     itxn_field RekeyTo
     frame_dig 1
     itxn_field ApplicationID
@@ -661,12 +632,12 @@ purchase_ternary_merge@4:
     itxn_field Sender
     intc_3 // appl
     itxn_field TypeEnum
-    // smart_contracts/marketplace_plugin/contract.algo.ts:133
+    // smart_contracts/marketplace_plugin/contract.algo.ts:130
     // fee: 0,
     intc_0 // 0
     itxn_field Fee
-    // smart_contracts/marketplace_plugin/contract.algo.ts:129-135
-    // listingFactoryApp.call.purchase({
+    // smart_contracts/marketplace_plugin/contract.algo.ts:126-132
+    // abiCall(ListingFactory.prototype.purchase, {
     //   sender: controlledAccount,
     //   appId: factoryAppID,
     //   args: [purchasePayment, listingAppID],
@@ -674,17 +645,10 @@ purchase_ternary_merge@4:
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     // })
     itxn_submit
-    // smart_contracts/marketplace_plugin/contract.algo.ts:30
-    // priceNegotiated = GlobalState<boolean>({ initialValue: false, key: 'priceNegotiated' })
-    bytec_0 // "priceNegotiated"
-    // smart_contracts/marketplace_plugin/contract.algo.ts:137
-    // this.priceNegotiated.value = false
-    intc_0 // 0
-    app_global_put
     retsub
 
 purchase_ternary_false@3:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:134
+    // smart_contracts/marketplace_plugin/contract.algo.ts:131
     // rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     global ZeroAddress
     b purchase_ternary_merge@4
@@ -692,7 +656,7 @@ purchase_ternary_false@3:
 
 // smart_contracts/marketplace_plugin/contract.algo.ts::MarketplacePlugin.delist(sender: uint64, rekeyBack: uint64, listingAppID: uint64) -> void:
 delist:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:140
+    // smart_contracts/marketplace_plugin/contract.algo.ts:135
     // delist(sender: uint64, rekeyBack: boolean, listingAppID: uint64): void {
     proto 3 0
     // smart_contracts/plugin/contract.algo.ts:7
@@ -700,15 +664,15 @@ delist:
     frame_dig -3
     // smart_contracts/abstracted_account/constants.ts:2
     // export const CONTROLLED_ADDRESS = 'controlled_address'
-    bytec_1 // "controlled_address"
+    bytec_0 // "controlled_address"
     // smart_contracts/plugin/contract.algo.ts:7
     // const [controlledAccountBytes] = op.AppGlobal.getExBytes(app, Bytes(CONTROLLED_ADDRESS))
     app_global_get_ex
     pop
-    // smart_contracts/marketplace_plugin/contract.algo.ts:26
+    // smart_contracts/marketplace_plugin/contract.algo.ts:25
     // const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
     intc_2 // TMPL_FACTORY_APP_ID
-    // smart_contracts/marketplace_plugin/contract.algo.ts:145
+    // smart_contracts/marketplace_plugin/contract.algo.ts:140
     // assert(listingApp.creator === factoryApp.address, LISTING_CREATOR_NOT_MARKETPLACE)
     frame_dig -1
     app_params_get AppCreator
@@ -718,7 +682,7 @@ delist:
     assert // application exists
     ==
     assert // Creator is not the marketplace
-    // smart_contracts/marketplace_plugin/contract.algo.ts:148-154
+    // smart_contracts/marketplace_plugin/contract.algo.ts:143-149
     // listingFactoryApp.call.delist({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
@@ -727,21 +691,21 @@ delist:
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     // })
     itxn_begin
-    // smart_contracts/marketplace_plugin/contract.algo.ts:26
+    // smart_contracts/marketplace_plugin/contract.algo.ts:25
     // const factoryAppID = TemplateVar<uint64>('FACTORY_APP_ID')
     intc_2 // TMPL_FACTORY_APP_ID
-    // smart_contracts/marketplace_plugin/contract.algo.ts:153
+    // smart_contracts/marketplace_plugin/contract.algo.ts:148
     // rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     frame_dig -2
     bz delist_ternary_false@2
     frame_dig 0
 
 delist_ternary_merge@3:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:151
+    // smart_contracts/marketplace_plugin/contract.algo.ts:146
     // args: [listingAppID],
     frame_dig -1
     itob
-    // smart_contracts/marketplace_plugin/contract.algo.ts:148-154
+    // smart_contracts/marketplace_plugin/contract.algo.ts:143-149
     // listingFactoryApp.call.delist({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
@@ -761,11 +725,11 @@ delist_ternary_merge@3:
     itxn_field Sender
     intc_3 // appl
     itxn_field TypeEnum
-    // smart_contracts/marketplace_plugin/contract.algo.ts:152
+    // smart_contracts/marketplace_plugin/contract.algo.ts:147
     // fee: 0,
     intc_0 // 0
     itxn_field Fee
-    // smart_contracts/marketplace_plugin/contract.algo.ts:148-154
+    // smart_contracts/marketplace_plugin/contract.algo.ts:143-149
     // listingFactoryApp.call.delist({
     //   sender: controlledAccount,
     //   appId: factoryAppID,
@@ -774,17 +738,10 @@ delist_ternary_merge@3:
     //   rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     // })
     itxn_submit
-    // smart_contracts/marketplace_plugin/contract.algo.ts:30
-    // priceNegotiated = GlobalState<boolean>({ initialValue: false, key: 'priceNegotiated' })
-    bytec_0 // "priceNegotiated"
-    // smart_contracts/marketplace_plugin/contract.algo.ts:156
-    // this.priceNegotiated.value = false
-    intc_0 // 0
-    app_global_put
     retsub
 
 delist_ternary_false@2:
-    // smart_contracts/marketplace_plugin/contract.algo.ts:153
+    // smart_contracts/marketplace_plugin/contract.algo.ts:148
     // rekeyTo: rekeyBack ? controlledAccount : Global.zeroAddress,
     global ZeroAddress
     b delist_ternary_merge@3

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": [
-    "/Users/gabe.algo/Code/smart-wallet-for-agent-to-agent-interaction/projects/contracts/smart_contracts/plugin/contract.algo.ts"
+    "/Users/kylebreeding/algorand/retreat/smart-wallet-for-agent-to-agent-interaction/projects/contracts/smart_contracts/plugin/contract.algo.ts"
   ],
   "mappings": ";AAIA;;AAAA;;;AAAA;;AAAA;;;AAAA;;AAAA;AAAA;AAAA;;;AAAA;;",
   "op_pc_offset": 0,
