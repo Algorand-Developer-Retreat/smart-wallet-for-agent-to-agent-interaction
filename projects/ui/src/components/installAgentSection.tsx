@@ -15,7 +15,6 @@ const maxUint64 = BigInt('18446744073709551615');
 
 const algodConfig = getAlgodConfigFromEnvironment()
 
-
 const optinPluginID = getOptinPluginIDFromEnvironment()
 const marketPlacePluginID = getMarketplacePluginIDFromEnvironment()
 const agentAddress = getAgentAddressFromEnvironment()
@@ -23,6 +22,7 @@ const agentAddress = getAgentAddressFromEnvironment()
 export default function HomeSection() {
     const { activeWallet, activeAddress, transactionSigner, signTransactions } = useWallet()
     const [abstractedAccountClient, setAbstractedAccountClient] = useState<AbstractedAccountClient | null>(null)
+    const [listingAppID, setListingAppID] = useState<bigint | null>(null)
 
     const createSmartWallet = async () => {
 
@@ -211,7 +211,7 @@ export default function HomeSection() {
         })).transactions[0]
 
         try {
-            await abstractedAccountClient
+            const results = await abstractedAccountClient
                 .newGroup()
                 .arc58RekeyToPlugin({
                     sender: activeAddress,
@@ -229,13 +229,62 @@ export default function HomeSection() {
                     args: {},
                 })
                 .send()
+
+            console.log('results.returns', results.returns)
+
+            // setListingAppID(results.returns[1])
         } catch (e: any) {
             alert(`Error: ${e.message}`)
         }
     }
 
     const recordNegotiatedPrice = async () => {
+        if (!activeAddress) {
+            console.error('No active address')
+            return
+        }
 
+        if (!abstractedAccountClient) {
+            console.error('No abstracted account client')
+            return
+        }
+
+        const marketPlacePluginClient = await getMarketplacePluginClient({ activeAddress: activeAddress, signer: transactionSigner })
+
+        // const recordNegotiatedPriceCall = (await marketPlacePluginClient.createTransaction.recordNegotiatedPrice({
+        //     sender: activeAddress,
+        //     signer: transactionSigner,
+        //     args: {
+        //         sender: abstractedAccountClient.appId,
+        //         rekeyBack: true,
+        //         price: 100_000_000n,
+        //         listingAppId: 0n
+        //     },
+        //     extraFee: (14000).microAlgos(),
+        // })).transactions[0]
+
+        // try {
+        //     await abstractedAccountClient
+        //         .newGroup()
+        //         .arc58RekeyToPlugin({
+        //             sender: activeAddress,
+        //             signer: transactionSigner,
+        //             args: {
+        //                 plugin: marketPlacePluginID,
+        //                 methodOffsets: []
+        //             },
+        //             extraFee: (1000).microAlgos(),
+        //         })
+        //         .addTransaction(recordNegotiatedPriceCall, transactionSigner) // list asset
+        //         .arc58VerifyAuthAddr({
+        //             sender: activeAddress,
+        //             signer: transactionSigner,
+        //             args: {},
+        //         })
+        //         .send()
+        // } catch (e) {
+        //     alert(`Error: ${e.message}`)
+        // }
     }
 
     const purchase = async () => {
@@ -243,7 +292,7 @@ export default function HomeSection() {
     }
 
     const delistNFT = async () => {
-        
+
     }
 
     if (!activeAddress) {
