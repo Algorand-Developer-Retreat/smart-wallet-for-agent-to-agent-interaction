@@ -242,7 +242,7 @@ export default function HomeSection() {
 
                 console.log('listing ids', listings)
 
-                setListingAppID(listings[0].id)
+                setListingAppID(listings[1].id)
         } catch (e: any) {
             alert(`Error: ${e.message}`)
         }
