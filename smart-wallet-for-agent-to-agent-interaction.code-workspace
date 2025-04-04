@@ -11,12 +11,10 @@
       "path": "projects/ui"
     },
     {
-      "path": "projects/mcp-client",
-      "name": "MCP Client"
+      "path": "projects/mcp-client"
     },
     {
-      "path": "projects/mcp-server",
-      "name": "MCP Server"
+      "path": "projects/mcp-server"
     }
   ],
   "settings": {
