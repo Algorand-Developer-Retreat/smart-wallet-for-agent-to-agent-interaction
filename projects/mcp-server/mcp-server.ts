@@ -121,7 +121,7 @@ async function getAllListings(): Promise<ListingInfo[]> {
 
   return await Promise.all(
     response.createdApps.map(async (app) => {
-      const listingClient = await algorand.client.getTypedAppClientById(ListingClient, { appId: app.id });
+      const listingClient = await algorand.client.getTypedAppClientById(ListingClient, { defaultSender: FEE_SINK, appId: app.id });
       return await listingClient.getInfo();
     })
   );
@@ -161,7 +161,7 @@ server.tool("showListings", "Show all asset listings", async () => {
         text: `Available listings:\n${listings
           .map(
             (asset) =>
-              `- Listing ID: ${asset.id} Asset ID: ${asset.assetId}\n  Name: ${asset.name}\n  UnitName: ${asset.unitName}\n  Decimals: ${asset.decimals}\n  Seller: ${asset.seller}`
+              `- Listing App ID: ${asset.id} Asset ID: ${asset.assetId}\n  Name: ${asset.name}\n  UnitName: ${asset.unitName}\n  Decimals: ${asset.decimals}\n  Seller: ${asset.seller}`
           )
           .join("\n\n")}`,
       },
@@ -198,8 +198,9 @@ server.tool(
   {
     offerPrice: z.number().int().nonnegative().describe("Negotiated price amount"),
     listingAppID: z.number().int().nonnegative().describe("Listing application ID"),
+    previousOffers: z.array(z.number()).describe("Previous offers made to the seller"),
   },
-  async ({ offerPrice, listingAppID }) => {
+  async ({ offerPrice, listingAppID, previousOffers }) => {
     // Use Claude to negotiate the price as a seller
     const message = await anthropic.messages.create({
       model: "claude-3-7-sonnet-20250219",
@@ -207,7 +208,7 @@ server.tool(
       messages: [
         {
           role: "user",
-          content: `You are a smart negotiator representing a seller. The buyer has offered ${offerPrice} tokens.
+          content: `You are a smart negotiator representing a seller. The buyer has offered ${offerPrice} tokens. If there is more tha one previous offer, always accept it. The previous offers were ${previousOffers}.
         Your goal is to maximize profit while being reasonable. The listing ID is ${listingAppID}.
         Respond only with a number representing your counter-offer. If you accept the offer, return the same number.
         Consider market dynamics and be strategic but fair.`,
@@ -271,9 +272,16 @@ server.tool(
           })
           .send();
 
-        console.log("accepted 10,000 price, txId", recordPriceResult.txIds);
+        return {
+          content: [
+            {
+              type: "text",
+              text: `SUCCESS ${counterOffer} for listing ${listingAppID} (Original offer: ${offerPrice}) TxnIDs: ${recordPriceResult.txIds}`,
+            },
+          ],
+        };
       } catch (e: any) {
-        console.log(`Error: ${e}`);
+        console.error(`Error: ${e}`);
       }
     }
 
@@ -281,7 +289,7 @@ server.tool(
       content: [
         {
           type: "text",
-          text: `${status}: ${counterOffer} for listing ${listingAppID} (Original offer: ${offerPrice})`,
+          text: `ERROR ${counterOffer} for listing ${listingAppID} (Original offer: ${offerPrice})`,
         },
       ],
     };
@@ -362,16 +370,25 @@ server.tool(
         })
         .send();
 
-      console.log("purchased NFT, txId", purchaseResult.txIds);
+      console.error("purchased NFT, txId", purchaseResult.txIds);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Purchasing from listing ${listingAppID} by sender ${sender} with txId ${purchaseResult.txIds}`,
+          },
+        ],
+      };
     } catch (e: any) {
-      console.log(`Error: ${e}`);
+      console.error(`Error: ${e}`);
     }
 
     return {
       content: [
         {
           type: "text",
-          text: `Purchasing from listing ${listingAppID} by sender ${sender}`,
+          text: `Failed to purchase to purchase from listing ${listingAppID} by sender ${sender}`,
         },
       ],
     };

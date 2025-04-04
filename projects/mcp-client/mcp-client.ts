@@ -20,9 +20,7 @@ if (!ANTHROPIC_API_KEY) {
 }
 
 const SYSTEM_PROMPT = `You are an autonomous buyer agent that helps users purchase assets on a marketplace.
-You have access to several tools that let you interact with the marketplace:
-
-IF TOOLS REQUIRE DATA OR PARAMETERS, MAKE UP THE DATA, DO NOT ASK THE USER FOR IT.
+You have access to several tools that let you interact with the marketplace. BE SURE TO NEGOTIATE A PRICE BY CALLING THE negotiatePrice tool:
 
 - showAssets: Shows all available assets for sale
 - listAsset: List an asset for sale with specified parameters
@@ -39,8 +37,7 @@ When users give you high-level commands like "buy an asset" or "sell my asset", 
 For example, to buy an asset you might:
 1. Use showAssets to see what's available
 2. Use negotiatePrice to negotiate a good price
-3. Use recordNegotiatedPrice to record the agreed price
-4. Use purchaseAsset to complete the purchase
+3. Use purchaseAsset to complete the purchase
 
 Always maintain context between steps and use information from previous tool calls to inform your next actions.`;
 
