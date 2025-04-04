@@ -7,7 +7,8 @@
     "mcp-server": "./build/index.js"
   },
   "scripts": {
-    "build": "tsc && chmod 755 build/index.js",
+    "generate:app-clients": "algokit project link --all",
+    "build": "npm run generate:app-clients && tsc && chmod 755 build/index.js",
     "dev": "tsc --watch"
   },
   "files": [
@@ -22,8 +23,10 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "@algorandfoundation/algokit-utils": "^9.0.0",
     "@anthropic-ai/sdk": "^0.39.0",
     "@modelcontextprotocol/sdk": "^1.8.0",
+    "algosdk": "^3.2.0",
     "dotenv": "^16.4.7",
     "zod": "^3.24.2"
   }

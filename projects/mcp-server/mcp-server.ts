@@ -2,9 +2,11 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import dotenv from "dotenv";
 import { Anthropic } from "@anthropic-ai/sdk";
+import { AlgorandClient } from "@algorandfoundation/algokit-utils";
 
 dotenv.config();
 
+const AGENT_MNEMONIC = process.env.AGENT_MNEMONIC;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 if (!ANTHROPIC_API_KEY) {
@@ -23,6 +25,17 @@ const server = new McpServer({
     tools: {},
   },
 });
+
+function getAgentAccount() {
+  if (!AGENT_MNEMONIC) {
+    throw new Error("AGENT_MNEMONIC is not set");
+  }
+
+  const algorand = AlgorandClient.defaultLocalNet();
+  const agentAccount = algorand.account.fromMnemonic(AGENT_MNEMONIC);
+
+  return agentAccount;
+}
 
 server.tool("showAssets", "Show all assets", async () => {
   // Mock data for demonstration
