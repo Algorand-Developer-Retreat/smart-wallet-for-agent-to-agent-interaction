@@ -23,22 +23,22 @@ if (!LISTING_FACTORY_ID) {
 
 const OPTIN_PLUGIN_ID = BigInt(process.env.OPTIN_PLUGIN_ID!)
 if (!OPTIN_PLUGIN_ID) {
-  throw new Error("ANTHROPIC_API_KEY is not set");
+  throw new Error("OPTIN_PLUGIN_ID is not set");
 }
 
 const MARKETPLACE_PLUGIN_ID = BigInt(process.env.MARKETPLACE_PLUGIN_ID!)
 if (!MARKETPLACE_PLUGIN_ID) {
-  throw new Error("ANTHROPIC_API_KEY is not set");
+  throw new Error("MARKETPLACE_PLUGIN_ID is not set");
 }
 
 const AGENT_MNEMONIC = process.env.AGENT_MNEMONIC;
 if (!AGENT_MNEMONIC) {
-  throw new Error("ANTHROPIC_API_KEY is not set");
+  throw new Error("AGENT_MNEMONIC is not set");
 }
 
 const SELLER_WALLET_APP_ID = BigInt(process.env.SELLER_SMART_WALLET_APP_ID!)
 if (!SELLER_WALLET_APP_ID) {
-  throw new Error("ANTHROPIC_API_KEY is not set");
+  throw new Error("SELLER_WALLET_APP_ID is not set");
 }
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
