@@ -1,22 +1,9 @@
 # smart-wallet-for-agent-to-agent-interaction
 
-Welcome to your new AlgoKit project!
+A2A negotiation flow
+1. Seller agent list the nft by calling the `list` method on the marketplace plugin
+buyer agent reaches out to the seller agent and they start negotiating a price.
+2. Once they agree on a price, the seller agent calls the `recordNegotiatedPrice` method on the plugin app.
+3. After the negotiatedPrice is set, the buyer agent calls the `purchase` method to buy the nft. This method will automatically query the `negotiatedPrice`, create an itxn that sends the correct payment amount, get the listing app to send the nft to the buyer and send the profit to the seller.
 
-This is your workspace root. A `workspace` in AlgoKit is an orchestrated collection of standalone projects (backends, smart contracts, frontend apps and etc).
-
-By default, `projects_root_path` parameter is set to `projects`. Which instructs AlgoKit CLI to create a new directory under `projects` directory when new project is instantiated via `algokit init` at the root of the workspace.
-
-## Getting Started
-
-To get started refer to `README.md` files in respective sub-projects in the `projects` directory.
-
-To learn more about algokit, visit [documentation](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/algokit.md).
-
-### GitHub Codespaces
-
-To get started execute:
-
-1. `algokit generate devcontainer` - invoking this command from the root of this repository will create a `devcontainer.json` file with all the configuration needed to run this project in a GitHub codespace. [Run the repository inside a codespace](https://docs.github.com/en/codespaces/getting-started/quickstart) to get started.
-2. `algokit init` - invoke this command inside a github codespace to launch an interactive wizard to guide you through the process of creating a new AlgoKit project
-
-Powered by [Copier templates](https://copier.readthedocs.io/en/stable/).
+![flow](./resources/diagram.png)

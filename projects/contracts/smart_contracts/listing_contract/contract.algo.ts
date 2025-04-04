@@ -84,7 +84,7 @@ export class Listing extends Contract {
   }
 
   public recordNegotiatedPrice(price: uint64): void {
-    assert(Txn.sender === this.seller.value.native, MUST_BE_CALLED_FROM_FACTORY)
+    assert(Txn.sender === this.seller.value.native, 'seller must call')
     this.negotiatedPrice.value = price
   }
 
